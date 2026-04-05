@@ -730,6 +730,7 @@
 // ══════════════════════════════════════════
 const AVATARES = ['🦁','🐯','🐸','🦊','🐧','🦄','🐉','🤖','👾','🦸'];
 let jogador = { nome: '', avatar: '🦁' };
+let respostaAtual = '';
 let nivel = 1;
 let timerInterval = null;
 let segundos = 0;
@@ -1044,8 +1045,6 @@ function confirmarResposta() {
   celulaAtiva = null;
   setTimeout(proximaPergunta, 400);
 }
-
-let respostaAtual = '';
 
 function numpadPress(v) {
   if (!jogoAtivo) return;
