@@ -1702,15 +1702,7 @@ function mostrarCountdown(numero, jogadoresSala, callback) {
 function compartilharWhatsApp() {
   const codigo = document.getElementById('codigo-sala-display').textContent;
   const url = 'https://meirelesnew.github.io/tabuada-turbo/';
-  const msg = '⚡ Tabuada Turbo — Batalha!
-
-Vem me desafiar na tabuada! 😤
-
-🔑 Código da sala: *' + codigo + '*
-
-👉 Acesse: ' + url + '
-
-Quem termina primeiro vence! ⚔️';
+  const msg = '⚡ Tabuada Turbo — Batalha!\n\nVem me desafiar na tabuada! 😤\n\n🔑 Código da sala: *' + codigo + '*\n\n👉 Acesse: ' + url + '\n\nQuem termina primeiro vence! ⚔️';
   window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
 }
 
@@ -1718,19 +1710,9 @@ function compartilharResultadoWhatsApp() {
   const titulo = document.getElementById('batalha-resultado-titulo').textContent;
   const ganhei = titulo.includes('VENCEU');
   const url = 'https://meirelesnew.github.io/tabuada-turbo/';
-  const tempo = document.querySelector('#batalha-placar .rank-time') ?
-    document.querySelector('#batalha-placar .rank-time').textContent : '';
-  const msg = ganhei
-    ? '🏆 Venci na Tabuada Turbo! ⚡
-
-Fiz a tabuada completa em *' + tempo + '*!
-
-Vem me desafiar: ' + url
-    : '😤 Perdi na Tabuada Turbo desta vez...
-
-Vem me desafiar: ' + url + '
-
-Bora revanche! ⚔️';
+  const tempoEl = document.querySelector('#batalha-placar .rank-time');
+  const tempo = tempoEl ? tempoEl.textContent : '';
+  const msg = ganhei ? '🏆 Venci na Tabuada Turbo! ⚡\n\nFiz em *' + tempo + '*!\n\nVem me desafiar: ' + url : '😤 Perdi desta vez...\n\nBora revanche: ' + url + ' ⚔️';
   window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
 }
 
