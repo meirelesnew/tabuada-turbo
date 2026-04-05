@@ -272,3 +272,7 @@ def ranking_nivel(nivel: int):
     for d in docs:
         d["_id"] = str(d["_id"])
     return {"ranking": docs, "nivel": nivel}
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("main:app", host="0.0.0.0", port=10000)
