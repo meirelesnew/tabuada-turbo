@@ -1101,9 +1101,8 @@ function selecionarCelula(xi, yi) {
   if (el) { el.textContent = '?'; el.classList.remove('preenchido'); }
   celulas.forEach((_, i) => atualizarCelulaVisual(i));
   atualizarHighlight(xi, yi);
-}l para o campo de resposta e foca
-  // sem foco em input nativo
 }
+  // sem foco em input nativo
 
 function confirmarResposta() {
   if (!jogoAtivo || celulaAtiva === null) return;
