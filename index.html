@@ -344,32 +344,39 @@
 
   /* ── PERGUNTA ── */
   .question-box {
-    background: linear-gradient(135deg, rgba(255,107,53,0.15), rgba(255,215,0,0.08));
+    background: linear-gradient(135deg, rgba(255,107,53,0.12), rgba(255,215,0,0.06));
     border: 2px solid rgba(255,107,53,0.3);
     border-radius: var(--radius);
-    padding: 20px;
+    padding: 12px 16px;
     text-align: center;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
   }
   .question-text {
     font-family: 'Boogaloo', cursive;
-    font-size: 2rem;
-    margin-bottom: 10px;
+    font-size: 1.8rem;
   }
   .question-text span { color: var(--accent); }
-  .answer-input {
-    background: rgba(255,255,255,0.07);
-    border: 2px solid rgba(255,255,255,0.15);
-    border-radius: 10px;
-    color: var(--text);
+  .resposta-display {
     font-family: 'Boogaloo', cursive;
-    font-size: 1.8rem;
-    text-align: center;
-    padding: 10px;
-    width: 120px;
-    outline: none;
+    font-size: 2rem;
+    min-width: 70px;
+    background: rgba(255,255,255,0.07);
+    border: 2px solid rgba(255,107,53,0.5);
+    border-radius: 10px;
+    padding: 6px 12px;
+    color: var(--accent2);
+    letter-spacing: 2px;
   }
-  .answer-input:focus { border-color: var(--accent2); }
+  .resposta-display.preenchido { color: var(--text); border-color: var(--accent2); }
+
+  /* ── NUMPAD FIXO (sem teclado nativo nunca) ── */
+  .numpad-fixo {
+    margin-bottom: 8px;
+  }
 
   /* ── STATS BAR ── */
   .stats-row {
@@ -651,8 +658,12 @@
   <!-- Pergunta atual -->
   <div class="question-box" id="question-box">
     <div class="question-text" id="question-text">—</div>
-    <input type="number" class="answer-input" id="answer-input" placeholder="?" min="1" max="100" autocomplete="off">
-    <div id="numpad" class="numpad">
+    <div class="resposta-display" id="resposta-display">?</div>
+  </div>
+
+  <!-- Numpad FIXO — nunca some, nunca abre teclado nativo -->
+  <div class="numpad-fixo">
+    <div class="numpad">
       <button class="nk" onclick="numpadPress('1')">1</button>
       <button class="nk" onclick="numpadPress('2')">2</button>
       <button class="nk" onclick="numpadPress('3')">3</button>
@@ -737,8 +748,12 @@ let nivelAtualJogo = 1;
 document.addEventListener('DOMContentLoaded', () => {
   renderAvatares();
   carregarJogador();
-  document.getElementById('answer-input').addEventListener('keydown', e => {
-    if (e.key === 'Enter') confirmarResposta();
+  // Teclado físico também funciona (para quem usa no PC)
+  document.addEventListener('keydown', e => {
+    if (!jogoAtivo) return;
+    if (e.key >= '0' && e.key <= '9') numpadPress(e.key);
+    else if (e.key === 'Backspace') numpadPress('del');
+    else if (e.key === 'Enter') numpadPress('ok');
   });
 });
 
@@ -847,6 +862,7 @@ function iniciarJogo(lv) {
   segundos = 0;
   jogoAtivo = true;
   celulaAtiva = null;
+  respostaAtual = '';
 
   // Eixos
   const base = [1,2,3,4,5,6,7,8,9,10];
@@ -867,7 +883,7 @@ function iniciarJogo(lv) {
   proximaPergunta();
   iniciarTimer();
   mostrarTela('screen-jogo');
-  setTimeout(() => document.getElementById('answer-input').focus(), 300);
+  // sem foco em input nativo
 }
 
 // ══════════════════════════════════════════
@@ -929,28 +945,63 @@ function atualizarCelulaVisual(idx) {
   }
 }
 
+function atualizarHighlight(xi, yi) {
+  // Limpar todos highlights
+  document.querySelectorAll('.mult-table th').forEach(th => {
+    th.classList.remove('col-ativa', 'row-ativa');
+  });
+  document.querySelectorAll('.mult-table td').forEach(td => {
+    td.classList.remove('col-highlight', 'row-highlight', 'cross-highlight');
+  });
+  if (xi === undefined || yi === undefined) return;
+
+  // Header da coluna (linha 0, posição xi+1)
+  const thead = document.querySelector('.mult-table thead tr');
+  if (thead) {
+    const ths = thead.querySelectorAll('th');
+    if (ths[xi + 1]) ths[xi + 1].classList.add('col-ativa');
+  }
+  // Header da linha (tbody, linha yi, primeiro th)
+  const tbody = document.querySelector('.mult-table tbody');
+  if (tbody) {
+    const rows = tbody.querySelectorAll('tr');
+    if (rows[yi]) {
+      const rowTh = rows[yi].querySelector('th');
+      if (rowTh) rowTh.classList.add('row-ativa');
+    }
+  }
+  // Highlight células col e row
+  celulas.forEach((c, i) => {
+    if (c.correto !== null) return; // já respondida, não recolore
+    const td = document.getElementById('cell-' + c.xi + '-' + c.yi);
+    if (!td) return;
+    const naCol = c.xi === xi;
+    const naRow = c.yi === yi;
+    if (naCol && naRow) return; // é a active-cell, já tem classe própria
+    if (naCol && naRow) td.classList.add('cross-highlight');
+    else if (naCol) td.classList.add('col-highlight');
+    else if (naRow) td.classList.add('row-highlight');
+  });
+}
+
 // ══════════════════════════════════════════
 //  PERGUNTA
 // ══════════════════════════════════════════
 function proximaPergunta() {
-  // Próxima sem resposta
   const pendentes = celulas.map((c, i) => ({...c, i})).filter(c => c.correto === null);
   if (pendentes.length === 0) { finalizarJogo(); return; }
   const idx = pendentes[0].i;
   celulaAtiva = idx;
   const c = celulas[idx];
 
-  document.getElementById('question-text').innerHTML = `<span>${c.x}</span> × <span>${c.y}</span> = ?`;
-  document.getElementById('answer-input').value = '';
-  document.getElementById('answer-input').focus();
+  document.getElementById('question-text').innerHTML = '<span>' + c.x + '</span> × <span>' + c.y + '</span> =';
+  respostaAtual = '';
+  const el = document.getElementById('resposta-display');
+  if (el) { el.textContent = '?'; el.classList.remove('preenchido'); }
 
-  // Atualizar visual
   celulas.forEach((_, i) => atualizarCelulaVisual(i));
+  atualizarHighlight(c.xi, c.yi);
   atualizarStats();
-
-  // Scroll para célula ativa na tabela
-  const td = document.getElementById(`cell-${c.xi}-${c.yi}`);
-  if (td) td.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
 }
 
 function selecionarCelula(xi, yi) {
@@ -958,31 +1009,35 @@ function selecionarCelula(xi, yi) {
   if (idx === -1) return;
   celulaAtiva = idx;
   const c = celulas[idx];
-  document.getElementById('question-text').innerHTML = `<span>${c.x}</span> × <span>${c.y}</span> = ?`;
-  document.getElementById('answer-input').value = '';
+  document.getElementById('question-text').innerHTML = '<span>' + c.x + '</span> × <span>' + c.y + '</span> =';
+  respostaAtual = '';
+  const el = document.getElementById('resposta-display');
+  if (el) { el.textContent = '?'; el.classList.remove('preenchido'); }
   celulas.forEach((_, i) => atualizarCelulaVisual(i));
-  // Scroll para o campo de resposta e foca
-  const inp = document.getElementById('answer-input');
-  inp.focus();
-  inp.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  atualizarHighlight(xi, yi);
+}l para o campo de resposta e foca
+  // sem foco em input nativo
 }
 
 function confirmarResposta() {
   if (!jogoAtivo || celulaAtiva === null) return;
-  const val = parseInt(document.getElementById('answer-input').value);
-  if (isNaN(val)) { toast('Digite um número!', 'err'); return; }
+  const val = parseInt(respostaAtual);
+  if (isNaN(val) || respostaAtual === '') { toast('Digite um número!', 'err'); return; }
   const c = celulas[celulaAtiva];
   const correto = val === c.x * c.y;
   celulas[celulaAtiva].correto = correto;
+  respostaAtual = '';
+  const el = document.getElementById('resposta-display');
+  if (el) { el.textContent = '?'; el.classList.remove('preenchido'); }
 
   if (correto) {
     acertos++;
     flashTela('correct');
-    toast(`✅ Correto! ${c.x}×${c.y}=${c.x*c.y}`, 'ok');
+    toast('✅ ' + c.x + '×' + c.y + '=' + (c.x*c.y), 'ok');
   } else {
     erros++;
     flashTela('wrong');
-    toast(`❌ Era ${c.x*c.y}`, 'err');
+    toast('❌ Era ' + (c.x*c.y), 'err');
   }
 
   atualizarCelulaVisual(celulaAtiva);
@@ -990,16 +1045,21 @@ function confirmarResposta() {
   setTimeout(proximaPergunta, 400);
 }
 
+let respostaAtual = '';
+
 function numpadPress(v) {
-  const inp = document.getElementById('answer-input');
+  if (!jogoAtivo) return;
   if (v === 'del') {
-    inp.value = inp.value.slice(0, -1);
+    respostaAtual = respostaAtual.slice(0, -1);
   } else if (v === 'ok') {
     confirmarResposta();
+    return;
   } else {
-    if (inp.value.length < 3) inp.value += v;
+    if (respostaAtual.length < 3) respostaAtual += v;
   }
-  inp.focus();
+  const el = document.getElementById('resposta-display');
+  el.textContent = respostaAtual || '?';
+  el.classList.toggle('preenchido', respostaAtual.length > 0);
 }
 
 // ══════════════════════════════════════════
