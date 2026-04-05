@@ -703,6 +703,76 @@
   <button class="btn-ghost mt8" onclick="irParaMenu()">◀ Menu</button>
 </div>
 
+<!-- ════════════════ TELA: BATALHA MENU ════════════════ -->
+<div id="screen-batalha" class="screen">
+  <div id="player-bar-batalha" class="player-bar"></div>
+  <div class="logo" style="font-size:2rem; margin-bottom:4px">⚔️ BATALHA</div>
+  <p class="tagline">Desafie seus amigos!</p>
+
+  <div class="card">
+    <p class="section-title">🆕 Criar Nova Sala</p>
+    <label class="field-label">Nível</label>
+    <div style="display:flex; gap:10px; margin-bottom:12px">
+      <button class="btn-level" style="flex:1; padding:12px" onclick="setBatalhaLevel(1)">
+        <span class="lv-icon">📊</span>
+        <div class="lv-info"><span>Nível 1</span><small>Crescente</small></div>
+      </button>
+      <button class="btn-level" style="flex:1; padding:12px" onclick="setBatalhaLevel(2)">
+        <span class="lv-icon">🎲</span>
+        <div class="lv-info"><span>Nível 2</span><small>Aleatório</small></div>
+      </button>
+    </div>
+    <div id="nivel-batalha-selecionado" style="text-align:center; color:var(--muted); font-size:0.8rem; margin-bottom:12px">Nenhum nível selecionado</div>
+    <button class="btn btn-primary" onclick="criarSala()">🚀 Criar Sala</button>
+  </div>
+
+  <div class="card">
+    <p class="section-title">🔑 Entrar em uma Sala</p>
+    <label class="field-label">Código da sala</label>
+    <input type="text" id="inp-codigo-sala" placeholder="Ex: ABCDE-123" maxlength="9"
+      style="text-transform:uppercase; letter-spacing:3px; font-size:1.2rem; text-align:center">
+    <button class="btn btn-primary mt8" onclick="entrarSala()">🎮 Entrar</button>
+  </div>
+
+  <button class="btn-ghost mt8" onclick="irParaMenu()">◀ Menu</button>
+</div>
+
+<!-- ════════════════ TELA: SALA DE ESPERA ════════════════ -->
+<div id="screen-sala" class="screen">
+  <div style="text-align:center; padding:32px 0 16px">
+    <div style="font-size:3rem">⏳</div>
+    <div style="font-family:'Boogaloo',cursive; font-size:1.4rem; color:var(--accent2); margin:8px 0">Sala de Espera</div>
+    <div style="font-size:0.8rem; color:var(--muted)">Compartilhe o código com seu adversário</div>
+  </div>
+
+  <div class="card" style="text-align:center">
+    <div style="font-size:0.75rem; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px">Código da Sala</div>
+    <div id="codigo-sala-display" style="font-family:'Boogaloo',cursive; font-size:2.8rem; color:var(--accent); letter-spacing:6px">----</div>
+    <button class="btn-ghost" style="margin-top:10px; width:auto; padding:8px 20px" onclick="copiarCodigo()">📋 Copiar</button>
+  </div>
+
+  <div class="card">
+    <p class="section-title">👥 Jogadores na sala</p>
+    <div id="lista-jogadores-sala"></div>
+    <div id="sala-status-msg" style="text-align:center; color:var(--muted); font-size:0.85rem; margin-top:8px">Aguardando adversário...</div>
+  </div>
+
+  <button id="btn-iniciar-batalha" class="btn btn-primary" style="display:none" onclick="iniciarBatalha()">⚔️ Iniciar Batalha!</button>
+  <button class="btn-ghost mt8" onclick="sairDaSala()">↩ Sair da sala</button>
+</div>
+
+<!-- ════════════════ TELA: RESULTADO BATALHA ════════════════ -->
+<div id="screen-resultado-batalha" class="screen">
+  <div style="text-align:center; padding:24px 0 16px">
+    <div id="batalha-trophy" style="font-size:5rem">🏆</div>
+    <div id="batalha-resultado-titulo" style="font-family:'Boogaloo',cursive; font-size:2rem; margin:8px 0"></div>
+  </div>
+  <div id="batalha-placar" class="card"></div>
+  <button class="btn btn-primary mt16" onclick="irParaBatalha()">⚔️ Jogar de novo</button>
+  <button class="btn-ghost mt8" onclick="irParaRanking()">🏆 Ver Ranking</button>
+  <button class="btn-ghost mt8" onclick="irParaMenu()">◀ Menu</button>
+</div>
+
 <!-- ════════════════ TELA 5: RANKING ════════════════ -->
 <div id="screen-ranking" class="screen">
   <div class="rank-header">
@@ -729,8 +799,12 @@
 //  ESTADO GLOBAL
 // ══════════════════════════════════════════
 const AVATARES = ['🦁','🐯','🐸','🦊','🐧','🦄','🐉','🤖','👾','🦸'];
+const API_URL = 'https://tabuada-turbo.onrender.com';
 let jogador = { nome: '', avatar: '🦁' };
+let jogadorId = null;
 let respostaAtual = '';
+let salaAtual = null;
+let pollingInterval = null;
 let nivel = 1;
 let timerInterval = null;
 let segundos = 0;
@@ -799,6 +873,17 @@ function mostrarTela(id) {
 
 function irParaMenu() {
   if (!validarCadastro()) return;
+  // Registrar jogador na API e pegar ID
+  fetch(API_URL + '/jogador/salvar', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ nome: jogador.nome, avatar: jogador.avatar })
+  }).then(r => r.json()).then(d => {
+    jogadorId = d.jogador_id;
+    localStorage.setItem('tt_jogador_id', jogadorId);
+  }).catch(() => {});
+  // Recuperar ID salvo se existir
+  if (!jogadorId) jogadorId = localStorage.getItem('tt_jogador_id');
   renderPlayerBar('menu');
   mostrarTela('screen-menu');
 }
@@ -1100,18 +1185,36 @@ function finalizarJogo() {
   jogoAtivo = false;
   clearInterval(timerInterval);
 
-  const tempo = segundos;
   const entrada = {
     nome: jogador.nome,
     avatar: jogador.avatar,
     nivel: nivelAtualJogo,
-    tempo,
+    tempo: segundos,
     acertos,
     erros,
     data: new Date().toLocaleDateString('pt-BR')
   };
 
   salvarRanking(entrada);
+
+  // Salvar na API (não bloqueia o jogo)
+  if (jogadorId) {
+    fetch(API_URL + '/ranking/salvar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        jogador_id: jogadorId,
+        nome: jogador.nome,
+        avatar: jogador.avatar,
+        nivel: nivelAtualJogo,
+        tempo: segundos,
+        acertos,
+        erros,
+        modo: 'solo'
+      })
+    }).catch(() => {}); // silencioso se offline
+  }
+
   mostrarResultado(entrada);
   lancarConfetti();
 }
@@ -1171,36 +1274,52 @@ function switchTab(lv) {
 }
 
 function renderRankList(lv) {
+  const el = document.getElementById('rank-list');
+  el.innerHTML = '<div class="rank-empty">Carregando... ⏳</div>';
+  const endpoint = lv === 0 ? '/ranking/global' : '/ranking/global?nivel=' + lv;
+  fetch(API_URL + endpoint)
+    .then(r => r.json())
+    .then(d => {
+      if (d.ranking && d.ranking.length > 0) {
+        renderRankItems(d.ranking.slice(0,20), lv); return;
+      }
+      renderRankLocal(lv);
+    })
+    .catch(() => renderRankLocal(lv));
+}
+
+function renderRankLocal(lv) {
   let items = [];
   if (lv === 0) {
     const r1 = getRanking(1).map(r => ({...r, _lv:1}));
     const r2 = getRanking(2).map(r => ({...r, _lv:2}));
-    items = [...r1, ...r2].sort((a,b) => a.tempo - b.tempo).slice(0, 20);
+    items = [...r1, ...r2].sort((a,b) => a.tempo-b.tempo).slice(0,20);
   } else {
-    items = getRanking(lv).slice(0, 20);
+    items = getRanking(lv).slice(0,20);
   }
+  renderRankItems(items, lv);
+}
 
+function renderRankItems(items, lv) {
   const el = document.getElementById('rank-list');
-  if (items.length === 0) {
+  if (!items || items.length === 0) {
     el.innerHTML = '<div class="rank-empty">Nenhum resultado ainda.<br>Seja o primeiro! 🚀</div>';
     return;
   }
-
   el.innerHTML = items.map((r, i) => {
-    const posClass = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
-    const posMedal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `#${i+1}`;
-    const lvTag = lv === 0 ? `<span style="color:var(--accent); font-size:0.65rem"> · Nv${r._lv||r.nivel}</span>` : '';
-    return `
-      <div class="rank-item">
-        <div class="rank-pos ${posClass}">${posMedal}</div>
-        <div class="rank-av">${r.avatar}</div>
-        <div class="rank-info">
-          <div class="rank-name">${r.nome}${lvTag}</div>
-          <div class="rank-meta">${r.acertos} acertos · ${r.erros} erros · ${r.data}</div>
-        </div>
-        <div class="rank-time">${formatarTempo(r.tempo)}</div>
-      </div>
-    `;
+    const posClass = i===0?'gold':i===1?'silver':i===2?'bronze':'';
+    const posMedal = i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1);
+    const lvTag = lv===0 ? '<span style="color:var(--accent);font-size:0.65rem"> · Nv'+(r._lv||r.nivel)+'</span>' : '';
+    const modoTag = r.modo==='batalha' ? ' <span style="color:var(--accent3);font-size:0.65rem">⚔️</span>' : '';
+    return '<div class="rank-item">' +
+      '<div class="rank-pos '+posClass+'">'+posMedal+'</div>' +
+      '<div class="rank-av">'+(r.avatar||'🦁')+'</div>' +
+      '<div class="rank-info">' +
+        '<div class="rank-name">'+r.nome+lvTag+modoTag+'</div>' +
+        '<div class="rank-meta">'+(r.acertos||0)+' acertos · '+(r.erros||0)+' erros · '+(r.data||'')+'</div>' +
+      '</div>' +
+      '<div class="rank-time">'+formatarTempo(r.tempo)+'</div>' +
+    '</div>';
   }).join('');
 }
 
@@ -1239,6 +1358,215 @@ function lancarConfetti() {
   }
 }
 
+// ══════════════════════════════════════════
+//  BATALHA
+// ══════════════════════════════════════════
+let batalhaLevel = 1;
+
+function irParaBatalha() {
+  renderPlayerBar('batalha');
+  mostrarTela('screen-batalha');
+}
+
+function setBatalhaLevel(lv) {
+  batalhaLevel = lv;
+  document.getElementById('nivel-batalha-selecionado').textContent =
+    lv === 1 ? '📊 Nível 1 selecionado' : '🎲 Nível 2 selecionado';
+  document.querySelectorAll('#screen-batalha .btn-level').forEach((b, i) => {
+    b.style.borderColor = (i + 1 === lv) ? 'var(--accent)' : 'rgba(255,255,255,0.08)';
+  });
+}
+
+async function criarSala() {
+  if (!jogadorId) { toast('Volte ao menu e entre novamente', 'err'); return; }
+  toast('Criando sala...', 'inf');
+  try {
+    const r = await fetch(API_URL + '/batalha/criar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        jogador_id: jogadorId,
+        nome: jogador.nome,
+        avatar: jogador.avatar,
+        nivel: batalhaLevel
+      })
+    });
+    const d = await r.json();
+    if (!r.ok) { toast('Erro: ' + (d.detail || 'tente novamente'), 'err'); return; }
+    salaAtual = d;
+    document.getElementById('codigo-sala-display').textContent = d.codigo;
+    renderJogadoresSala([{ nome: jogador.nome, avatar: jogador.avatar, finalizado: false }]);
+    mostrarTela('screen-sala');
+    iniciarPolling(d.codigo);
+  } catch(e) { toast('Sem conexão com a API', 'err'); }
+}
+
+async function entrarSala() {
+  const codigo = document.getElementById('inp-codigo-sala').value.trim().toUpperCase();
+  if (codigo.length < 5) { toast('Digite o código da sala', 'err'); return; }
+  if (!jogadorId) { toast('Volte ao menu e entre novamente', 'err'); return; }
+  toast('Entrando na sala...', 'inf');
+  try {
+    const r = await fetch(API_URL + '/batalha/entrar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        codigo,
+        jogador_id: jogadorId,
+        nome: jogador.nome,
+        avatar: jogador.avatar
+      })
+    });
+    const d = await r.json();
+    if (!r.ok) { toast(d.detail || 'Sala não encontrada', 'err'); return; }
+    salaAtual = d;
+    batalhaLevel = d.nivel;
+    document.getElementById('codigo-sala-display').textContent = d.codigo;
+    renderJogadoresSala(d.jogadores);
+    mostrarTela('screen-sala');
+    iniciarPolling(d.codigo);
+  } catch(e) { toast('Sem conexão com a API', 'err'); }
+}
+
+function renderJogadoresSala(jogadores) {
+  const el = document.getElementById('lista-jogadores-sala');
+  el.innerHTML = jogadores.map(j => `
+    <div style="display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.06)">
+      <span style="font-size:1.6rem">${j.avatar || '🦁'}</span>
+      <span style="font-weight:700">${j.nome}</span>
+      ${j.finalizado ? '<span style="color:var(--green); margin-left:auto">✅ Pronto</span>' : ''}
+    </div>
+  `).join('');
+
+  // Mostrar botão iniciar se 2+ jogadores e eu sou o criador
+  const btnIniciar = document.getElementById('btn-iniciar-batalha');
+  const msg = document.getElementById('sala-status-msg');
+  if (jogadores.length >= 2) {
+    btnIniciar.style.display = 'block';
+    msg.textContent = 'Sala completa! Clique em Iniciar quando todos estiverem prontos.';
+    msg.style.color = 'var(--green)';
+  } else {
+    btnIniciar.style.display = 'none';
+    msg.textContent = 'Aguardando adversário entrar na sala...';
+    msg.style.color = 'var(--muted)';
+  }
+}
+
+function iniciarPolling(codigo) {
+  clearInterval(pollingInterval);
+  pollingInterval = setInterval(async () => {
+    try {
+      const r = await fetch(API_URL + '/batalha/' + codigo);
+      const d = await r.json();
+      if (!r.ok) return;
+      salaAtual = d;
+      renderJogadoresSala(d.jogadores);
+      // Se status mudou para em_jogo, iniciar jogo automaticamente
+      if (d.status === 'em_jogo' && !jogoAtivo) {
+        clearInterval(pollingInterval);
+        iniciarJogoBatalha(d.nivel);
+      }
+      // Se finalizada, mostrar resultado
+      if (d.status === 'finalizada') {
+        clearInterval(pollingInterval);
+        mostrarResultadoBatalha(d.jogadores);
+      }
+    } catch(e) {}
+  }, 2000);
+}
+
+async function iniciarBatalha() {
+  if (!salaAtual) return;
+  try {
+    const r = await fetch(API_URL + '/batalha/' + salaAtual.codigo + '/iniciar', {
+      method: 'POST'
+    });
+    const d = await r.json();
+    if (!r.ok) { toast(d.detail || 'Erro ao iniciar', 'err'); return; }
+  } catch(e) { toast('Erro de conexão', 'err'); }
+}
+
+function iniciarJogoBatalha(nivel) {
+  clearInterval(pollingInterval);
+  iniciarJogo(nivel);
+  // Após finalizar o jogo no modo batalha, enviar resultado
+  const origFinalizar = window._origFinalizar || finalizarJogo;
+}
+
+async function enviarResultadoBatalha() {
+  if (!salaAtual || !jogadorId) return;
+  try {
+    const r = await fetch(API_URL + '/batalha/finalizar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        codigo: salaAtual.codigo,
+        jogador_id: jogadorId,
+        tempo: segundos,
+        acertos,
+        erros
+      })
+    });
+    const d = await r.json();
+    if (d.status === 'finalizada') {
+      mostrarResultadoBatalha(d.jogadores);
+    } else {
+      // Aguardar adversário terminar
+      toast('⏳ Aguardando adversário...', 'inf');
+      iniciarPolling(salaAtual.codigo);
+    }
+  } catch(e) {}
+}
+
+function mostrarResultadoBatalha(jogadoresList) {
+  clearInterval(pollingInterval);
+  // Ordenar por tempo
+  const finalizados = jogadoresList.filter(j => j.finalizado && j.tempo !== null);
+  finalizados.sort((a, b) => a.tempo - b.tempo);
+  const eu = jogadoresList.find(j => j.id === jogadorId);
+  const vencedor = finalizados[0];
+  const ganhei = vencedor && vencedor.id === jogadorId;
+
+  document.getElementById('batalha-trophy').textContent = ganhei ? '🏆' : '😤';
+  document.getElementById('batalha-resultado-titulo').innerHTML =
+    ganhei
+      ? '<span style="color:var(--accent2)">VOCÊ VENCEU!</span>'
+      : '<span style="color:var(--muted)">Boa tentativa!</span>';
+
+  document.getElementById('batalha-placar').innerHTML = finalizados.map((j, i) => `
+    <div style="display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.06)">
+      <div style="font-family:'Boogaloo',cursive; font-size:1.4rem; min-width:36px; color:${i===0?'var(--accent2)':'var(--muted)'}">
+        ${i===0?'🥇':i===1?'🥈':'🥉'}
+      </div>
+      <span style="font-size:1.4rem">${j.avatar||'🦁'}</span>
+      <div style="flex:1">
+        <div style="font-weight:700">${j.nome}${j.id===jogadorId?' (você)':''}</div>
+        <div style="font-size:0.75rem; color:var(--muted)">${j.acertos} acertos · ${j.erros} erros</div>
+      </div>
+      <div style="font-family:'Boogaloo',cursive; font-size:1.1rem; color:var(--accent3)">${formatarTempo(j.tempo)}</div>
+    </div>
+  `).join('');
+
+  lancarConfetti();
+  mostrarTela('screen-resultado-batalha');
+}
+
+function copiarCodigo() {
+  const codigo = document.getElementById('codigo-sala-display').textContent;
+  navigator.clipboard.writeText(codigo).then(() => toast('Código copiado! 📋', 'ok')).catch(() => {
+    toast(codigo, 'ok');
+  });
+}
+
+function sairDaSala() {
+  clearInterval(pollingInterval);
+  salaAtual = null;
+  irParaBatalha();
+}
+
+// ══════════════════════════════════════════
+//  TOAST
+// ══════════════════════════════════════════
 let toastTimer = null;
 function toast(msg, tipo) {
   const el = document.getElementById('toast');
