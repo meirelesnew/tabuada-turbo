@@ -647,6 +647,42 @@
     75% { transform: translateX(8px); }
   }
 
+  /* ── COOKIE BANNER ── */
+  #cookie-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: var(--card);
+    border-top: 2px solid var(--accent);
+    padding: 20px;
+    z-index: 10000;
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.5);
+  }
+  #cookie-banner.active { display: flex; }
+  .cookie-text { font-size: 0.85rem; color: var(--muted); line-height: 1.4; }
+  .cookie-text strong { color: var(--text); }
+  .cookie-btns { display: flex; gap: 10px; }
+  .cookie-btns .btn { padding: 10px; font-size: 1rem; }
+
+  /* ── PRIVACY POLICY ── */
+  .privacy-content {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.6;
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 10px;
+    margin: 16px 0;
+  }
+  .privacy-content h3 { color: var(--accent2); font-size: 1rem; margin: 16px 0 8px; }
+  .privacy-content p { margin-bottom: 8px; }
+  .privacy-content::-webkit-scrollbar { width: 4px; }
+  .privacy-content::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+
   /* ── COUNTDOWN ── */
   #screen-countdown {
     background: var(--bg);
@@ -1108,6 +1144,7 @@ const SomManager = {
 document.addEventListener('DOMContentLoaded', () => {
   renderAvatares();
   carregarJogador();
+  checarCookies();
   // Teclado físico também funciona (para quem usa no PC)
   document.addEventListener('keydown', e => {
     if (!jogoAtivo) return;
@@ -1157,6 +1194,7 @@ function mostrarTela(id) {
 }
 
 async function irParaMenu() {
+  if (!checarCookies()) return;
   if (!validarCadastro()) return;
   // Registrar jogador na API e pegar ID
   try {
@@ -2094,6 +2132,24 @@ function limparDados() {
 window.addEventListener('load', () => {
   exibirRecordeTela(nivelAtual || 'normal');
 });
+
+// LGPD / Cookies
+function checarCookies() {
+  const consent = localStorage.getItem('tt_cookie_consent');
+  if (!consent) {
+    document.getElementById('cookie-banner').classList.add('active');
+    return false;
+  }
+  return true;
+}
+
+function aceitarCookies() {
+  localStorage.setItem('tt_cookie_consent', 'true');
+  document.getElementById('cookie-banner').classList.remove('active');
+  if (document.getElementById('screen-privacidade').classList.contains('active')) {
+    irParaMenu();
+  }
+}
 </script>
 
 <!-- ESPAÇO PARA ANÚNCIO RETANGULAR (300x250) -->
@@ -2125,6 +2181,42 @@ window.addEventListener('load', () => {
     <div id="feedback-icon" class="feedback-icon"></div>
     <div id="feedback-msg" class="feedback-msg"></div>
     <div id="feedback-sub" class="feedback-sub"></div>
+  </div>
+</div>
+
+<!-- ════════════════ TELA: PRIVACIDADE ════════════════ -->
+<div id="screen-privacidade" class="screen">
+  <div class="logo" style="font-size:2rem">🔒 PRIVACIDADE</div>
+  <div class="card">
+    <p class="section-title">LGPD / GDPR</p>
+    <div class="privacy-content">
+      <p>O <strong>Tabuada Turbo</strong> valoriza sua privacidade. Veja como lidamos com seus dados:</p>
+      
+      <h3>1. Que dados coletamos?</h3>
+      <p>Coletamos seu <strong>Apelido</strong>, <strong>Avatar</strong> escolhido e seu <strong>Desempenho no Jogo</strong> (acertos, erros e tempo).</p>
+      
+      <h3>2. Qual a finalidade?</h3>
+      <p>Os dados são processados para gerar o <strong>Ranking Global</strong> e permitir que você e outros jogadores comparem seus tempos e evoluam na matemática.</p>
+      
+      <h3>3. Onde os dados ficam?</h3>
+      <p>O apelido e score são enviados para nosso banco de dados seguro para o ranking. Dados temporários ficam salvos apenas no seu navegador (LocalStorage).</p>
+      
+      <h3>4. Seus Direitos (LGPD)</h3>
+      <p>Você tem direito a acessar, retificar ou solicitar a exclusão dos seus dados do ranking a qualquer momento. Para isso, entre em contato via WhatsApp.</p>
+    </div>
+    <button class="btn btn-primary" onclick="aceitarCookies()">ENTENDI E ACEITO ✓</button>
+  </div>
+  <button class="btn-ghost mt8" onclick="mostrarTela('screen-cadastro')">◀ Voltar</button>
+</div>
+
+<!-- COOKIE BANNER -->
+<div id="cookie-banner">
+  <div class="cookie-text">
+    Utilizamos cookies e persistência local para salvar seu recorde e ranking global. Ao continuar, você aceita nossa <strong>Política de Privacidade (LGPD)</strong>.
+  </div>
+  <div class="cookie-btns">
+    <button class="btn btn-primary" onclick="aceitarCookies()">ACEITAR</button>
+    <button class="btn-ghost" onclick="mostrarTela('screen-privacidade')">LER POLÍTICA</button>
   </div>
 </div>
 
