@@ -726,6 +726,10 @@
   <div class="logo">TABUADA<br>TURBO ⚡</div>
   <p class="tagline">Quem é o mais rápido?</p>
 
+  <div style="position: absolute; top: 10px; right: 10px;">
+    <button id="btn-som" class="av-btn" style="padding: 10px; font-size: 1.2rem;" onclick="SomManager.toggle()">🔈</button>
+  </div>
+
   <div class="card">
     <p class="section-title">👤 Quem vai jogar?</p>
     <label class="field-label">Seu apelido</label>
@@ -1007,6 +1011,81 @@ let acertos = 0;
 let erros = 0;
 let jogoAtivo = false;
 let nivelAtualJogo = 1;
+let audioAtivo = false;
+
+// ══════════════════════════════════════════
+//  SOM & MÚSICA (Procedural - Escala Dó Maior)
+// ══════════════════════════════════════════
+const SomManager = {
+  ctx: null,
+  gainNode: null,
+  osc: null,
+  loopInterval: null,
+  freqs: [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88, 523.25], // Dó Maior (C4 a C5)
+  
+  init() {
+    if (this.ctx) return;
+    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+    this.gainNode = this.ctx.createGain();
+    this.gainNode.gain.value = 0.05; // Volume baixo
+    this.gainNode.connect(this.ctx.destination);
+  },
+
+  toggle() {
+    this.init();
+    if (this.ctx.state === 'suspended') this.ctx.resume();
+    audioAtivo = !audioAtivo;
+    const btn = document.getElementById('btn-som');
+    if (btn) btn.textContent = audioAtivo ? '🔊' : '🔈';
+    
+    if (audioAtivo) this.startLoop();
+    else this.stopLoop();
+  },
+
+  playNote(freq, dur = 0.1, type = 'sine', vol = 0.1) {
+    if (!audioAtivo || !this.ctx) return;
+    const osc = this.ctx.createOscillator();
+    const g = this.ctx.createGain();
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+    g.gain.setValueAtTime(vol, this.ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + dur);
+    osc.connect(g);
+    g.connect(this.ctx.destination);
+    osc.start();
+    osc.stop(this.ctx.currentTime + dur);
+  },
+
+  startLoop() {
+    this.stopLoop();
+    let step = 0;
+    // Sequência alegre em Dó Maior
+    const seq = [0, 2, 4, 7, 5, 4, 2, 0]; 
+    this.loopInterval = setInterval(() => {
+      if (!audioAtivo) return;
+      const f = this.freqs[seq[step % seq.length]];
+      this.playNote(f, 0.4, 'triangle', 0.03);
+      step++;
+    }, 450);
+  },
+
+  stopLoop() {
+    clearInterval(this.loopInterval);
+  },
+
+  msgAcerto() {
+    if (!audioAtivo) return;
+    // Arpejo Dó Maior
+    this.playNote(261.63, 0.1, 'sine', 0.1);
+    setTimeout(() => this.playNote(329.63, 0.1, 'sine', 0.1), 50);
+    setTimeout(() => this.playNote(392.00, 0.2, 'sine', 0.1), 100);
+  },
+
+  msgErro() {
+    if (!audioAtivo) return;
+    this.playNote(150, 0.3, 'sawtooth', 0.05);
+  }
+};
 
 // ══════════════════════════════════════════
 //  INIT
@@ -1319,10 +1398,12 @@ function confirmarResposta() {
     acertos++;
     flashTela('correct');
     toast('✅ ' + c.x + '×' + c.y + '=' + (c.x*c.y), 'ok');
+    SomManager.msgAcerto();
   } else {
     erros++;
     flashTela('wrong');
     toast('❌ Era ' + (c.x*c.y), 'err');
+    SomManager.msgErro();
   }
 
   atualizarCelulaVisual(celulaAtiva);
