@@ -1072,7 +1072,7 @@ const SomManager = {
     if (this.ctx) return;
     this.ctx = new (window.AudioContext || window.webkitAudioContext)();
     this.gainNode = this.ctx.createGain();
-    this.gainNode.gain.value = 0.05; 
+    this.gainNode.gain.value = 0.2; // Volume um pouco maior (era 0.05)
     this.gainNode.connect(this.ctx.destination);
   },
 
@@ -1094,10 +1094,10 @@ const SomManager = {
     osc.type = type;
     osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
     g.gain.setValueAtTime(vol, this.ctx.currentTime);
-    g.gain.linearRampToValueAtTime(vol * 0.8, this.ctx.currentTime + dur * 0.2); // Decay mais suave estilo piano
+    g.gain.linearRampToValueAtTime(vol * 0.8, this.ctx.currentTime + dur * 0.2); 
     g.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + dur);
     osc.connect(g);
-    g.connect(this.ctx.destination);
+    g.connect(this.gainNode); // Conectar ao master gain
     osc.start();
     osc.stop(this.ctx.currentTime + dur);
   },
@@ -1105,19 +1105,20 @@ const SomManager = {
   startLoop() {
     this.stopLoop();
     let step = 0;
-    // Progressão Jazz (ii-V-I-VI) em Dó Maior com swing
-    const seq = [2, 4, 7, 9, 4, 7, 10, 7, 0, 4, 7, 11, 5, 8, 12, 10]; 
+    // Progressão Jazz ii-V-I animada
+    const seq = [2, 4, 7, 9,  1, 3, 5, 8,  0, 2, 4, 7,  4, 2, 1, 11]; 
     this.loopInterval = setInterval(() => {
       if (!audioAtivo) return;
       
-      const isSwing = step % 2 === 1;
+      // Swing Ratio (2:1) - Aproximado com micro-atraso no setInterval ou ritmos alternados
+      const isOffbeat = step % 2 === 1;
       const f = this.freqs[seq[step % seq.length] % this.freqs.length];
       
-      // Ritmo de Swing: Notas pares são levemente atrasadas e mais curtas
-      this.playNote(f, isSwing ? 0.3 : 0.6, 'triangle', isSwing ? 0.02 : 0.04);
+      // Notas no offbeat são mais curtas e "swingadas"
+      this.playNote(f, isOffbeat ? 0.2 : 0.4, 'sine', isOffbeat ? 0.08 : 0.12);
       
       step++;
-    }, 300); // Base tempo mais rápido para o swing
+    }, 280); 
   },
 
   stopLoop() {
