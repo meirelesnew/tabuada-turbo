@@ -1062,19 +1062,27 @@ function mostrarTela(id) {
   window.scrollTo(0, 0);
 }
 
-function irParaMenu() {
+async function irParaMenu() {
   if (!validarCadastro()) return;
   // Registrar jogador na API e pegar ID
-  fetch(API_URL + '/jogador/salvar', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ nome: jogador.nome, avatar: jogador.avatar })
-  }).then(r => r.json()).then(d => {
-    jogadorId = d.jogador_id;
-    localStorage.setItem('tt_jogador_id', jogadorId);
-  }).catch(() => {});
-  // Recuperar ID salvo se existir
+  try {
+    const r = await fetch(API_URL + '/jogador/salvar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nome: jogador.nome, avatar: jogador.avatar })
+    });
+    const d = await r.json();
+    if (r.ok) {
+      jogadorId = d.jogador_id;
+      localStorage.setItem('tt_jogador_id', jogadorId);
+    }
+  } catch (e) {
+    console.error('Erro ao salvar jogador na API:', e);
+  }
+  
+  // Recuperar ID salvo se o fetch falhar
   if (!jogadorId) jogadorId = localStorage.getItem('tt_jogador_id');
+  
   renderPlayerBar('menu');
   mostrarTela('screen-menu');
 }
@@ -1415,25 +1423,39 @@ function finalizarJogo() {
   lancarConfetti();
 }
 
-function mostrarResultado(entrada) {
+async function mostrarResultado(entrada) {
   document.getElementById('result-trophy').textContent = entrada.erros === 0 ? '🏆' : entrada.acertos >= 80 ? '🥈' : '🎯';
   document.getElementById('result-time').textContent = formatarTempo(entrada.tempo);
   document.getElementById('result-acertos').innerHTML =
     `<strong>${entrada.acertos}</strong> acertos &nbsp;|&nbsp; <span style="color:var(--red)">${entrada.erros}</span> erros`;
 
-  // Posição no ranking
-  const rank = getRanking(entrada.nivel);
-  const pos = rank.findIndex(r => r.nome === entrada.nome && r.tempo === entrada.tempo && r.data === entrada.data) + 1;
   const preview = document.getElementById('result-rank-preview');
   preview.innerHTML = `
     <div style="text-align:center">
       <div style="font-size:0.75rem; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px">Sua posição no ranking</div>
-      <div style="font-family:'Boogaloo',cursive; font-size:2.5rem; color:var(--accent2)">#${pos}</div>
-      <div style="font-size:0.8rem; color:var(--muted)">Nível ${entrada.nivel === 1 ? '1 — Clássico' : '2 — Embaralhado'}</div>
+      <div id="rank-pos-display" style="font-family:'Boogaloo',cursive; font-size:2.5rem; color:var(--accent2)">...</div>
+      <div id="rank-type-display" style="font-size:0.8rem; color:var(--muted)">Nível ${entrada.nivel === 1 ? '1 — Clássico' : '2 — Embaralhado'}</div>
     </div>
   `;
 
   mostrarTela('screen-resultado');
+
+  // Posição no ranking - Tenta Global, cai para Local
+  try {
+    const r = await fetch(API_URL + '/ranking/posicao?tempo=' + entrada.tempo + '&nivel=' + entrada.nivel);
+    const d = await r.json();
+    if (r.ok && d.posicao) {
+      document.getElementById('rank-pos-display').textContent = '#' + d.posicao;
+      document.getElementById('rank-type-display').textContent = `Global — Nível ${entrada.nivel === 1 ? '1' : '2'}`;
+      return;
+    }
+  } catch (e) {}
+
+  // Fallback Local
+  const rank = getRanking(entrada.nivel);
+  const pos = rank.findIndex(r => r.nome === entrada.nome && r.tempo === entrada.tempo && r.data === entrada.data) + 1;
+  document.getElementById('rank-pos-display').textContent = '#' + (pos || '?');
+  document.getElementById('rank-type-display').textContent = `Local — Nível ${entrada.nivel === 1 ? '1' : '2'}`;
 }
 
 function confirmarDesistir() {
@@ -1541,7 +1563,6 @@ function limparRanking() {
     exibirRecordeTela(nivelAtual || 'normal');
     toast('✅ Ranking limpo!', 'ok');
   }, 600);
-}
 }
 
 // ══════════════════════════════════════════

@@ -11,7 +11,7 @@ import os
 
 MONGO_URL = os.environ.get("MONGO_URL")
 if not MONGO_URL:
-    raise RuntimeError("MONGO_URL não configurada nas variáveis de ambiente")
+    raise RuntimeError("ERRO: Variável de ambiente MONGO_URL não encontrada. Certifique-se de configurar a URL de conexão do MongoDB.")
 client = MongoClient(MONGO_URL)
 db = client["tabuada2026"]
 
@@ -264,6 +264,13 @@ def ranking_global(nivel: int = 0, modo: str = "todos", limite: int = 50):
     for d in docs:
         d["_id"] = str(d["_id"])
     return {"ranking": docs, "total": len(docs)}
+
+# ── RANKING: POSIÇÃO GLOBAL ─────────────────────────────────────────
+@app.get("/ranking/posicao")
+def ranking_posicao(tempo: int, nivel: int):
+    # Quantos jogadores têm tempo MENOR que o informado
+    qtd = ranking_col.count_documents({"nivel": nivel, "tempo": {"$lt": tempo}})
+    return {"posicao": qtd + 1}
 
 # ── RANKING: POR NÍVEL ─────────────────────────────────────────────
 @app.get("/ranking/nivel/{nivel}")
