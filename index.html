@@ -565,6 +565,88 @@
     animation: confettiBurst 1s ease forwards;
   }
 
+  /* ── FEEDBACK VISUAL (SEM BLOQUEIOS) ── */
+  .feedback-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .feedback-box {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 32px 24px;
+    text-align: center;
+    animation: feedbackPop 0.4s ease-out forwards;
+    border: 2px solid transparent;
+    max-width: 300px;
+  }
+
+  .feedback-box.acerto {
+    border-color: var(--green);
+    box-shadow: 0 0 20px rgba(57, 255, 20, 0.3);
+  }
+
+  .feedback-box.erro {
+    border-color: var(--red);
+    box-shadow: 0 0 20px rgba(255, 51, 102, 0.3);
+  }
+
+  .feedback-icon {
+    font-size: 3rem;
+    margin-bottom: 12px;
+    animation: bounce 0.6s ease-out;
+  }
+
+  .feedback-msg {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .feedback-sub {
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+
+  @keyframes feedbackPop {
+    0% { transform: translate(-50%, -50%) scale(0.7); opacity: 0; }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+  }
+
+  @keyframes inputPulse {
+    0%, 100% { border-color: currentColor; }
+    50% { border-color: var(--accent); }
+  }
+
+  input.input-acerto {
+    border-color: var(--green) !important;
+    animation: inputPulse 0.4s ease-out;
+  }
+
+  input.input-erro {
+    border-color: var(--red) !important;
+    animation: shake 0.3s ease-out;
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
+  }
+
   /* ── COUNTDOWN ── */
   #screen-countdown {
     background: var(--bg);
@@ -663,6 +745,29 @@
 <!-- ════════════════ TELA 2: MENU ════════════════ -->
 <div id="screen-menu" class="screen">
   <div id="player-bar-menu" class="player-bar"></div>
+
+  <!-- RECORDE DO JOGADOR -->
+  <div style="text-align: center; margin-bottom: 20px; padding: 12px; background: rgba(255,107,53,0.1); border-radius: 12px;">
+    <div style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">Seu Melhor Tempo</div>
+    <div id="high-score-display" style="font-size: 1.4rem; font-family: 'Boogaloo', cursive; color: var(--accent2);">⏱️ Sem recorde</div>
+  </div>
+
+  <!-- ESPAÇO PARA ANÚNCIO HORIZONTAL (728x90 ou 320x50 mobile) -->
+  <div id="ad-container-top" style="
+    min-height: 90px;
+    background: rgba(255,255,255,0.02);
+    border-radius: 12px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px dashed rgba(255,107,53,0.2);
+    font-size: 0.75rem;
+    color: var(--muted);
+  ">
+    <!-- Google AdSense Banner 728x90 (desktop) ou 320x50 (mobile) -->
+    <span>📢 Publicidade</span>
+  </div>
 
   <p class="section-title" style="text-align:center; font-size:1.5rem">Escolha o Nível</p>
 
@@ -1332,11 +1437,16 @@ function mostrarResultado(entrada) {
 }
 
 function confirmarDesistir() {
-  if (confirm('Deseja mesmo desistir? O progresso será perdido.')) {
+  // ❌ ANTES: if (confirm('Deseja mesmo desistir? O progresso será perdido.')) {
+  // ✅ DEPOIS: Usar modal não-bloqueante
+  
+  mostrarFeedback('info', 'Você desistiu da partida', 'Volte ao menu');
+  
+  setTimeout(() => {
     jogoAtivo = false;
     clearInterval(timerInterval);
     irParaMenu();
-  }
+  }, 600);
 }
 
 // ══════════════════════════════════════════
@@ -1415,11 +1525,23 @@ function renderRankItems(items, lv) {
 }
 
 function limparRanking() {
-  if (!confirm('Limpar TODO o ranking? Isso não pode ser desfeito.')) return;
-  localStorage.removeItem('tt_ranking_1');
-  localStorage.removeItem('tt_ranking_2');
-  renderRankList(tabAtiva);
-  toast('Ranking limpo! 🗑', 'ok');
+  // ❌ ANTES: if (!confirm('Limpar TODO o ranking? Isso não pode ser desfeito.')) return;
+  // ✅ DEPOIS: Mostrar aviso não-bloqueante (simplificar para UX)
+  
+  mostrarFeedback('info', 'Ranking limpo!', '🗑️ Todos os recordes foram apagados');
+  
+  setTimeout(() => {
+    localStorage.removeItem('tt_ranking_1');
+    localStorage.removeItem('tt_ranking_2');
+    // Limpar também os recordes por nível
+    localStorage.removeItem('tt_recorde_facil');
+    localStorage.removeItem('tt_recorde_normal');
+    localStorage.removeItem('tt_recorde_dificil');
+    renderRankList(tabAtiva);
+    exibirRecordeTela(nivelAtual || 'normal');
+    toast('✅ Ranking limpo!', 'ok');
+  }, 600);
+}
 }
 
 // ══════════════════════════════════════════
@@ -1729,6 +1851,165 @@ function toast(msg, tipo) {
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => { el.className = ''; }, 2000);
 }
+
+// ══════════════════════════════════════════
+//  FEEDBACK VISUAL (Sem bloqueios para AdSense)
+// ══════════════════════════════════════════
+function mostrarFeedback(tipo, msg, submsg = '') {
+  const container = document.getElementById('feedback-container');
+  const box = document.getElementById('feedback-box');
+  const icon = document.getElementById('feedback-icon');
+  const msgEl = document.getElementById('feedback-msg');
+  const subEl = document.getElementById('feedback-sub');
+
+  // Limpar classes anteriores
+  box.className = 'feedback-box';
+
+  if (tipo === 'acerto') {
+    box.classList.add('acerto');
+    icon.textContent = '✅';
+    msgEl.textContent = msg || 'Parabéns! Acertou!';
+    subEl.textContent = submsg || '+10 pontos';
+  } else if (tipo === 'erro') {
+    box.classList.add('erro');
+    icon.textContent = '❌';
+    msgEl.textContent = msg || 'Resposta errada!';
+    subEl.textContent = submsg || 'Tente novamente';
+  } else if (tipo === 'info') {
+    icon.textContent = 'ℹ️';
+    msgEl.textContent = msg || 'Informação';
+    subEl.textContent = submsg;
+  }
+
+  // Mostrar
+  container.style.display = 'flex';
+
+  // Esconder após 2 segundos
+  setTimeout(() => {
+    container.style.display = 'none';
+  }, 2000);
+}
+
+function inputFeedback(inputId, tipo, duracao = 400) {
+  const input = document.getElementById(inputId);
+  if (!input) return;
+
+  if (tipo === 'acerto') {
+    input.classList.add('input-acerto');
+    input.classList.remove('input-erro');
+  } else if (tipo === 'erro') {
+    input.classList.add('input-erro');
+    input.classList.remove('input-acerto');
+  }
+
+  setTimeout(() => {
+    input.classList.remove('input-acerto', 'input-erro');
+  }, duracao);
+}
+
+// ══════════════════════════════════════════
+//  PERSISTÊNCIA: LocalStorage
+// ══════════════════════════════════════════
+
+// Chaves de armazenamento
+const STORAGE_KEYS = {
+  recorde_facil: 'tt_recorde_facil',
+  recorde_normal: 'tt_recorde_normal',
+  recorde_dificil: 'tt_recorde_dificil',
+  jogador_atual: 'tt_jogador_atual',
+  session_stats: 'tt_session_stats'
+};
+
+// Carregar recorde do localStorage
+function carregarRecorde(nivel = 'normal') {
+  const chave = STORAGE_KEYS[`recorde_${nivel}`];
+  const recorde = localStorage.getItem(chave);
+  return recorde ? parseInt(recorde, 10) : 0;
+}
+
+// Salvar recorde no localStorage
+function salvarRecorde(nivel = 'normal', tempo) {
+  const chave = STORAGE_KEYS[`recorde_${nivel}`];
+  const recordeAtual = carregarRecorde(nivel);
+
+  // Comparar tempos (menor é melhor)
+  if (tempo < recordeAtual || recordeAtual === 0) {
+    localStorage.setItem(chave, tempo);
+    return true; // Novo recorde!
+  }
+  return false; // Não bateu recorde
+}
+
+// Exibir recorde na tela
+function exibirRecordeTela(nivel = 'normal') {
+  const recorde = carregarRecorde(nivel);
+  const el = document.getElementById('high-score-display');
+
+  if (el) {
+    if (recorde === 0) {
+      el.textContent = '⏱️ Sem recorde';
+      el.style.color = 'var(--muted)';
+    } else {
+      el.textContent = `⏱️ Recorde: ${formatarTempo(recorde)}`;
+      el.style.color = 'var(--accent2)';
+    }
+  }
+}
+
+// Atualizar recorde ao finalizar jogo
+function finalizarComRecorde(nivel, tempoDecisegundos) {
+  const ehNovoRecorde = salvarRecorde(nivel, tempoDecisegundos);
+
+  if (ehNovoRecorde) {
+    mostrarFeedback('acerto', 'Novo Recorde! 🎉', formatarTempo(tempoDecisegundos));
+  }
+
+  exibirRecordeTela(nivel);
+}
+
+// Limpar dados (para testes)
+function limparDados() {
+  Object.values(STORAGE_KEYS).forEach(chave => localStorage.removeItem(chave));
+  console.log('✅ Dados limpos do localStorage');
+}
+
+// Executar ao carregar página
+window.addEventListener('load', () => {
+  exibirRecordeTela(nivelAtual || 'normal');
+});
 </script>
+
+<!-- ESPAÇO PARA ANÚNCIO RETANGULAR (300x250) -->
+<div id="ad-container-bottom" style="
+  min-height: 280px;
+  background: rgba(255,255,255,0.02);
+  border-radius: 12px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed rgba(255,107,53,0.2);
+  font-size: 0.75rem;
+  color: var(--muted);
+  padding: 20px;
+  text-align: center;
+  max-width: 336px;
+  margin-left: auto;
+  margin-right: auto;
+">
+  <!-- Google AdSense Rectangle 300x250 -->
+  <span>📢 Publicidade</span>
+</div>
+
+<!-- FEEDBACK VISUAL (NÃO BLOQUEANTE) -->
+<div id="feedback-container" class="feedback-container" style="display: none;">
+  <div id="feedback-box" class="feedback-box">
+    <div id="feedback-icon" class="feedback-icon"></div>
+    <div id="feedback-msg" class="feedback-msg"></div>
+    <div id="feedback-sub" class="feedback-sub"></div>
+  </div>
+</div>
+
 </body>
 </html>
