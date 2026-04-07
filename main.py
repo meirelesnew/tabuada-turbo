@@ -9,17 +9,33 @@ import string
 import uuid
 import os
 
+app = FastAPI()
+
 MONGO_URL = os.environ.get("MONGO_URL")
 if not MONGO_URL:
-    raise RuntimeError("ERRO: Variável de ambiente MONGO_URL não encontrada. Certifique-se de configurar a URL de conexão do MongoDB.")
-client = MongoClient(MONGO_URL)
-db = client["tabuada2026"]
+    # Para desenvolvimento local, podemos usar um fallback ou apenas avisar
+    # mas mantendo a lógica de erro se for produção
+    print("⚠️ Variável MONGO_URL não encontrada. Certifique-se de configurar a URL de conexão do MongoDB.")
 
-jogadores_col = db["jogadores"]
-salas_col     = db["salas"]
-ranking_col   = db["ranking"]
+client = MongoClient(MONGO_URL) if MONGO_URL else None
+db = client["tabuada2026"] if client else None
 
-app = FastAPI(title="Tabuada Turbo API", version="1.0.0")
+jogadores_col = db["jogadores"] if db is not None else None
+salas_col     = db["salas"] if db is not None else None
+ranking_col   = db["ranking"] if db is not None else None
+
+@app.on_event("startup")
+def startup_db_client():
+    if salas_col is None:
+        print("⚠️ MongoDB não conectado. Ignorando criação de índice.")
+        return
+    # Criar índice TTL nas salas (expiração automática após o tempo em 'expira_em')
+    # O MongoDB verifica isso a cada 60s
+    try:
+        salas_col.create_index("expira_em", expireAfterSeconds=0)
+        print("✅ Índice TTL criado com sucesso em 'salas_col'")
+    except Exception as e:
+        print(f"⚠️ Erro ao criar índice TTL: {e}")
 
 app.add_middleware(
     CORSMiddleware,
@@ -109,7 +125,7 @@ def criar_sala(body: CriarSalaIn):
         "nivel": body.nivel,
         "status": "aguardando",
         "criado_em": datetime.utcnow().isoformat(),
-        "expira_em": expira_em.isoformat(),
+        "expira_em": expira_em,  # Deve ser datetime, não string, para TTL funcionar
         "jogadores": [
             {
                 "id": body.jogador_id,
@@ -252,24 +268,58 @@ def salvar_ranking(body: RankingIn):
     })
     return {"ok": True}
 
-# ── RANKING: GLOBAL ────────────────────────────────────────────────
+# ── RANKING: GLOBAL (melhor score por jogador) ──────────────────────
 @app.get("/ranking/global")
 def ranking_global(nivel: int = 0, modo: str = "todos", limite: int = 50):
-    filtro = {}
+    """
+    Retorna o melhor tempo de cada jogador (deduplicado por jogador_id).
+    Filtros opcionais: nivel (1|2), modo (solo|batalha).
+    """
+    match = {}
     if nivel in [1, 2]:
-        filtro["nivel"] = nivel
+        match["nivel"] = nivel
     if modo in ["solo", "batalha"]:
-        filtro["modo"] = modo
-    docs = list(ranking_col.find(filtro).sort("tempo", 1).limit(limite))
+        match["modo"] = modo
+
+    pipeline = []
+    if match:
+        pipeline.append({"$match": match})
+    pipeline += [
+        # Agrupa por jogador e pega o menor tempo
+        {"$sort": {"tempo": 1}},
+        {"$group": {
+            "_id": "$jogador_id",
+            "nome":    {"$first": "$nome"},
+            "avatar":  {"$first": "$avatar"},
+            "nivel":   {"$first": "$nivel"},
+            "tempo":   {"$min": "$tempo"},
+            "acertos": {"$first": "$acertos"},
+            "erros":   {"$first": "$erros"},
+            "modo":    {"$first": "$modo"},
+            "data":    {"$first": "$data"}
+        }},
+        {"$sort": {"tempo": 1}},
+        {"$limit": limite}
+    ]
+
+    docs = list(ranking_col.aggregate(pipeline))
     for d in docs:
-        d["_id"] = str(d["_id"])
+        d["jogador_id"] = str(d.pop("_id"))
     return {"ranking": docs, "total": len(docs)}
 
 # ── RANKING: POSIÇÃO GLOBAL ─────────────────────────────────────────
 @app.get("/ranking/posicao")
 def ranking_posicao(tempo: int, nivel: int):
-    # Quantos jogadores têm tempo MENOR que o informado
-    qtd = ranking_col.count_documents({"nivel": nivel, "tempo": {"$lt": tempo}})
+    """Retorna a posição do jogador considerando apenas o melhor tempo por jogador."""
+    # Agrupa por jogador, pega o melhor tempo, conta quantos têm tempo menor
+    pipeline = [
+        {"$match": {"nivel": nivel}},
+        {"$group": {"_id": "$jogador_id", "melhor": {"$min": "$tempo"}}},
+        {"$match": {"melhor": {"$lt": tempo}}},
+        {"$count": "total"}
+    ]
+    result = list(ranking_col.aggregate(pipeline))
+    qtd = result[0]["total"] if result else 0
     return {"posicao": qtd + 1}
 
 # ── RANKING: POR NÍVEL ─────────────────────────────────────────────

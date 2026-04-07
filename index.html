@@ -769,8 +769,28 @@
 </head>
 <body>
 
+<!-- ════════════════ TELA 0: LOADING (Cold Start) ════════════════ -->
+<div id="screen-loading" class="screen active" style="justify-content: center; align-items: center; text-align: center;">
+  <div class="logo">TABUADA<br>TURBO ⚡</div>
+  <div style="margin-top: 40px;">
+    <div id="loading-spinner" style="
+      width: 50px;
+      height: 50px;
+      border: 4px solid rgba(255,107,53,0.1);
+      border-top: 4px solid var(--accent);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    "></div>
+    <div style="font-family: 'Boogaloo', cursive; font-size: 1.5rem; color: var(--accent2);">Conectando ao servidor...</div>
+    <p style="font-size: 0.85rem; color: var(--muted); margin-top: 10px; padding: 0 40px;">O servidor pode levar até 30s para "acordar" no primeiro acesso.</p>
+  </div>
+</div>
+
+<style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
+
 <!-- ════════════════ TELA 1: CADASTRO ════════════════ -->
-<div id="screen-cadastro" class="screen active">
+<div id="screen-cadastro" class="screen">
   <div class="logo">TABUADA<br>TURBO ⚡</div>
   <p class="tagline">Quem é o mais rápido?</p>
 
@@ -1034,6 +1054,7 @@
     <button class="rank-tab active" id="tab-n1" onclick="switchTab(1)">Nível 1 📊</button>
     <button class="rank-tab" id="tab-n2" onclick="switchTab(2)">Nível 2 🎲</button>
     <button class="rank-tab" id="tab-all" onclick="switchTab(0)">Geral 🌟</button>
+    <button class="rank-tab" id="tab-batalha" onclick="switchTab(0,'batalha')">⚔️ Batalha</button>
   </div>
 
   <div id="rank-list"></div>
@@ -1068,6 +1089,28 @@ let erros = 0;
 let jogoAtivo = false;
 let nivelAtualJogo = 1;
 let audioAtivo = false;
+
+// ══════════════════════════════════════════
+//  COOKIES (Persistência mais longa que Session)
+// ══════════════════════════════════════════
+const CookieManager = {
+  set(name, value, days = 365) {
+    const d = new Date();
+    d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+    const expires = "expires=" + d.toUTCString();
+    document.cookie = name + "=" + value + ";" + expires + ";path=/;SameSite=Lax";
+  },
+  get(name) {
+    const nameEQ = name + "=";
+    const ca = document.cookie.split(';');
+    for(let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+  }
+};
 
 // ══════════════════════════════════════════
 //  SOM & MÚSICA (Procedural - Escala Dó Maior)
@@ -1158,6 +1201,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderAvatares();
   carregarJogador();
   checarCookies();
+  checkApiHealth(); // Validar Cold Start do Render
   // Teclado físico também funciona (para quem usa no PC)
   document.addEventListener('keydown', e => {
     if (!jogoAtivo) return;
@@ -1195,6 +1239,28 @@ function carregarJogador() {
       }
     });
   }
+  // Tentar recuperar ID via Cookie (maior persistência)
+  jogadorId = CookieManager.get('tt_jogador_id');
+  if (!jogadorId) jogadorId = localStorage.getItem('tt_jogador_id');
+}
+
+async function checkApiHealth() {
+  const statusEl = document.querySelector('#screen-loading div[style*="font-family: \'Boogaloo\'"]');
+  try {
+    const start = Date.now();
+    const res = await fetch(API_URL + '/health');
+    if (res.ok) {
+      console.log('✅ API Online');
+      // Se tiver jogadorId, pula cadastro e vai direto pro menu
+      if (jogadorId && jogador.nome) irParaMenu();
+      else mostrarTela('screen-cadastro');
+    } else {
+      throw new Error('API fora do ar');
+    }
+  } catch (e) {
+    console.warn('⌛ API em Cold Start, tentando novamente...', e);
+    setTimeout(checkApiHealth, 3000);
+  }
 }
 
 // ══════════════════════════════════════════
@@ -1220,6 +1286,7 @@ async function irParaMenu() {
     if (r.ok) {
       jogadorId = d.jogador_id;
       localStorage.setItem('tt_jogador_id', jogadorId);
+      CookieManager.set('tt_jogador_id', jogadorId); // Salvar no Cookie
     }
   } catch (e) {
     console.error('Erro ao salvar jogador na API:', e);
@@ -1634,39 +1701,53 @@ function salvarRanking(entrada) {
   localStorage.setItem(key, JSON.stringify(rank.slice(0, 50)));
 }
 
-let tabAtiva = 1;
-function switchTab(lv) {
-  tabAtiva = lv;
-  document.getElementById('tab-n1').classList.toggle('active', lv === 1);
-  document.getElementById('tab-n2').classList.toggle('active', lv === 2);
-  document.getElementById('tab-all').classList.toggle('active', lv === 0);
-  renderRankList(lv);
+let tabAtiva = { lv: 1, modo: 'todos' };
+function switchTab(lv, modo = 'todos') {
+  tabAtiva = { lv, modo };
+  document.getElementById('tab-n1').classList.toggle('active', lv === 1 && modo === 'todos');
+  document.getElementById('tab-n2').classList.toggle('active', lv === 2 && modo === 'todos');
+  document.getElementById('tab-all').classList.toggle('active', lv === 0 && modo === 'todos');
+  document.getElementById('tab-batalha').classList.toggle('active', modo === 'batalha');
+  renderRankList(lv, modo);
 }
 
-function renderRankList(lv) {
+function renderRankList(lv, modo = 'todos') {
   const el = document.getElementById('rank-list');
   el.innerHTML = '<div class="rank-empty">Carregando... ⏳</div>';
-  const endpoint = lv === 0 ? '/ranking/global' : '/ranking/global?nivel=' + lv;
+  let endpoint = '/ranking/global';
+  const params = [];
+  if (lv !== 0) params.push('nivel=' + lv);
+  if (modo === 'batalha') params.push('modo=batalha');
+  if (params.length) endpoint += '?' + params.join('&');
   fetch(API_URL + endpoint)
     .then(r => r.json())
     .then(d => {
       if (d.ranking && d.ranking.length > 0) {
         renderRankItems(d.ranking.slice(0,20), lv); return;
       }
-      renderRankLocal(lv);
+      renderRankLocal(lv, modo);
     })
-    .catch(() => renderRankLocal(lv));
+    .catch(() => renderRankLocal(lv, modo));
 }
 
-function renderRankLocal(lv) {
+function renderRankLocal(lv, modo = 'todos') {
   let items = [];
   if (lv === 0) {
     const r1 = getRanking(1).map(r => ({...r, _lv:1}));
     const r2 = getRanking(2).map(r => ({...r, _lv:2}));
-    items = [...r1, ...r2].sort((a,b) => a.tempo-b.tempo).slice(0,20);
+    items = [...r1, ...r2];
   } else {
-    items = getRanking(lv).slice(0,20);
+    items = getRanking(lv);
   }
+  // Filtrar por modo se necessário
+  if (modo === 'batalha') items = items.filter(r => r.modo === 'batalha');
+  // Deduplicar: manter apenas o melhor tempo por jogador (nome+avatar)
+  const map = {};
+  for (const r of items) {
+    const key = r.nome + '__' + (r.avatar || '');
+    if (!map[key] || r.tempo < map[key].tempo) map[key] = r;
+  }
+  items = Object.values(map).sort((a,b) => a.tempo - b.tempo).slice(0, 20);
   renderRankItems(items, lv);
 }
 
