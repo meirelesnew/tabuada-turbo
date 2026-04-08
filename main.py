@@ -12,17 +12,25 @@ import os
 app = FastAPI()
 
 MONGO_URL = os.environ.get("MONGO_URL")
-if not MONGO_URL:
-    # Para desenvolvimento local, podemos usar um fallback ou apenas avisar
-    # mas mantendo a lógica de erro se for produção
-    print("⚠️ Variável MONGO_URL não encontrada. Certifique-se de configurar a URL de conexão do MongoDB.")
 
-client = MongoClient(MONGO_URL) if MONGO_URL else None
-db = client["tabuada2026"] if client else None
+if MONGO_URL:
+    try:
+        client = MongoClient(MONGO_URL)
+        client.admin.command("ping")
+        db = client["tabuada2026"]
+        print("✅ MongoDB conectado com sucesso")
+    except Exception as e:
+        print(f"⚠️ Erro ao conectar MongoDB: {e}")
+        client = None
+        db = None
+else:
+    print("⚠️ MONGO_URL não configurada - API funcionará em modo limitado")
+    client = None
+    db = None
 
-jogadores_col = db["jogadores"] if db is not None else None
-salas_col     = db["salas"] if db is not None else None
-ranking_col   = db["ranking"] if db is not None else None
+jogadores_col = db["jogadores"] if db else None
+salas_col     = db["salas"] if db else None
+ranking_col   = db["ranking"] if db else None
 
 @app.on_event("startup")
 def startup_db_client():
@@ -44,6 +52,15 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Headers para evitar cache do Cloudflare
+@app.middleware("http")
+async def add_no_cache_headers(request, call_next):
+    response = await call_next(request)
+    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
 
 # ── MODELS ──────────────────────────────────────────────────────────
 class JogadorIn(BaseModel):
@@ -92,6 +109,8 @@ def root():
 
 @app.get("/health")
 def health():
+    if not client or not db:
+        return {"status": "ok", "db": "offline"}
     try:
         client.admin.command("ping")
         return {"status": "ok", "db": "conectado"}
@@ -105,6 +124,8 @@ def ping():
 # ── JOGADOR ─────────────────────────────────────────────────────────
 @app.post("/jogador/salvar")
 def salvar_jogador(body: JogadorIn):
+    if not jogadores_col:
+        return {"jogador_id": str(uuid.uuid4()), "nome": body.nome, "avatar": body.avatar}
     jid = str(uuid.uuid4())
     doc = {
         "_id": jid,
@@ -118,6 +139,8 @@ def salvar_jogador(body: JogadorIn):
 # ── BATALHA: CRIAR SALA ─────────────────────────────────────────────
 @app.post("/batalha/criar")
 def criar_sala(body: CriarSalaIn):
+    if not salas_col:
+        raise HTTPException(status_code=503, detail="Serviço temporariamente indisponível")
     codigo = gerar_codigo()
     while salas_col.find_one({"codigo": codigo, "status": {"$ne": "finalizada"}}):
         codigo = gerar_codigo()
@@ -149,6 +172,8 @@ def criar_sala(body: CriarSalaIn):
 # ── BATALHA: ENTRAR NA SALA ─────────────────────────────────────────
 @app.post("/batalha/entrar")
 def entrar_sala(body: EntrarSalaIn):
+    if not salas_col:
+        raise HTTPException(status_code=503, detail="Serviço indisponível")
     sala = salas_col.find_one({"codigo": body.codigo.upper()})
     if not sala:
         raise HTTPException(status_code=404, detail="Sala não encontrada")
