@@ -1210,7 +1210,12 @@ document.addEventListener('DOMContentLoaded', () => {
   renderAvatares();
   carregarJogador();
   checarCookies();
-  checkApiHealth(); // Validar Cold Start do Render
+  checkApiHealth();
+  
+  // Keep-alive: ping a cada 30 segundos para evitar servidor dormir
+  setInterval(() => {
+    fetch(API_URL + '/ping', { mode: 'no-cors' }).catch(() => {});
+  }, 30000);
 
   document.addEventListener('click', () => {
     if (!audioIniciado && audioAtivo) {
@@ -1315,6 +1320,20 @@ async function irParaMenu() {
   if (!jogadorId) jogadorId = localStorage.getItem('tt_jogador_id');
   
   renderPlayerBar('menu');
+  // Exibir melhor tempo do nível atual ou do nível 1
+  const melhor = carregarRecorde(1);
+  const melhor2 = carregarRecorde(2);
+  const el = document.getElementById('high-score-display');
+  if (el) {
+    if (melhor === 0 && melhor2 === 0) {
+      el.textContent = '⏱️ Sem recorde';
+      el.style.color = 'var(--muted)';
+    } else {
+      const melhorTempo = melhor === 0 ? melhor2 : (melhor2 === 0 ? melhor : Math.min(melhor, melhor2));
+      el.textContent = `⏱️ Recorde: ${formatarTempo(melhorTempo)}`;
+      el.style.color = 'var(--accent2)';
+    }
+  }
   mostrarTela('screen-menu');
 }
 
@@ -1638,6 +1657,13 @@ function finalizarJogo() {
 
   // Modo solo
   salvarRanking(entrada);
+  
+  // Salvar melhor tempo local (recorde)
+  const ehNovoRecorde = salvarRecorde(nivelAtualJogo, segundos);
+  if (ehNovoRecorde) {
+    toast('🎉 Novo Recorde!', 'ok');
+  }
+  
   if (jogadorId) {
     fetch(API_URL + '/ranking/salvar', {
       method: 'POST',
@@ -1656,11 +1682,10 @@ function finalizarJogo() {
   }
 
   mostrarResultado(entrada);
-  lancarBaloes();
 }
 
 async function mostrarResultado(entrada) {
-  document.getElementById('result-trophy').textContent = entrada.erros === 0 ? '🏆' : entrada.acertos >= 80 ? '🥈' : '🎯';
+  document.getElementById('result-trophy').textContent = '🏆';
   document.getElementById('result-time').textContent = formatarTempo(entrada.tempo);
   document.getElementById('result-acertos').innerHTML =
     `<strong>${entrada.acertos}</strong> acertos &nbsp;|&nbsp; <span style="color:var(--red)">${entrada.erros}</span> erros`;
@@ -1675,6 +1700,9 @@ async function mostrarResultado(entrada) {
   `;
 
   mostrarTela('screen-resultado');
+  
+  lancarBaloes();
+  lancarConfetti();
 
   // Posição no ranking - Tenta Global, cai para Local
   try {
@@ -1779,21 +1807,45 @@ function renderRankItems(items, lv) {
     el.innerHTML = '<div class="rank-empty">Nenhum resultado ainda.<br>Seja o primeiro! 🚀</div>';
     return;
   }
+  
+  // Encontrar melhor tempo do jogador atual no localStorage
+  const meuMelhorTempo = getMelhorTempoJogador(lv);
+  
   el.innerHTML = items.map((r, i) => {
     const posClass = i===0?'gold':i===1?'silver':i===2?'bronze':'';
     const posMedal = i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1);
     const lvTag = lv===0 ? '<span style="color:var(--accent);font-size:0.65rem"> · Nv'+(r._lv||r.nivel)+'</span>' : '';
     const modoTag = r.modo==='batalha' ? ' <span style="color:var(--accent3);font-size:0.65rem">⚔️</span>' : '';
-    return '<div class="rank-item">' +
+    
+    // Destacar o jogador atual
+    const ehMeu = r.nome === jogador.nome && r.avatar === jogador.avatar;
+    const meuStyle = ehMeu ? 'background:rgba(255,107,53,0.2);border:2px solid var(--accent);' : '';
+    const meuLabel = ehMeu ? '<span style="color:var(--accent);font-size:0.65rem;margin-left:4px">(você)</span>' : '';
+    
+    return '<div class="rank-item" style="' + meuStyle + '">' +
       '<div class="rank-pos '+posClass+'">'+posMedal+'</div>' +
       '<div class="rank-av">'+(r.avatar||'🦁')+'</div>' +
       '<div class="rank-info">' +
-        '<div class="rank-name">'+r.nome+lvTag+modoTag+'</div>' +
+        '<div class="rank-name">'+r.nome+lvTag+modoTag+meuLabel+'</div>' +
         '<div class="rank-meta">'+(r.acertos||0)+' acertos · '+(r.erros||0)+' erros · '+(r.data||'')+'</div>' +
       '</div>' +
       '<div class="rank-time">'+formatarTempo(r.tempo)+'</div>' +
     '</div>';
   }).join('');
+}
+
+function getMelhorTempoJogador(lv) {
+  const rank = getRanking(lv);
+  if (lv === 0) {
+    const r1 = getRanking(1);
+    const r2 = getRanking(2);
+    const all = [...r1, ...r2].filter(r => r.nome === jogador.nome && r.avatar === jogador.avatar);
+    if (all.length === 0) return null;
+    return Math.min(...all.map(r => r.tempo));
+  }
+  const meus = rank.filter(r => r.nome === jogador.nome && r.avatar === jogador.avatar);
+  if (meus.length === 0) return null;
+  return Math.min(...meus.map(r => r.tempo));
 }
 
 function limparRanking() {
@@ -1805,13 +1857,10 @@ function limparRanking() {
   setTimeout(() => {
     localStorage.removeItem('tt_ranking_1');
     localStorage.removeItem('tt_ranking_2');
-    // Limpar também os recordes por nível
-    localStorage.removeItem('tt_recorde_facil');
-    localStorage.removeItem('tt_recorde_normal');
-    localStorage.removeItem('tt_recorde_dificil');
-    renderRankList(tabAtiva);
-    exibirRecordeTela(nivelAtual || 'normal');
-    toast('✅ Ranking limpo!', 'ok');
+  // Limpar também os recordes por nível
+  localStorage.removeItem('tt_recorde_nivel1');
+  localStorage.removeItem('tt_recorde_nivel2');
+  renderRankList(tabAtiva);
   }, 600);
 }
 
@@ -2221,29 +2270,28 @@ const STORAGE_KEYS = {
   session_stats: 'tt_session_stats'
 };
 
-// Carregar recorde do localStorage
-function carregarRecorde(nivel = 'normal') {
-  const chave = STORAGE_KEYS[`recorde_${nivel}`];
+// Carregar melhor tempo do localStorage por nivel (1 ou 2)
+function carregarRecorde(nivel) {
+  const chave = nivel === 1 ? 'tt_recorde_nivel1' : 'tt_recorde_nivel2';
   const recorde = localStorage.getItem(chave);
   return recorde ? parseInt(recorde, 10) : 0;
 }
 
-// Salvar recorde no localStorage
-function salvarRecorde(nivel = 'normal', tempo) {
-  const chave = STORAGE_KEYS[`recorde_${nivel}`];
+// Salvar melhor tempo no localStorage
+function salvarRecorde(nivel, tempo) {
+  const chave = nivel === 1 ? 'tt_recorde_nivel1' : 'tt_recorde_nivel2';
   const recordeAtual = carregarRecorde(nivel);
-
-  // Comparar tempos (menor é melhor)
   if (tempo < recordeAtual || recordeAtual === 0) {
     localStorage.setItem(chave, tempo);
-    return true; // Novo recorde!
+    return true;
   }
-  return false; // Não bateu recorde
+  return false;
 }
 
-// Exibir recorde na tela
-function exibirRecordeTela(nivel = 'normal') {
-  const recorde = carregarRecorde(nivel);
+// Exibir melhor tempo na tela do menu
+function exibirRecordeTela(nivel) {
+  const niv = nivel || nivelAtualJogo || 1;
+  const recorde = carregarRecorde(niv);
   const el = document.getElementById('high-score-display');
 
   if (el) {
@@ -2257,27 +2305,11 @@ function exibirRecordeTela(nivel = 'normal') {
   }
 }
 
-// Atualizar recorde ao finalizar jogo
-function finalizarComRecorde(nivel, tempoDecisegundos) {
-  const ehNovoRecorde = salvarRecorde(nivel, tempoDecisegundos);
-
-  if (ehNovoRecorde) {
-    mostrarFeedback('acerto', 'Novo Recorde! 🎉', formatarTempo(tempoDecisegundos));
-  }
-
-  exibirRecordeTela(nivel);
-}
-
 // Limpar dados (para testes)
 function limparDados() {
   Object.values(STORAGE_KEYS).forEach(chave => localStorage.removeItem(chave));
   console.log('✅ Dados limpos do localStorage');
 }
-
-// Executar ao carregar página
-window.addEventListener('load', () => {
-  exibirRecordeTela(nivelAtual || 'normal');
-});
 
 // LGPD / Cookies
 function checarCookies() {

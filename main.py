@@ -98,6 +98,10 @@ def health():
     except Exception as e:
         return {"status": "erro", "detalhe": str(e)}
 
+@app.get("/ping")
+def ping():
+    return {"status": "ok", "time": datetime.utcnow().isoformat()}
+
 # ── JOGADOR ─────────────────────────────────────────────────────────
 @app.post("/jogador/salvar")
 def salvar_jogador(body: JogadorIn):
