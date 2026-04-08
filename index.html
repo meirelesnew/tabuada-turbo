@@ -1200,6 +1200,24 @@ const SomManager = {
   msgErro() {
     if (!audioAtivo) return;
     this.playNote(120, 0.4, 'sawtooth', 0.05);
+  },
+
+  msgVitoria() {
+    if (!audioAtivo) return;
+    // Fanfarra de vitória - escala ascendente
+    const notes = [0, 2, 4, 7, 9, 12, 12];
+    notes.forEach((n, i) => {
+      setTimeout(() => this.playNote(this.freqs[n % 10] * (n >= 12 ? 2 : 1), 0.3, 'sine', 0.15), i * 120);
+    });
+  },
+
+  msgDerrota() {
+    if (!audioAtivo) return;
+    // Melodia triste descendente
+    const notes = [7, 5, 4, 2, 0];
+    notes.forEach((n, i) => {
+      setTimeout(() => this.playNote(this.freqs[n], 0.4, 'triangle', 0.08), i * 200);
+    });
   }
 };
 
@@ -1743,6 +1761,15 @@ function getRanking(lv) {
   return JSON.parse(localStorage.getItem(key) || '[]');
 }
 
+function getVitoriasBatalha() {
+  return parseInt(localStorage.getItem('tt_vitorias_batalha') || '0');
+}
+
+function adicionarVitoriaBatalha() {
+  const atual = getVitoriasBatalha();
+  localStorage.setItem('tt_vitorias_batalha', atual + 1);
+}
+
 function salvarRanking(entrada) {
   const key = `tt_ranking_${entrada.nivel}`;
   const rank = getRanking(entrada.nivel);
@@ -2067,11 +2094,50 @@ async function enviarResultadoBatalha() {
     if (d.status === 'finalizada') {
       mostrarResultadoBatalha(d.jogadores);
     } else {
-      // Aguardar adversário terminar
-      toast('⏳ Aguardando adversário...', 'inf');
-      iniciarPolling(salaAtual.codigo);
+      // Jogador terminou primeiro - mostrar tela de espera
+      jogoAtivo = false;
+      clearInterval(timerInterval);
+      mostrarTelaAguardandoOponente();
     }
   } catch(e) {}
+}
+
+function mostrarTelaAguardandoOponente() {
+  const tela = document.getElementById('screen-resultado-batalha');
+  tela.innerHTML = `
+    <div style="text-align:center; padding:40px 20px;">
+      <div style="font-size:4rem; margin-bottom:16px;">⏳</div>
+      <div style="font-family:'Boogaloo',cursive; font-size:2rem; color:var(--accent2); margin-bottom:12px;">
+        Você terminou!
+      </div>
+      <div style="font-size:1rem; color:var(--muted); margin-bottom:24px;">
+        Agora é só aguardar o adversário terminar a partida...
+      </div>
+      
+      <div style="font-family:'Boogaloo',cursive; font-size:3rem; color:var(--accent3); margin-bottom:8px;">
+        ${formatarTempo(segundos)}
+      </div>
+      <div style="font-size:0.8rem; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:24px;">
+        Seu tempo
+      </div>
+      
+      <div class="result-acertos">
+        <strong>${acertos}</strong> acertos &nbsp;|&nbsp; <span style="color:var(--red)">${erros}</span> erros
+      </div>
+      
+      <div style="margin-top:32px; padding:20px; background:rgba(255,107,53,0.1); border-radius:12px;">
+        <div style="font-size:0.8rem; color:var(--muted); margin-bottom:8px;">Aguarde o resultado final</div>
+        <div class="loading-dots" style="display:flex; gap:8px; justify-content:center;">
+          <div style="width:12px; height:12px; background:var(--accent); border-radius:50%; animation:bounce 0.6s infinite;"></div>
+          <div style="width:12px; height:12px; background:var(--accent); border-radius:50%; animation:bounce 0.6s infinite 0.2s;"></div>
+          <div style="width:12px; height:12px; background:var(--accent); border-radius:50%; animation:bounce 0.6s infinite 0.4s;"></div>
+        </div>
+      </div>
+    </div>
+  `;
+  mostrarTela('screen-resultado-batalha');
+  // Continuar verificando até o oponente terminar
+  iniciarPolling(salaAtual.codigo);
 }
 
 function mostrarResultadoBatalha(jogadoresList) {
@@ -2082,15 +2148,30 @@ function mostrarResultadoBatalha(jogadoresList) {
   const eu = jogadoresList.find(j => j.id === jogadorId);
   const vencedor = finalizados[0];
   const ganhei = vencedor && vencedor.id === jogadorId;
+  
+  // Atualizar contador de vitórias
+  if (ganhei) {
+    adicionarVitoriaBatalha();
+  }
+  const vitorias = getVitoriasBatalha();
 
   const motivacoes = [
     "Na próxima você ganha!", 
     "Não desista, a prática leva à perfeição!", 
-    "Por pouco! Tente mais uma vez!", 
+    "Por pouco! Tente mais uma vez!",
     "A tabuada é só questão de tempo. Bora lá!",
     "Errar faz parte do aprendizado. Tente novamente!"
   ];
   const msgMotivacao = motivacoes[Math.floor(Math.random() * motivacoes.length)];
+
+  // Tocar música de vitória ou derrota
+  if (ganhei) {
+    SomManager.msgVitoria();
+    lancarBaloes();
+    lancarConfetti();
+  } else {
+    SomManager.msgDerrota();
+  }
 
   document.getElementById('batalha-trophy').textContent = ganhei ? '🏆' : '😤';
   document.getElementById('batalha-resultado-titulo').innerHTML =
@@ -2112,9 +2193,22 @@ function mostrarResultadoBatalha(jogadoresList) {
     </div>
   `).join('');
 
-  if (ganhei) {
-    lancarBaloes();
+  // Mostrar contador de vitórias
+  const vitoriasHTML = `
+    <div style="text-align:center; margin-top:16px; padding:12px; background:rgba(255,215,0,0.1); border-radius:12px; border:2px solid var(--accent2);">
+      <div style="font-size:0.7rem; color:var(--muted); text-transform:uppercase; letter-spacing:1px;">Vitórias na Batalha</div>
+      <div style="font-family:'Boogaloo',cursive; font-size:2.5rem; color:var(--accent2);">${vitorias} 🏆</div>
+    </div>
+  `;
+  
+  // Inserir após o placar
+  const placarEl = document.getElementById('batalha-placar');
+  if (placarEl) {
+    placarEl.innerHTML += vitoriasHTML;
   }
+  
+  mostrarTela('screen-resultado-batalha');
+}
   mostrarTela('screen-resultado-batalha');
 }
 
