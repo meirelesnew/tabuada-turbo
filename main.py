@@ -28,9 +28,9 @@ else:
     client = None
     db = None
 
-jogadores_col = db["jogadores"] if db else None
-salas_col     = db["salas"] if db else None
-ranking_col   = db["ranking"] if db else None
+jogadores_col = db["jogadores"] if db is not None else None
+salas_col     = db["salas"] if db is not None else None
+ranking_col   = db["ranking"] if db is not None else None
 
 @app.on_event("startup")
 def startup_db_client():
@@ -109,7 +109,7 @@ def root():
 
 @app.get("/health")
 def health():
-    if not client or not db:
+    if client is None or db is None:
         return {"status": "ok", "db": "offline"}
     try:
         client.admin.command("ping")
