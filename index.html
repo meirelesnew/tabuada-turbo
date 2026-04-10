@@ -1077,7 +1077,7 @@
 //  ESTADO GLOBAL
 // ══════════════════════════════════════════
 const AVATARES = ['🦁','🐯','🐸','🦊','🐧','🦄','🐉','🤖','👾','🦸'];
-const API_URL = 'https://tabuada-turbo.onrender.com';
+const API_URL = 'https://tabuada-api.onrender.com';
 let jogador = { nome: '', avatar: '🦁' };
 let jogadorId = null;
 let respostaAtual = '';
@@ -2202,17 +2202,6 @@ function mostrarResultadoBatalha(jogadoresList) {
   `;
   
   // Inserir após o placar
-  const placarEl = document.getElementById('batalha-placar');
-  if (placarEl) {
-    placarEl.innerHTML += vitoriasHTML;
-  }
-  
-  mostrarTela('screen-resultado-batalha');
-}
-  mostrarTela('screen-resultado-batalha');
-}
-
-function copiarCodigo() {
   const codigo = document.getElementById('codigo-sala-display').textContent;
   navigator.clipboard.writeText(codigo).then(() => toast('Código copiado! 📋', 'ok')).catch(() => {
     toast(codigo, 'ok');
