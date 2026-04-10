@@ -1296,10 +1296,10 @@ function carregarJogador() {
   if (!jogadorId) jogadorId = localStorage.getItem('tt_jogador_id');
 }
 
+let healthFailures = 0;
 async function checkApiHealth() {
   const statusEl = document.querySelector('#screen-loading div[style*="font-family: \'Boogaloo\'"]');
   try {
-    const start = Date.now();
     const res = await fetch(API_URL + '/health');
     if (res.ok) {
       console.log('✅ API Online');
@@ -1311,8 +1311,14 @@ async function checkApiHealth() {
       throw new Error('API fora do ar');
     }
   } catch (e) {
-    console.warn('⌛ API em Cold Start, tentando novamente...', e);
-    setTimeout(checkApiHealth, 3000);
+    healthFailures++;
+    console.warn(`⌛ API offline (${healthFailures}), tentando novamente...`, e);
+    
+    if (healthFailures >= 3 && statusEl) {
+      statusEl.innerHTML = `Conexão lenta ou protegida...<br><a href="${API_URL}/health" target="_blank" style="color:var(--accent2); text-decoration:underline; font-size: 1.1rem;">Clique aqui para verificar e autorizar</a>`;
+    }
+    
+    setTimeout(checkApiHealth, 3500);
   }
 }
 
