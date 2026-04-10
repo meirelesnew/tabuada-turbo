@@ -789,7 +789,7 @@
       animation: spin 1s linear infinite;
       margin: 0 auto 20px;
     "></div>
-    <div style="font-family: 'Boogaloo', cursive; font-size: 1.5rem; color: var(--accent2);">Conectando ao servidor...</div>
+    <div style="font-family: 'Boogaloo', cursive; font-size: 1.5rem; color: var(--accent2);">Conectando ao servidor... <span id="loading-timer">30s</span></div>
     <p style="font-size: 0.85rem; color: var(--muted); margin-top: 10px; padding: 0 40px;">O servidor pode levar até 30s para "acordar" no primeiro acesso.</p>
   </div>
 </div>
@@ -1228,6 +1228,16 @@ document.addEventListener('DOMContentLoaded', () => {
   renderAvatares();
   carregarJogador();
   checarCookies();
+  
+  // Script do Countdown de 30s
+  let loadingTime = 30;
+  window.loadingInterval = setInterval(() => {
+    loadingTime--;
+    const el = document.getElementById('loading-timer');
+    if (el) el.textContent = Math.max(0, loadingTime) + 's';
+    if (loadingTime <= 0) clearInterval(window.loadingInterval);
+  }, 1000);
+
   checkApiHealth();
   
   // Keep-alive: ping a cada 30 segundos para evitar servidor dormir
@@ -1293,6 +1303,7 @@ async function checkApiHealth() {
     const res = await fetch(API_URL + '/health');
     if (res.ok) {
       console.log('✅ API Online');
+      if (window.loadingInterval) clearInterval(window.loadingInterval);
       // Se tiver jogadorId, pula cadastro e vai direto pro menu
       if (jogadorId && jogador.nome) irParaMenu();
       else mostrarTela('screen-cadastro');
