@@ -365,6 +365,34 @@ def ranking_nivel(nivel: int):
         d["_id"] = str(d["_id"])
     return {"ranking": docs, "nivel": nivel}
 
+@app.get("/admin/backup")
+def admin_backup(token: str):
+    # Token simples para proteção (pode ser movido para env var depois)
+    SECRET_TOKEN = os.environ.get("ADMIN_TOKEN", "tabuada_turbo_secret_2026")
+    if token != SECRET_TOKEN:
+        raise HTTPException(status_code=403, detail="Acesso negado")
+    
+    if client is None or db is None:
+        raise HTTPException(status_code=503, detail="Banco offline")
+        
+    backup_data = {}
+    collections = ["jogadores", "salas", "ranking"]
+    for coll_name in collections:
+        cursor = db[coll_name].find({})
+        data = []
+        for doc in cursor:
+            if "_id" in doc: doc["_id"] = str(doc["_id"])
+            if "expira_em" in doc and isinstance(doc["expira_em"], datetime):
+                doc["expira_em"] = doc["expira_em"].isoformat()
+            data.append(doc)
+        backup_data[coll_name] = data
+        
+    return {
+        "data_backup": datetime.utcnow().isoformat(),
+        "total_colecoes": len(backup_data),
+        "backup": backup_data
+    }
+
 if __name__ == "__main__":
     import uvicorn
     # Render fornece a porta via variável de ambiente PORT
