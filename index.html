@@ -1077,7 +1077,7 @@
 //  ESTADO GLOBAL
 // ══════════════════════════════════════════
 const AVATARES = ['🦁','🐯','🐸','🦊','🐧','🦄','🐉','🤖','👾','🦸'];
-const API_URL = 'https://tabuada-api.onrender.com';
+const API_URL = 'https://tabuada-turbo.onrender.com';
 let jogador = { nome: '', avatar: '🦁' };
 let jogadorId = null;
 let respostaAtual = '';
@@ -1313,11 +1313,6 @@ async function checkApiHealth() {
   } catch (e) {
     healthFailures++;
     console.warn(`⌛ API offline (${healthFailures}), tentando novamente...`, e);
-    
-    if (healthFailures >= 3 && statusEl) {
-      statusEl.innerHTML = `Conexão lenta ou protegida...<br><a href="${API_URL}/health" target="_blank" style="color:var(--accent2); text-decoration:underline; font-size: 1.1rem;">Clique aqui para verificar e autorizar</a>`;
-    }
-    
     setTimeout(checkApiHealth, 3500);
   }
 }
