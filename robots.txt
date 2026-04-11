@@ -1,9 +1,4 @@
-# Tabuada Turbo - Robots.txt
 User-agent: *
 Allow: /
 
-# Sitemap
 Sitemap: https://tabuadaturbo.com.br/sitemap.xml
-
-# Crawl-delay (evita sobrecarga)
-Crawl-delay: 1
