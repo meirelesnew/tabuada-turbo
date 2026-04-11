@@ -8,7 +8,7 @@ import random
 import string
 import uuid
 import os
-from passlib.hash import bcrypt
+import hashlib
 import jwt
 
 app = FastAPI()
@@ -181,7 +181,8 @@ def login(body: LoginIn):
         return {"erro": "Serviço indisponível"}, 503
     
     usuario = usuarios_col.find_one({"email": body.email})
-    if not usuario or not bcrypt.verify(body.senha, usuario.get("senha")):
+    senha_hash = hashlib.sha256(body.senha.encode()).hexdigest()
+    if not usuario or senha_hash != usuario.get("senha"):
         return {"erro": "Credenciais incorretas"}
     
     token = criar_token(str(usuario["_id"]), usuario["nome"], usuario["email"])
@@ -203,11 +204,12 @@ def registrar(body: RegistrarIn):
         return {"erro": "Email já cadastrado"}
     
     uid = str(uuid.uuid4())
+    senha_hash = hashlib.sha256(body.senha.encode()).hexdigest()
     doc = {
         "_id": uid,
         "nome": body.nome,
         "email": body.email,
-        "senha": bcrypt.hash(body.senha),
+        "senha": senha_hash,
         "avatar": "🦁",
         "criado_em": datetime.utcnow().isoformat()
     }
