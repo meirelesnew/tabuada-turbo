@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Depends, Header
 from fastapi.middleware.cors import CORSMiddleware
 from pymongo import MongoClient
 from pydantic import BaseModel
@@ -7,9 +7,9 @@ from datetime import datetime, timedelta
 import random
 import string
 import uuid
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
 import os
+from passlib.hash import bcrypt
+import jwt
 
 app = FastAPI()
 
@@ -19,10 +19,11 @@ db = None
 jogadores_col = None
 salas_col = None
 ranking_col = None
+usuarios_col = None
 
 @app.on_event("startup")
 def startup_db_client():
-    global client, db, jogadores_col, salas_col, ranking_col
+    global client, db, jogadores_col, salas_col, ranking_col, usuarios_col
     
     MONGO_URL_DIRETA = "mongodb+srv://Admin:oAgtNf8ujb6sHKew@tabuada2026.cjzpxgk.mongodb.net/?retryWrites=true&w=majority&appName=tabuada2026"
     MONGO_URL = os.environ.get("MONGO_URL", MONGO_URL_DIRETA)
@@ -37,6 +38,7 @@ def startup_db_client():
             jogadores_col = db["jogadores"]
             salas_col     = db["salas"]
             ranking_col   = db["ranking"]
+            usuarios_col  = db["usuarios"]
             
             print("✅ MongoDB conectado com sucesso")
             
@@ -71,6 +73,15 @@ async def add_no_cache_headers(request, call_next):
     return response
 
 # ── MODELS ──────────────────────────────────────────────────────────
+class LoginIn(BaseModel):
+    email: str
+    senha: str
+
+class RegistrarIn(BaseModel):
+    nome: str
+    email: str
+    senha: str
+
 class JogadorIn(BaseModel):
     nome: str
     avatar: str
@@ -110,6 +121,11 @@ def gerar_codigo():
     nums   = ''.join(random.choices(string.digits, k=3))
     return f"{letras}-{nums}"
 
+import os
+
+# Get base directory
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 # ── HEALTH ──────────────────────────────────────────────────────────
 @app.get("/health")
 def health():
@@ -127,7 +143,8 @@ def ping():
 
 @app.get("/")
 def root():
-    index_path = os.path.join(os.path.dirname(__file__), "index.html")
+    index_path = os.path.join(BASE_DIR, "index.html")
+    print(f"Looking for index.html at: {index_path}")
     if os.path.exists(index_path):
         return FileResponse(index_path)
     return {"status": "ok", "app": "Tabuada Turbo API v1.0"}
@@ -136,10 +153,90 @@ def root():
 async def serve_static(file_path: str):
     allowed_files = ['manifest.json', 'sw.js', 'robots.txt', 'sitemap.xml', 'favicon.ico', 'og-image.png']
     if file_path in allowed_files:
-        file_path_static = os.path.join(os.path.dirname(__file__), file_path)
+        file_path_static = os.path.join(BASE_DIR, file_path)
         if os.path.exists(file_path_static):
             return FileResponse(file_path_static)
     return {"error": "Not found"}, 404
+
+# ── AUTH: LOGIN ─────────────────────────────────────────────────────
+SECRET_KEY = os.environ.get("JWT_SECRET", "tabuada_turbo_2026_secreto")
+ALGORITHM = "HS256"
+
+def criar_token(usuario_id: str, nome: str, email: str) -> str:
+    return jwt.encode(
+        {"sub": usuario_id, "nome": nome, "email": email},
+        SECRET_KEY,
+        algorithm=ALGORITHM
+    )
+
+def verificar_token(token: str):
+    try:
+        return jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+    except:
+        return None
+
+@app.post("/auth/login")
+def login(body: LoginIn):
+    if not usuarios_col:
+        return {"erro": "Serviço indisponível"}, 503
+    
+    usuario = usuarios_col.find_one({"email": body.email})
+    if not usuario or not bcrypt.verify(body.senha, usuario.get("senha")):
+        return {"erro": "Credenciais incorretas"}
+    
+    token = criar_token(str(usuario["_id"]), usuario["nome"], usuario["email"])
+    return {
+        "token": token,
+        "usuario": {
+            "nome": usuario["nome"],
+            "email": usuario["email"],
+            "avatar": usuario.get("avatar", "🦁")
+        }
+    }
+
+@app.post("/auth/registrar")
+def registrar(body: RegistrarIn):
+    if not usuarios_col:
+        return {"erro": "Serviço indisponível"}, 503
+    
+    if usuarios_col.find_one({"email": body.email}):
+        return {"erro": "Email já cadastrado"}
+    
+    uid = str(uuid.uuid4())
+    doc = {
+        "_id": uid,
+        "nome": body.nome,
+        "email": body.email,
+        "senha": bcrypt.hash(body.senha),
+        "avatar": "🦁",
+        "criado_em": datetime.utcnow().isoformat()
+    }
+    usuarios_col.insert_one(doc)
+    
+    token = criar_token(uid, body.nome, body.email)
+    return {
+        "token": token,
+        "usuario": {
+            "nome": body.nome,
+            "email": body.email,
+            "avatar": "🦁"
+        }
+    }
+
+@app.get("/auth/me")
+def quem_sou(authorization: str = Header(None)):
+    if not authorization or not authorization.startswith("Bearer "):
+        return {"erro": "Não autorizado"}, 401
+    
+    token = authorization.replace("Bearer ", "")
+    dados = verificar_token(token)
+    if not dados:
+        return {"erro": "Token inválido"}, 401
+    
+    return {
+        "nome": dados.get("nome"),
+        "email": dados.get("email")
+    }
 
 # ── JOGADOR ─────────────────────────────────────────────────────────
 @app.post("/jogador/salvar")

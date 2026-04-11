@@ -152,12 +152,12 @@ const SomManager = {
 // INICIALIZAÇÃO
 // ═══════════════════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
-  // Registrar Service Worker para PWA offline
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js')
-      .then((reg) => console.log('✅ SW registrado:', reg.scope))
-      .catch((err) => console.log('⚠️ SW erro:', err));
-  }
+  // Service Worker temporariamente desativado para debug
+  // if ('serviceWorker' in navigator) {
+  //   navigator.serviceWorker.register('/sw.js')
+  //     .then((reg) => console.log('✅ SW registrado:', reg.scope))
+  //     .catch((err) => console.log('⚠️ SW erro:', err));
+  // }
   
   // Restaura jogador
   const salvo = localStorage.getItem('tt_jogador');
@@ -194,28 +194,33 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 async function checkApiHealth() {
-  try {
-    const res = await fetch(API_URL + '/health', { method: 'GET' });
-    if (res.ok) {
-      const data = await res.json();
-      isApiOnline = true;
-      console.log('✅ API online');
-      if (jogadorId && jogador.nome) irParaMenu();
-      else mostrarTela('screen-cadastro');
-      return;
+  // Verificar se tem token salvo
+  const token = localStorage.getItem('tt_token');
+  const salvo = localStorage.getItem('tt_usuario');
+  
+  if (token && salvo) {
+    try {
+      usuarioLogado = JSON.parse(salvo);
+      const res = await fetch(API_URL + '/health', { method: 'GET' });
+      if (res.ok) {
+        isApiOnline = true;
+        console.log('✅ API online');
+        if (jogadorId && jogador.nome) irParaMenu();
+        else {
+          jogador.nome = usuarioLogado.nome;
+          jogador.avatar = usuarioLogado.avatar || '🦁';
+          irParaMenu();
+        }
+        return;
+      }
+    } catch(e) {
+      console.log('⚠️ API erro:', e.message);
     }
-  } catch(e) {
-    console.log('⚠️ API erro:', e.message);
   }
   
   console.log('⚠️ API offline - modo offline ativo');
   isApiOnline = false;
-  
-  if (!jogadorId || !jogador.nome) {
-    mostrarTela('screen-cadastro');
-  } else {
-    irParaMenu();
-  }
+  mostrarTela('screen-login');
 }
 
 function mostrarTela(id) {
@@ -243,6 +248,96 @@ function renderAvatares() {
     };
     grid.appendChild(btn);
   });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// TELA LOGIN/CADASTRO
+// ═══════════════════════════════════════════════════════════════
+let usuarioLogado = null;
+
+async function fazerLogin() {
+  const email = document.getElementById('inp-email')?.value.trim();
+  const senha = document.getElementById('inp-senha')?.value;
+  
+  if (!email || !senha) {
+    toast('Preencha email e senha! 😅', 'err');
+    return;
+  }
+  
+  try {
+    const r = await fetch(API_URL + '/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, senha })
+    });
+    const d = await r.json();
+    
+    if (d.token) {
+      localStorage.setItem('tt_token', d.token);
+      usuarioLogado = d.usuario;
+      localStorage.setItem('tt_usuario', JSON.stringify(d.usuario));
+      toast('✅ Login realizado!', 'ok');
+      irParaMenu();
+    } else {
+      toast(d.erro || 'Credenciais incorretas!', 'err');
+    }
+  } catch(e) {
+    toast('Erro ao fazer login 😅', 'err');
+  }
+}
+
+async function fazerCadastro() {
+  const nome = document.getElementById('inp-cad-nome')?.value.trim();
+  const email = document.getElementById('inp-cad-email')?.value.trim();
+  const senha = document.getElementById('inp-cad-senha')?.value;
+  const senha2 = document.getElementById('inp-cad-senha2')?.value;
+  
+  if (!nome || !email || !senha) {
+    toast('Preencha todos os campos! 😅', 'err');
+    return;
+  }
+  
+  if (senha !== senha2) {
+    toast('As senhas não conferem! 😅', 'err');
+    return;
+  }
+  
+  if (senha.length < 6) {
+    toast('Senha deve ter pelo menos 6 dígitos! 😅', 'err');
+    return;
+  }
+  
+  try {
+    const r = await fetch(API_URL + '/auth/registrar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nome, email, senha })
+    });
+    const d = await r.json();
+    
+    if (d.token) {
+      localStorage.setItem('tt_token', d.token);
+      usuarioLogado = d.usuario;
+      localStorage.setItem('tt_usuario', JSON.stringify(d.usuario));
+      toast('✅ Cadastro realizado!', 'ok');
+      irParaMenu();
+    } else {
+      toast(d.erro || 'Erro ao cadastrar!', 'err');
+    }
+  } catch(e) {
+    toast('Erro ao cadastrar 😅', 'err');
+  }
+}
+
+function irParaCadastro() {
+  mostrarTela('screen-cadastro');
+}
+
+function logout() {
+  localStorage.removeItem('tt_token');
+  localStorage.removeItem('tt_usuario');
+  usuarioLogado = null;
+  mostrarTela('screen-login');
 }
 
 function validarCadastro() {
@@ -748,7 +843,37 @@ input.input-erro{border-color:var(--red)!important;animation:shake .3s ease-out}
   </div>
 </div>
 
-<!-- Tela 1: Cadastro -->
+<!-- Tela 0: Login/Cadastro -->
+<div id="screen-login" class="screen">
+  <div class="logo">TABUADA<br>TURBO ⚡</div>
+  <p class="tagline">Entre ou cadastre-se</p>
+  <div style="position:absolute;top:10px;right:10px">
+    <button id="btn-som" class="av-btn" style="padding:10px;font-size:1.2rem" onclick="SomManager.toggle()">🔊</button>
+  </div>
+  <div class="card">
+    <p class="section-title">🔐 Login</p>
+    <label class="field-label">Email</label>
+    <input type="email" id="inp-email" placeholder="seu@email.com">
+    <label class="field-label mt8">Senha</label>
+    <input type="password" id="inp-senha" placeholder="••••••••">
+    <button class="btn btn-primary mt8" onclick="fazerLogin()">ENTRAR</button>
+  </div>
+  <div class="card">
+    <p class="section-title">📝 Cadastro</p>
+    <label class="field-label">Nome completo</label>
+    <input type="text" id="inp-cad-nome" placeholder="Seu nome">
+    <label class="field-label mt8">Email</label>
+    <input type="email" id="inp-cad-email" placeholder="seu@email.com">
+    <label class="field-label mt8">Senha</label>
+    <input type="password" id="inp-cad-senha" placeholder="••••••••">
+    <label class="field-label mt8">Confirmar senha</label>
+    <input type="password" id="inp-cad-senha2" placeholder="••••••••">
+    <button class="btn btn-primary mt8" onclick="fazerCadastro()">CADASTRAR</button>
+  </div>
+  <button class="btn-ghost mt8" onclick="irParaCadastro()">Jogar sem conta (visitante)</button>
+</div>
+
+<!-- Tela 1: Cadastro (Visitante) -->
 <div id="screen-cadastro" class="screen">
   <div class="logo">TABUADA<br>TURBO ⚡</div>
   <p class="tagline">Quem é o mais rápido?</p>
