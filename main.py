@@ -111,6 +111,20 @@ def gerar_codigo():
     return f"{letras}-{nums}"
 
 # ── HEALTH ──────────────────────────────────────────────────────────
+@app.get("/health")
+def health():
+    if client is None or db is None:
+        return {"status": "ok", "db": "offline"}
+    try:
+        client.admin.command("ping")
+        return {"status": "ok", "db": "conectado"}
+    except Exception as e:
+        return {"status": "erro", "detalhe": str(e)}
+
+@app.get("/ping")
+def ping():
+    return {"status": "ok", "time": datetime.utcnow().isoformat()}
+
 @app.get("/")
 def root():
     index_path = os.path.join(os.path.dirname(__file__), "index.html")
@@ -126,20 +140,6 @@ async def serve_static(file_path: str):
         if os.path.exists(file_path_static):
             return FileResponse(file_path_static)
     return {"error": "Not found"}, 404
-
-@app.get("/health")
-def health():
-    if client is None or db is None:
-        return {"status": "ok", "db": "offline"}
-    try:
-        client.admin.command("ping")
-        return {"status": "ok", "db": "conectado"}
-    except Exception as e:
-        return {"status": "erro", "detalhe": str(e)}
-
-@app.get("/ping")
-def ping():
-    return {"status": "ok", "time": datetime.utcnow().isoformat()}
 
 # ── JOGADOR ─────────────────────────────────────────────────────────
 @app.post("/jogador/salvar")
