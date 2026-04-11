@@ -197,18 +197,20 @@ async function checkApiHealth() {
   try {
     const res = await fetch(API_URL + '/health', { method: 'GET' });
     if (res.ok) {
+      const data = await res.json();
       isApiOnline = true;
       console.log('✅ API online');
       if (jogadorId && jogador.nome) irParaMenu();
       else mostrarTela('screen-cadastro');
       return;
     }
-  } catch(e) {}
+  } catch(e) {
+    console.log('⚠️ API erro:', e.message);
+  }
   
   console.log('⚠️ API offline - modo offline ativo');
   isApiOnline = false;
   
-  // Mesmo offline, mostra a tela de cadastro!
   if (!jogadorId || !jogador.nome) {
     mostrarTela('screen-cadastro');
   } else {

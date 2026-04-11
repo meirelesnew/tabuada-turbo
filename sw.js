@@ -1,11 +1,9 @@
-const CACHE_NAME = 'tabuada-turbo-v1';
+const CACHE_NAME = 'tabuada-turbo-v2';
 const ASSETS = [
   '/',
-  '/index.html',
   '/robots.txt',
   '/sitemap.xml',
-  '/manifest.json',
-  '/favicon.ico'
+  '/manifest.json'
 ];
 
 self.addEventListener('install', (event) => {
@@ -32,7 +30,17 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(request.url);
 
   if (request.method !== 'GET') return;
-  if (url.pathname.startsWith('/api')) return;
+
+  // Não cachear HTML - sempre buscar do servidor
+  if (url.pathname.endsWith('.html') || url.pathname === '/') {
+    event.respondWith(fetch(request).catch(() => caches.match('/')));
+    return;
+  }
+
+  // API vai direto
+  if (url.pathname.startsWith('/api')) {
+    return;
+  }
 
   event.respondWith(
     caches.match(request)
