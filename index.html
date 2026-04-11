@@ -1,432 +1,198 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tabuada Turbo ⚡ | Jogo de Tabuada Online Grátis</title>
-<meta name="description" content="Tabuada Turbo ⚡ - O melhor jogo de tabuada online grátis! Aprenda multiplicação com timer, ranking e níveis. Sem login, jogue agora!">
-<meta name="keywords" content="tabuada, tabuada online, jogo de tabuada, aprender tabuada, tabuada do 1 ao 10, multiplicação, matemática, matemática infantil, jogo educativo, tabuada gratis, tabuada infantil, exercicios de matematica, jogos de matematica, aprender multiplicar">
-<meta name="author" content="Tabuada Turbo">
-<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-<meta name="theme-color" content="#ff6b35">
-<link rel="canonical" href="https://tabuadaturbo.com.br/">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
-<link rel="manifest" href="/manifest.json">
-<link rel="apple-touch-icon" href="https://meirelesnew.github.io/tabuada-turbo/icon-192.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tabuada Turbo ⚡ | Jogo de Tabuada Online Grátis</title>
+  <meta name="description" content="Aprenda a tabuada de multiplicar de forma divertida! Jogue grátis: timer, ranking, níveis clássico e aleatório. Sem login!">
+  <meta name="keywords" content="tabuada, tabuada online, jogo de tabuada, multiplicação, matemática">
+  <meta name="theme-color" content="#ff6b35">
+  <link rel="canonical" href="https://tabuadaturbo.com.br/">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Boogaloo&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0f0e17;--card:#1a1830;--accent:#ff6b35;--accent2:#ffd700;--green:#39ff14;--red:#ff3366;--text:#fffffe;--muted:#a7a9be;--radius:16px}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh}
+    .screen{display:none;padding:20px;max-width:480px;margin:0 auto;min-height:100vh}
+    .screen.active{display:block}
+    .logo{font-family:'Boogaloo',cursive;font-size:3rem;text-align:center;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .tagline{text-align:center;color:var(--muted);margin-bottom:20px}
+    .card{background:var(--card);border-radius:var(--radius);padding:20px;margin-bottom:16px}
+    .input{width:100%;background:rgba(255,255,255,0.05);border:2px solid rgba(255,255,255,0.1);border-radius:10px;color:var(--text);font-size:1.1rem;padding:12px;outline:none}
+    .input:focus{border-color:var(--accent)}
+    .btn{width:100%;padding:16px;border-radius:var(--radius);border:none;font-family:'Boogaloo',cursive;font-size:1.3rem;cursor:pointer;background:linear-gradient(135deg,var(--accent),#ff8c55);color:#fff;margin-top:10px}
+    .btn-level{background:var(--card);border:2px solid rgba(255,255,255,0.08);color:var(--text);font-family:'Boogaloo',cursive;font-size:1.2rem;padding:20px;border-radius:var(--radius);width:100%;margin-bottom:12px;cursor:pointer;text-align:left}
+    .btn-level:hover{border-color:var(--accent)}
+    .player-bar{display:flex;align-items:center;gap:12px;background:var(--card);border-radius:12px;padding:12px;margin-bottom:16px}
+    .player-avatar{font-size:1.5rem}
+    .player-name{font-weight:700}
+    .timer{font-family:'Boogaloo',cursive;font-size:2.5rem;color:var(--accent2);text-align:center;margin:10px 0}
+    .stats{display:flex;gap:10px;margin-bottom:14px}
+    .stat{flex:1;background:var(--card);border-radius:10px;padding:10px;text-align:center}
+    .stat .v{font-family:'Boogaloo',cursive;font-size:1.3rem}
+    .stat .l{font-size:0.7rem;color:var(--muted)}
+    .stat.green .v{color:var(--green)}
+    .stat.red .v{color:var(--red)}
+    .question{text-align:center;background:rgba(255,107,53,0.1);border:2px solid var(--accent);border-radius:var(--radius);padding:15px;margin-bottom:10px;font-family:'Boogaloo',cursive;font-size:1.8rem}
+    .resposta{font-family:'Boogaloo',cursive;font-size:2rem;background:rgba(255,255,255,0.07);border:2px solid var(--accent);border-radius:10px;padding:10px;text-align:center;min-width:80px}
+    .numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
+    .nk{background:var(--card);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:var(--text);font-family:'Boogaloo',cursive;font-size:1.5rem;padding:15px;cursor:pointer;text-align:center}
+    .nk:active{background:var(--accent)}
+    .nk.ok{background:var(--accent);grid-column:span 2}
+    table{border-collapse:collapse;width:100%;margin:10px 0}
+    th,td{width:40px;height:40px;text-align:center;border:1px solid rgba(255,255,255,0.2)}
+    th{background:var(--card);color:var(--accent2);font-family:'Boogaloo',cursive}
+    td.answered-correct{background:rgba(57,255,20,0.2);color:var(--green)}
+    td.answered-wrong{background:rgba(255,51,102,0.2);color:var(--red)}
+    td.active-cell{outline:3px solid var(--accent);background:rgba(255,107,53,0.2)}
+    .rank-item{display:flex;align-items:center;gap:10px;background:var(--card);border-radius:10px;padding:12px;margin-bottom:8px}
+    .rank-pos{font-family:'Boogaloo',cursive;font-size:1.2rem;min-width:30px}
+    .rank-pos.gold{color:var(--accent2)}
+    .rank-time{font-family:'Boogaloo',cursive;color:var(--accent2)}
+    .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--card);border-radius:10px;padding:12px 24px;display:none;z-index:999}
+    .toast.show{display:block}
+    .toast.err{border-color:var(--red);color:var(--red)}
+    .toast.ok{border-color:var(--green);color:var(--green)}
+    @media(max-width:360px){th,td{width:32px;height:32px;font-size:0.8rem}}
+  </style>
+</head>
+<body>
+<div id="screen-loading" class="screen active">
+  <div class="logo">TABUADA<br>TURBO ⚡</div>
+  <p style="text-align:center;margin-top:40px;font-family:'Boogaloo',cursive;font-size:1.5rem;color:var(--accent2)">Conectando...</p>
+</div>
 
-<!-- Open Graph / Facebook -->
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://tabuadaturbo.com.br/">
-<meta property="og:title" content="Tabuada Turbo ⚡ | Jogo de Tabuada Online Grátis">
-<meta property="og:description" content="Aprenda a tabuada de multiplicar de forma divertida! Jogue grátis: timer, ranking, níveis clássico e aleatório. Sem login!">
-<meta property="og:image" content="https://tabuadaturbo.com.br/og-image.png">
+<div id="screen-cadastro" class="screen">
+  <div class="logo">TABUADA<br>TURBO ⚡</div>
+  <p class="tagline">Quem é o mais rápido?</p>
+  <div class="card">
+    <label class="field-label">Seu apelido</label>
+    <input type="text" id="inp-nome" class="input" placeholder="Ex: Lucas" maxlength="20">
+  </div>
+  <button class="btn" onclick="irParaMenu()">JOGAR ▶</button>
+  <button class="btn-level" style="margin-top:10px;background:transparent;border:2px solid rgba(255,255,255,0.2)" onclick="irParaRanking()">🏆 Ver Ranking</button>
+</div>
 
-<!-- Twitter -->
-<meta property="twitter:card" content="summary_large_image">
-<meta property="twitter:url" content="https://tabuadaturbo.com.br/">
-<meta property="twitter:title" content="Tabuada Turbo ⚡ | Jogo de Tabuada Online Grátis">
-<meta property="twitter:description" content="Aprenda a tabuada de multiplicar de forma divertida! Jogue grátis: timer, ranking, níveis clássico e aleatório. Sem login!">
-<meta property="twitter:image" content="https://tabuadaturbo.com.br/og-image.png">
+<div id="screen-menu" class="screen">
+  <div id="player-bar" class="player-bar"></div>
+  <div class="card" style="text-align:center">
+    <div style="font-size:0.8rem;color:var(--muted)">SEU MELHOR TEMPO</div>
+    <div id="high-score" style="font-family:'Boogaloo',cursive;font-size:1.5rem;color:var(--accent2)">⏱️ Sem recorde</div>
+  </div>
+  <p style="font-family:'Boogaloo',cursive;font-size:1.4rem;text-align:center;margin:10px 0">Escolha o Nível</p>
+  <button class="btn-level" onclick="iniciarJogo(1)">📊 Nível 1 — Clássico</button>
+  <button class="btn-level" onclick="iniciarJogo(2)">🎲 Nível 2 — Embaralhado</button>
+  <button class="btn-level" style="background:transparent;border:2px solid rgba(255,255,255,0.2)" onclick="irParaRanking()">🏆 Ranking</button>
+  <button class="btn-level" style="background:transparent;border:2px solid rgba(255,255,255,0.2)" onclick="mostrarTela('screen-cadastro')">🔄 Trocar jogador</button>
+</div>
 
-<!-- Schema.org JSON-LD -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Tabuada Turbo",
-  "alternateName": "Tabuada Turbo ⚡",
-  "description": "Jogo de tabuada online gratuito para aprender multiplicação de forma divertida com timer e ranking.",
-  "url": "https://tabuadaturbo.com.br/",
-  "applicationCategory": "Game",
-  "operatingSystem": "Web Browser",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "BRL"
-  },
-  "genre": ["educational", "casual"],
-  "browserRequirements": "Requires JavaScript",
-  "softwareVersion": "1.0.0",
-  "author": {
-    "@type": "Organization",
-    "name": "Tabuada Turbo"
-  }
-}
-</script>
+<div id="screen-jogo" class="screen">
+  <div id="player-bar-jogo" class="player-bar"></div>
+  <div class="timer" id="timer">00:00</div>
+  <div class="stats">
+    <div class="stat green"><div class="v" id="acertos">0</div><div class="l">✅ Acertos</div></div>
+    <div class="stat red"><div class="v" id="erros">0</div><div class="l">❌ Erros</div></div>
+    <div class="stat"><div class="v" id="restam">100</div><div class="l">⬜ Restam</div></div>
+  </div>
+  <div class="question" id="question">2 × 3 = ?</div>
+  <div style="display:flex;justify-content:center;gap:10px;align-items:center">
+    <div class="resposta" id="resposta">?</div>
+  </div>
+  <div class="numpad">
+    <div class="nk" onclick="numpad('1')">1</div><div class="nk" onclick="numpad('2')">2</div><div class="nk" onclick="numpad('3')">3</div>
+    <div class="nk" onclick="numpad('4')">4</div><div class="nk" onclick="numpad('5')">5</div><div class="nk" onclick="numpad('6')">6</div>
+    <div class="nk" onclick="numpad('7')">7</div><div class="nk" onclick="numpad('8')">8</div><div class="nk" onclick="numpad('9')">9</div>
+    <div class="nk" onclick="numpad('del')">⌫</div><div class="nk" onclick="numpad('0')">0</div><div class="nk ok" onclick="numpad('ok')">OK</div>
+  </div>
+  <div style="overflow-x:auto"><table id="tabela"></table></div>
+  <button class="btn-level" style="background:transparent;border:2px solid rgba(255,255,255,0.2)" onclick="desistir()">↩ Desistir</button>
+</div>
 
-<!-- Preconnect para性能 -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" href="https://fonts.googleapis.com/css2?family=Boogaloo&family=Nunito:wght@400;600;700;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Boogaloo&family=Nunito:wght@400;600;700;900&display=swap"></noscript>
+<div id="screen-resultado" class="screen" style="text-align:center;padding-top:40px">
+  <div style="font-size:4rem" id="trofeu">🏆</div>
+  <div class="timer" id="tempo-fim" style="font-size:3rem">00:00</div>
+  <p style="color:var(--muted)">TEMPO TOTAL</p>
+  <div id="acertos-fim" style="margin:20px 0;font-size:1.2rem"></div>
+  <button class="btn" onclick="iniciarJogo(nivelAtual)">🔁 Jogar de novo</button>
+  <button class="btn-level" style="margin-top:10px;background:transparent;border:2px solid rgba(255,255,255,0.2)" onclick="irParaRanking()">🏆 Ver Ranking</button>
+  <button class="btn-level" style="background:transparent;border:2px solid rgba(255,255,255,0.2)" onclick="mostrarTela('screen-menu')">◀ Menu</button>
+</div>
 
-<!-- Critical CSS inline para render instantâneo -->
-<style>
-:root{--bg:#0f0e17;--card:#1a1830;--card2:#221f38;--accent:#ff6b35;--accent2:#ffd700;--accent3:#00e5ff;--green:#39ff14;--red:#ff3366;--text:#fffffe;--muted:#a7a9be;--radius:16px}*{box-sizing:border-box;margin:0;padding:0}body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh}@keyframes spin{to{transform:rotate(360deg)}}.loading-spinner{width:50px;height:50px;border:4px solid rgba(255,107,53,0.1);border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 20px}
-</style>
+<div id="screen-ranking" class="screen">
+  <p class="logo" style="font-size:2rem">🏆 Ranking</p>
+  <div style="display:flex;gap:5px;margin-bottom:15px">
+    <button class="btn-level" style="flex:1;padding:10px;font-size:0.9rem" onclick="switchTab(1)">Nível 1</button>
+    <button class="btn-level" style="flex:1;padding:10px;font-size:0.9rem" onclick="switchTab(2)">Nível 2</button>
+  </div>
+  <div id="rank-list"></div>
+  <button class="btn-level" style="background:transparent;border:2px solid rgba(255,255,255,0.2)" onclick="mostrarTela('screen-menu')">◀ Menu</button>
+</div>
+
+<div id="toast" class="toast"></div>
 
 <script>
-// ═══════════════════════════════════════════════════════════════
-// CONFIGURAÇÃO - Altere aqui para produção
-// ═══════════════════════════════════════════════════════════════
-// Para LOCAL: use http://localhost:10000
-// Para PRODUÇÃO: use https://tabuada-turbo.onrender.com
-const API_URL = 'https://tabuada-turbo.onrender.com';  // ← Mude para local se necessário
-const USE_OFFLINE_MODE = true; // true = funciona SEM API no início
-// ═══════════════════════════════════════════════════════════════
-
-// Estado global
-const AVATARES = ['🦁','🐯','🐸','🦊','🐧','🦄','🐉','🤖','👾','🦸'];
+const API_URL = 'https://tabuada-turbo.onrender.com';
 let jogador = { nome: '', avatar: '🦁' };
-let jogadorId = localStorage.getItem('tt_jogador_id');
-let nivel = 1;
-let modoAtual = 'solo';
-let jogoAtivo = false;
-let celulas = [];
-let celulaAtiva = null;
-let acertos = 0;
-let erros = 0;
-let segundos = 0;
-let timerInterval = null;
-let respostaAtual = '';
-let axisX = [], axisY = [];
-let audioAtivo = true;
-let audioIniciado = false;
-let isApiOnline = false;
+let nivel = 1, nivelAtual = 1, jogoAtivo = false;
+let celulas = [], celulaAtiva = 0, acertos = 0, erros = 0, segundos = 0, timerInterval = null;
+let respostaAtual = '', axisX = [], axisY = [];
 
-// Cookie Manager (persistência)
-const CookieManager = {
-  set(name, value, days = 365) {
-    const d = new Date();
-    d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
-    document.cookie = name + "=" + value + ";expires=" + d.toUTCString() + ";path=/;SameSite=Lax";
-  },
-  get(name) {
-    const ca = document.cookie.split(';');
-    for(let i = 0; i < ca.length; i++) {
-      let c = ca[i].trim();
-      if (c.indexOf(name + "=") == 0) return c.substring(name.length + 1);
-    }
-    return null;
-  }
-};
-
-// Sound Manager
-const SomManager = {
-  ctx: null, gainNode: null,
-  freqs: [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88, 523.25, 587.33, 659.25],
-  init() {
-    if (this.ctx) return;
-    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
-    this.gainNode = this.ctx.createGain();
-    this.gainNode.gain.value = 0.15;
-    this.gainNode.connect(this.ctx.destination);
-  },
-  playNote(freq, dur = 0.1, vol = 0.1) {
-    if (!audioAtivo || !this.ctx) return;
-    const osc = this.ctx.createOscillator();
-    const g = this.ctx.createGain();
-    osc.type = 'sine';
-    osc.frequency.value = freq;
-    g.gain.setValueAtTime(vol, this.ctx.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + dur);
-    osc.connect(g);
-    g.connect(this.gainNode);
-    osc.start();
-    osc.stop(this.ctx.currentTime + dur);
-  },
-  msgAcerto() { if (!audioAtivo) return; [0,2,4,7].forEach((n,i) => setTimeout(() => this.playNote(this.freqs[n],0.2,0.1), i*60)); },
-  msgErro() { if (!audioAtivo) return; this.playNote(120, 0.4, 0.05); },
-  msgVitoria() { if (!audioAtivo) return; [0,2,4,7,9,12,12].forEach((n,i) => setTimeout(() => this.playNote(this.freqs[n%10]*(n>=12?2:1),0.3,0.15), i*120)); },
-  toggle() {
-    this.init();
-    audioAtivo = !audioAtivo;
-    const btn = document.getElementById('btn-som');
-    if (btn) btn.textContent = audioAtivo ? '🔊' : '🔈';
-  }
-};
-
-// ═══════════════════════════════════════════════════════════════
-// INICIALIZAÇÃO
-// ═══════════════════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
-  // Service Worker temporariamente desativado para debug
-  // if ('serviceWorker' in navigator) {
-  //   navigator.serviceWorker.register('/sw.js')
-  //     .then((reg) => console.log('✅ SW registrado:', reg.scope))
-  //     .catch((err) => console.log('⚠️ SW erro:', err));
-  // }
-  
-  // Restaura jogador
   const salvo = localStorage.getItem('tt_jogador');
-  if (salvo) {
-    try {
-      jogador = JSON.parse(salvo);
-    } catch(e) {}
-  }
-  
-  // Check API em background (não bloqueia)
+  if (salvo) try { jogador = JSON.parse(salvo); } catch(e) {}
   checkApiHealth();
-  
-  // Keep-alive para evitar cold start
   setInterval(() => fetch(API_URL + '/ping', { mode: 'no-cors' }).catch(()=>{}), 25000);
-  
-  // Primeiro clique ativa áudio
-  document.addEventListener('click', () => {
-    if (!audioIniciado && audioAtivo) {
-      SomManager.init();
-      if (SomManager.ctx?.state === 'suspended') SomManager.ctx.resume();
-      audioIniciado = true;
-    }
-  }, { once: true });
-  
-  // Teclado físico
   document.addEventListener('keydown', e => {
     if (!jogoAtivo) return;
-    if (e.key >= '0' && e.key <= '9') numpadPress(e.key);
-    else if (e.key === 'Backspace') numpadPress('del');
-    else if (e.key === 'Enter') numpadPress('ok');
+    if (e.key >= '0' && e.key <= '9') numpad(e.key);
+    else if (e.key === 'Backspace') numpad('del');
+    else if (e.key === 'Enter') numpad('ok');
   });
-  
-  renderAvatares();
 });
 
 async function checkApiHealth() {
-  // Verificar se tem token salvo
-  const token = localStorage.getItem('tt_token');
-  const salvo = localStorage.getItem('tt_usuario');
-  
-  if (token && salvo) {
-    try {
-      usuarioLogado = JSON.parse(salvo);
-      const res = await fetch(API_URL + '/health', { method: 'GET' });
-      if (res.ok) {
-        isApiOnline = true;
-        console.log('✅ API online');
-        if (jogadorId && jogador.nome) irParaMenu();
-        else {
-          jogador.nome = usuarioLogado.nome;
-          jogador.avatar = usuarioLogado.avatar || '🦁';
-          irParaMenu();
-        }
-        return;
-      }
-    } catch(e) {
-      console.log('⚠️ API erro:', e.message);
+  try {
+    const res = await fetch(API_URL + '/health');
+    if (res.ok) {
+      if (jogador.nome) irParaMenu();
+      else mostrarTela('screen-cadastro');
+      return;
     }
-  }
-  
-  console.log('⚠️ API offline - modo offline ativo');
-  isApiOnline = false;
-  mostrarTela('screen-login');
+  } catch(e) {}
+  mostrarTela('screen-cadastro');
 }
 
 function mostrarTela(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  const screen = document.getElementById(id);
-  if (screen) screen.classList.add('active');
-  window.scrollTo(0, 0);
+  document.getElementById(id).classList.add('active');
 }
 
-// ═══════════════════════════════════════════════════════════════
-// TELA CADASTRO
-// ═══════════════════════════════════════════════════════════════
-function renderAvatares() {
-  const grid = document.getElementById('avatar-grid');
-  if (!grid) return;
-  grid.innerHTML = '';
-  AVATARES.forEach((av, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'av-btn' + (av === jogador.avatar ? ' selected' : '');
-    btn.textContent = av;
-    btn.onclick = () => {
-      document.querySelectorAll('.av-btn').forEach(b => b.classList.remove('selected'));
-      btn.classList.add('selected');
-      jogador.avatar = av;
-    };
-    grid.appendChild(btn);
-  });
-}
-
-// ═══════════════════════════════════════════════════════════════
-// TELA LOGIN/CADASTRO
-// ═══════════════════════════════════════════════════════════════
-let usuarioLogado = null;
-
-async function fazerLogin() {
-  const email = document.getElementById('inp-email')?.value.trim();
-  const senha = document.getElementById('inp-senha')?.value;
-  
-  if (!email || !senha) {
-    toast('Preencha email e senha! 😅', 'err');
-    return;
-  }
-  
-  try {
-    const r = await fetch(API_URL + '/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, senha })
-    });
-    const d = await r.json();
-    
-    if (d.token) {
-      localStorage.setItem('tt_token', d.token);
-      usuarioLogado = d.usuario;
-      localStorage.setItem('tt_usuario', JSON.stringify(d.usuario));
-      toast('✅ Login realizado!', 'ok');
-      irParaMenu();
-    } else {
-      toast(d.erro || 'Credenciais incorretas!', 'err');
-    }
-  } catch(e) {
-    toast('Erro ao fazer login 😅', 'err');
-  }
-}
-
-async function fazerCadastro() {
-  const nome = document.getElementById('inp-cad-nome')?.value.trim();
-  const email = document.getElementById('inp-cad-email')?.value.trim();
-  const senha = document.getElementById('inp-cad-senha')?.value;
-  const senha2 = document.getElementById('inp-cad-senha2')?.value;
-  
-  if (!nome || !email || !senha) {
-    toast('Preencha todos os campos! 😅', 'err');
-    return;
-  }
-  
-  if (senha !== senha2) {
-    toast('As senhas não conferem! 😅', 'err');
-    return;
-  }
-  
-  if (senha.length < 6) {
-    toast('Senha deve ter pelo menos 6 dígitos! 😅', 'err');
-    return;
-  }
-  
-  try {
-    const r = await fetch(API_URL + '/auth/registrar', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nome, email, senha })
-    });
-    const d = await r.json();
-    
-    if (d.token) {
-      localStorage.setItem('tt_token', d.token);
-      usuarioLogado = d.usuario;
-      localStorage.setItem('tt_usuario', JSON.stringify(d.usuario));
-      toast('✅ Cadastro realizado!', 'ok');
-      irParaMenu();
-    } else {
-      toast(d.erro || 'Erro ao cadastrar!', 'err');
-    }
-  } catch(e) {
-    toast('Erro ao cadastrar 😅', 'err');
-  }
-}
-
-function irParaCadastro() {
-  mostrarTela('screen-cadastro');
-}
-
-function logout() {
-  localStorage.removeItem('tt_token');
-  localStorage.removeItem('tt_usuario');
-  usuarioLogado = null;
-  mostrarTela('screen-login');
-}
-
-function validarCadastro() {
+function irParaMenu() {
   const nome = document.getElementById('inp-nome')?.value.trim();
-  if (!nome) { toast('Digite seu apelido! 😅', 'err'); return false; }
+  if (!nome) { toast('Digite seu apelido!', 'err'); return; }
   jogador.nome = nome;
   localStorage.setItem('tt_jogador', JSON.stringify(jogador));
-  return true;
-}
-
-async function irParaMenu() {
-  if (!validarCadastro()) return;
   
-  // Salvar jogador na API (se online)
-  try {
-    const r = await fetch(API_URL + '/jogador/salvar', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nome: jogador.nome, avatar: jogador.avatar })
-    });
-    const d = await r.json();
-    if (d.jogador_id) {
-      jogadorId = d.jogador_id;
-      localStorage.setItem('tt_jogador_id', jogadorId);
-      CookieManager.set('tt_jogador_id', jogadorId);
-    }
-  } catch(e) {
-    console.log('⚠️ Não foi possível salvar na API (offline mode)');
-    // Usa ID local temporário
-    if (!jogadorId) {
-      jogadorId = 'local_' + Date.now();
-      localStorage.setItem('tt_jogador_id', jogadorId);
-    }
-  }
+  document.getElementById('player-bar').innerHTML = `<div class="player-avatar">${jogador.avatar}</div><div class="player-name">${jogador.nome}</div>`;
   
-  renderPlayerBar('menu');
-  const melhor = carregarRecorde(1);
-  const melhor2 = carregarRecorde(2);
-  const el = document.getElementById('high-score-display');
-  if (el) {
-    if (melhor === 0 && melhor2 === 0) {
-      el.textContent = '⏱️ Sem recorde';
-      el.style.color = 'var(--muted)';
-    } else {
-      const melhorTempo = melhor === 0 ? melhor2 : (melhor2 === 0 ? melhor : Math.min(melhor, melhor2));
-      el.textContent = `⏱️ Recorde: ${formatarTempo(melhorTempo)}`;
-      el.style.color = 'var(--accent2)';
-    }
-  }
+  const r1 = localStorage.getItem('tt_recorde_1') || 0;
+  const r2 = localStorage.getItem('tt_recorde_2') || 0;
+  const melhor = Math.min(r1, r2);
+  document.getElementById('high-score').textContent = melhor ? `⏱️ ${formatar(melhor)}` : '⏱️ Sem recorde';
+  
+  fetch(API_URL + '/jogador/salvar', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ nome: jogador.nome, avatar: jogador.avatar })
+  }).catch(()=>{});
+  
   mostrarTela('screen-menu');
 }
 
-// ═══════════════════════════════════════════════════════════════
-// MENU
-// ═══════════════════════════════════════════════════════════════
-function renderPlayerBar(ctx) {
-  const el = document.getElementById('player-bar-' + ctx);
-  if (!el) return;
-  el.innerHTML = `
-    <div class="player-avatar">${jogador.avatar}</div>
-    <div>
-      <div class="player-name">${jogador.nome}</div>
-      <div class="player-level">${ctx === 'jogo' ? (nivel === 1 ? '📊 Nível 1 — Clássico' : '🎲 Nível 2 — Embaralhado') : ''}</div>
-    </div>`;
-}
-
-function carregarRecorde(nivel) {
-  const key = 'tt_recorde_n' + nivel;
-  return parseInt(localStorage.getItem(key) || '0');
-}
-
-function formatarTempo(segundos) {
-  const m = Math.floor(segundos / 60);
-  const s = segundos % 60;
-  return `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
-}
-
-function irParaRanking() {
-  switchTab(1);
-  mostrarTela('screen-ranking');
-}
-
-function trocarJogador() {
-  mostrarTela('screen-cadastro');
-}
-
-// ═══════════════════════════════════════════════════════════════
-// JOGO
-// ═══════════════════════════════════════════════════════════════
 function shuffle(arr) {
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -435,554 +201,166 @@ function shuffle(arr) {
   return arr;
 }
 
-function iniciarJogo(nivelEscolhido) {
-  nivel = nivelEscolhido;
-  nivelAtualJogo = nivelEscolhido;
-  modoAtual = 'solo';
+function iniciarJogo(n) {
+  nivel = nivelAtual = n;
   jogoAtivo = true;
-  acertos = 0;
-  erros = 0;
-  segundos = 0;
+  acertos = erros = segundos = 0;
   respostaAtual = '';
-  celulaAtiva = null;
+  celulaAtiva = 0;
   
-  // Gerar tabuada
   axisX = [...Array(10)].map((_,i) => i + 1);
   axisY = [...Array(10)].map((_,i) => i + 1);
-  if (nivel === 2) {
-    axisX = shuffle(axisX);
-    axisY = shuffle(axisY);
-  }
+  if (n === 2) { axisX = shuffle(axisX); axisY = shuffle(axisY); }
   
   celulas = [];
-  axisX.forEach((x) => axisY.forEach((y) => {
-    celulas.push({ x, y, correto: null });
-  }));
-  
-  celulaAtiva = 0;
+  axisX.forEach(x => axisY.forEach(y => celulas.push({ x, y, correto: null })));
   celulas[0].correto = null;
   
-  renderPlayerBar('jogo');
+  document.getElementById('player-bar-jogo').innerHTML = `<div class="player-avatar">${jogador.avatar}</div><div class="player-name">${jogador.nome}</div>`;
   atualizarStats();
   renderTabela();
   mostrarCelula();
   iniciarTimer();
-  
   mostrarTela('screen-jogo');
 }
 
 function iniciarTimer() {
   if (timerInterval) clearInterval(timerInterval);
-  document.getElementById('timer-display').textContent = '00:00';
-  document.getElementById('progress-fill').style.width = '100%';
+  document.getElementById('timer').textContent = '00:00';
   timerInterval = setInterval(() => {
     segundos++;
-    const m = Math.floor(segundos / 60);
-    const s = segundos % 60;
-    document.getElementById('timer-display').textContent = 
-      `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+    document.getElementById('timer').textContent = formatar(segundos);
   }, 1000);
 }
 
 function atualizarStats() {
-  document.getElementById('stat-acertos').textContent = acertos;
-  document.getElementById('stat-erros').textContent = erros;
-  document.getElementById('stat-restam').textContent = celulas.length - (acertos + erros);
+  document.getElementById('acertos').textContent = acertos;
+  document.getElementById('erros').textContent = erros;
+  document.getElementById('restam').textContent = celulas.length - (acertos + erros);
+}
+
+function formatar(s) {
+  return `${Math.floor(s/60).toString().padStart(2,'0')}:${(s%60).toString().padStart(2,'0')}`;
 }
 
 function renderTabela() {
-  const table = document.getElementById('mult-table');
-  if (!table) return;
-  let html = '<tr><th class="corner">×</th>';
+  let html = '<tr><th>×</th>';
   axisX.forEach(x => html += `<th>${x}</th>`);
   html += '</tr>';
-  
   axisY.forEach((y, yi) => {
     html += `<tr><th>${y}</th>`;
     axisX.forEach((x, xi) => {
       const idx = yi * axisX.length + xi;
       const c = celulas[idx];
-      let classes = '';
-      if (c.correto === true) classes = 'answered-correct';
-      else if (c.correto === false) classes = 'answered-wrong';
-      else if (idx === celulaAtiva) classes = 'active-cell';
-      html += `<td class="${classes}" data-idx="${idx}" onclick="tocarCelula(${idx})">${x*y}</td>`;
+      let cls = '';
+      if (c.correto === true) cls = 'answered-correct';
+      else if (c.correto === false) cls = 'answered-wrong';
+      else if (idx === celulaAtiva) cls = 'active-cell';
+      html += `<td class="${cls}" onclick="tocar(${idx})">${x*y}</td>`;
     });
     html += '</tr>';
   });
-  table.innerHTML = html;
+  document.getElementById('tabela').innerHTML = html;
 }
 
-function tocarCelula(idx) {
+function tocar(idx) {
   if (!jogoAtivo) return;
   celulaAtiva = idx;
   celulas[idx].correto = null;
+  respostaAtual = '';
+  document.getElementById('resposta').textContent = '?';
   renderTabela();
   mostrarCelula();
-  document.getElementById('resposta-display').textContent = '?';
-  document.getElementById('resposta-display').classList.remove('preenchido');
-  respostaAtual = '';
 }
 
 function mostrarCelula() {
-  if (celulaAtiva === null || celulaAtiva >= celulas.length) return;
   const c = celulas[celulaAtiva];
-  document.getElementById('question-text').innerHTML = `<span>${c.x}</span> × <span>${c.y}</span> = ?`;
+  document.getElementById('question').innerHTML = `<span style="color:var(--accent)">${c.x}</span> × <span style="color:var(--accent)">${c.y}</span> = ?`;
 }
 
-function numpadPress(tecla) {
+function numpad(t) {
   if (!jogoAtivo) return;
-  
-  if (tecla === 'del') {
-    respostaAtual = respostaAtual.slice(0, -1);
-  } else if (tecla === 'ok') {
-    verificarResposta();
-    return;
-  } else if (respostaAtual.length < 3) {
-    respostaAtual += tecla;
-  }
-  
-  const display = document.getElementById('resposta-display');
-  display.textContent = respostaAtual || '?';
-  display.classList.toggle('preenchido', respostaAtual.length > 0);
+  if (t === 'del') respostaAtual = respostaAtual.slice(0, -1);
+  else if (t === 'ok') verificar();
+  else if (respostaAtual.length < 3) respostaAtual += t;
+  document.getElementById('resposta').textContent = respostaAtual || '?';
 }
 
-function verificarResposta() {
+function verificar() {
   if (!respostaAtual || celulaAtiva === null) return;
-  
   const correta = celulas[celulaAtiva].x * celulas[celulaAtiva].y;
-  const resposta = parseInt(respostaAtual);
-  const acertou = resposta === correta;
-  
+  const acertou = parseInt(respostaAtual) === correta;
   celulas[celulaAtiva].correto = acertou;
   
-  if (acertou) {
-    acertos++;
-    SomManager.msgAcerto();
-    toast('✅ Correto!', 'ok');
-    document.getElementById('resposta-display').classList.add('input-acerto');
-    setTimeout(() => document.getElementById('resposta-display').classList.remove('input-acerto'), 400);
-  } else {
-    erros++;
-    SomManager.msgErro();
-    toast(`❌ Erro! Era ${correta}`, 'err');
-    document.getElementById('resposta-display').classList.add('input-erro');
-    setTimeout(() => document.getElementById('resposta-display').classList.remove('input-erro'), 400);
-  }
+  if (acertou) { acertos++; toast('✅ Correto!', 'ok'); }
+  else { erros++; toast(`❌ Era ${correta}`, 'err'); }
   
   respostaAtual = '';
-  document.getElementById('resposta-display').textContent = '?';
-  document.getElementById('resposta-display').classList.remove('preenchido');
-  
+  document.getElementById('resposta').textContent = '?';
   atualizarStats();
   renderTabela();
   
-  // Próxima célula - SÓ pula se ACERTOU, se errou fica na mesma
-  if (acertou) {
-    celulaAtiva++;
-  }
-  
-  if (celulaAtiva >= celulas.length) {
-    finalizeJogo();
-  } else {
-    celulas[celulaAtiva].correto = null;
-    renderTabela();
-    mostrarCelula();
-  }
-}
-  
-  if (celulaAtiva >= celulas.length) {
-    finalizarJogo();
-  } else {
-    celulas[celulaAtiva].correto = null;
-    renderTabela();
-    mostrarCelula();
-  }
-}
+  if (acertou) celulaAtiva++;
+  if (celulaAtiva >= celulas.length) finalizar();
+  else { celulas[celulaAtiva].correto = null; renderTabela(); mostrarCelula(); }
 }
 
-function finalizarJogo() {
+function finalizar() {
   jogoAtivo = false;
   clearInterval(timerInterval);
-  SomManager.msgVitoria();
   
-  // Salvar recordes
-  const key = 'tt_recorde_n' + nivel;
-  const atual = carregarRecorde(nivel);
-  if (atual === 0 || segundos < atual) {
-    localStorage.setItem(key, segundos);
-  }
+  const key = 'tt_recorde_' + nivel;
+  const atual = parseInt(localStorage.getItem(key) || '0');
+  if (!atual || segundos < atual) localStorage.setItem(key, segundos);
   
-  // Salvar no ranking (se online)
-  if (isApiOnline && jogadorId) {
-    fetch(API_URL + '/ranking/salvar', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        jogador_id: jogadorId,
-        nome: jogador.nome,
-        avatar: jogador.avatar,
-        nivel: nivel,
-        tempo: segundos,
-        acertos: acertos,
-        erros: erros,
-        modo: 'solo'
-      })
-    }).catch(() => {});
-  }
+  fetch(API_URL + '/ranking/salvar', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ nome: jogador.nome, avatar: jogador.avatar, nivel, tempo: segundos, acertos, erros, modo: 'solo' })
+  }).catch(()=>{});
   
-  // Mostrar resultado
-  const m = Math.floor(segundos / 60);
-  const s = segundos % 60;
-  document.getElementById('result-time').textContent = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
-  document.getElementById('result-acertos').innerHTML = `✅ <strong>${acertos}</strong> acertos | ❌ <strong>${erros}</strong> erros`;
-  
-  const trofeu = acertos >= 90 ? '🏆' : (acertos >= 70 ? '🥈' : '🥉');
-  document.getElementById('result-trophy').textContent = trofeu;
-  
+  document.getElementById('tempo-fim').textContent = formatar(segundos);
+  document.getElementById('acertos-fim').innerHTML = `✅ <strong>${acertos}</strong> acertos | ❌ <strong>${erros}</strong> erros`;
+  document.getElementById('trofeu').textContent = acertos >= 90 ? '🏆' : (acertos >= 70 ? '🥈' : '🥉');
   mostrarTela('screen-resultado');
 }
 
-function jogarNovamente() {
-  iniciarJogo(nivelAtualJogo);
-}
-
-function confirmarDesistir() {
-  if (confirm('Tem certeza que deseja desistir?')) {
+function desistir() {
+  if (confirm('Desistir?')) {
     jogoAtivo = false;
     clearInterval(timerInterval);
-    irParaMenu();
+    mostrarTela('screen-menu');
   }
 }
 
-// ═══════════════════════════════════════════════════════════════
-// RANKING
-// ═══════════════════════════════════════════════════════════════
-async function switchTab(nivel, modo) {
-  document.querySelectorAll('.rank-tab').forEach(t => t.classList.remove('active'));
-  if (modo === 'batalha') {
-    document.getElementById('tab-batalha')?.classList.add('active');
-  } else if (nivel === 0) {
-    document.getElementById('tab-all')?.classList.add('active');
-  } else if (nivel === 2) {
-    document.getElementById('tab-n2')?.classList.add('active');
-  } else {
-    document.getElementById('tab-n1')?.classList.add('active');
-  }
-  
-  const listEl = document.getElementById('rank-list');
-  listEl.innerHTML = '<div class="rank-empty">Carregando...</div>';
-  
-  let url = API_URL + '/ranking/global';
-  if (nivel > 0 && !modo) url += '?nivel=' + nivel;
-  if (modo === 'batalha') url = API_URL + '/ranking/global?modo=batalha';
-  
+async function switchTab(n) {
+  const list = document.getElementById('rank-list');
+  list.innerHTML = '<p style="text-align:center;color:var(--muted)">Carregando...</p>';
   try {
-    const res = await fetch(url);
+    const res = await fetch(API_URL + '/ranking/global?nivel=' + n);
     const data = await res.json();
-    
-    if (data.ranking && data.ranking.length > 0) {
+    if (data.ranking && data.ranking.length) {
       let html = '';
       data.ranking.forEach((r, i) => {
-        const pos = i + 1;
-        const cls = pos === 1 ? 'gold' : (pos === 2 ? 'silver' : (pos === 3 ? 'bronze' : ''));
-        const tempo = formatarTempo(r.tempo);
-        html += `
-          <div class="rank-item">
-            <div class="rank-pos ${cls}">${pos}º</div>
-            <div class="rank-av">${r.avatar || '🦁'}</div>
-            <div class="rank-info">
-              <div class="rank-name">${r.nome}</div>
-              <div class="rank-meta">${r.modo || 'solo'} | ${r.data || ''}</div>
-            </div>
-            <div class="rank-time">${tempo}</div>
-          </div>`;
+        html += `<div class="rank-item"><div class="rank-pos ${i<3?'gold':''}">${i+1}º</div><div>${r.avatar||'🦁'}</div><div style="flex:1"><div>${r.nome}</div><div style="font-size:0.7rem;color:var(--muted)">${r.modo||'solo'}</div></div><div class="rank-time">${formatar(r.tempo)}</div></div>`;
       });
-      listEl.innerHTML = html;
+      list.innerHTML = html;
     } else {
-      listEl.innerHTML = '<div class="rank-empty">Nenhum registro ainda. Seja o primeiro! 🎮</div>';
+      list.innerHTML = '<p style="text-align:center;color:var(--muted)">Nenhum registro ainda</p>';
     }
   } catch(e) {
-    listEl.innerHTML = '<div class="rank-empty">Ranking indisponível (API offline)</div>';
+    list.innerHTML = '<p style="text-align:center;color:var(--muted)">Ranking indisponível</p>';
   }
 }
 
-function limparRanking() {
-  if (confirm('Limpar todo o ranking local?')) {
-    localStorage.removeItem('tt_recorde_n1');
-    localStorage.removeItem('tt_recorde_n2');
-    switchTab(1);
-  }
-}
+function irParaRanking() { switchTab(1); mostrarTela('screen-ranking'); }
 
-// ═══════════════════════════════════════════════════════════════
-// TOAST
-// ═══════════════════════════════════════════════════════════════
 function toast(msg, tipo) {
   const el = document.getElementById('toast');
-  if (!el) return;
   el.textContent = msg;
-  el.className = 'show ' + tipo;
-  setTimeout(() => el.className = '', 2000);
+  el.className = 'toast show ' + tipo;
+  setTimeout(() => el.className = 'toast', 2000);
 }
 </script>
-
-<style>
-:root{--bg:#0f0e17;--card:#1a1830;--card2:#221f38;--accent:#ff6b35;--accent2:#ffd700;--accent3:#00e5ff;--green:#39ff14;--red:#ff3366;--text:#fffffe;--muted:#a7a9be;--radius:16px}
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(circle,rgba(255,107,53,0.07)1px,transparent 1px);background-size:32px 32px;pointer-events:none;z-index:0}
-.screen{display:none;position:relative;z-index:1;min-height:100vh;padding:20px;max-width:480px;margin:0 auto}
-.screen.active{display:flex;flex-direction:column}
-.logo{font-family:'Boogaloo',cursive;font-size:2.8rem;text-align:center;letter-spacing:2px;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px;animation:pulse 2s ease-in-out infinite}
-.tagline{text-align:center;color:var(--muted);font-size:0.85rem;margin-bottom:28px;letter-spacing:1px;text-transform:uppercase}
-@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
-.card{background:var(--card);border-radius:var(--radius);padding:24px;margin-bottom:16px;border:1px solid rgba(255,255,255,0.06)}
-.field-label{font-size:0.75rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:8px;display:block}
-input[type="text"]{width:100%;background:rgba(255,255,255,0.05);border:2px solid rgba(255,255,255,0.1);border-radius:10px;color:var(--text);font-family:'Nunito',sans-serif;font-size:1.1rem;padding:12px 16px;outline:none;transition:border-color .2s}
-input[type="text"]:focus{border-color:var(--accent)}
-.avatar-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:12px}
-.av-btn{font-size:1.8rem;background:rgba(255,255,255,0.05);border:2px solid transparent;border-radius:12px;padding:8px 4px;cursor:pointer;transition:all .2s;text-align:center}
-.av-btn:hover{background:rgba(255,107,53,0.15)}
-.av-btn.selected{border-color:var(--accent);background:rgba(255,107,53,0.2);transform:scale(1.1)}
-.btn{display:block;width:100%;padding:16px;border-radius:var(--radius);border:none;font-family:'Boogaloo',cursive;font-size:1.3rem;letter-spacing:1px;cursor:pointer;transition:all .2s;text-transform:uppercase}
-.btn-primary{background:linear-gradient(135deg,var(--accent),#ff8c55);color:#fff;box-shadow:0 4px 20px rgba(255,107,53,0.4)}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 28px rgba(255,107,53,0.5)}
-.btn-level{display:flex;align-items:center;gap:14px;padding:20px 24px;border-radius:var(--radius);border:2px solid rgba(255,255,255,0.08);background:var(--card2);color:var(--text);font-family:'Boogaloo',cursive;font-size:1.2rem;cursor:pointer;transition:all .2s;margin-bottom:12px;width:100%;text-align:left}
-.btn-level:hover{border-color:var(--accent);background:rgba(255,107,53,0.1);transform:translateX(4px)}
-.btn-level .lv-icon{font-size:2rem;flex-shrink:0}
-.btn-level .lv-info small{font-family:'Nunito',sans-serif;font-size:0.75rem;color:var(--muted);display:block}
-.btn-ghost{background:transparent;border:2px solid rgba(255,255,255,0.15);color:var(--muted);font-family:'Nunito',sans-serif;font-size:0.9rem;padding:10px;border-radius:10px;cursor:pointer;width:100%;transition:all .2s}
-.btn-ghost:hover{border-color:var(--accent3);color:var(--accent3)}
-.player-bar{display:flex;align-items:center;gap:12px;background:var(--card2);border-radius:12px;padding:12px 16px;margin-bottom:16px}
-.player-avatar{font-size:1.6rem}
-.player-name{font-weight:700;font-size:1rem}
-.player-level{font-size:0.7rem;color:var(--accent2);text-transform:uppercase;letter-spacing:1px}
-.timer-wrap{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
-.timer-display{font-family:'Boogaloo',cursive;font-size:2.4rem;color:var(--accent2);letter-spacing:2px;min-width:100px}
-.timer-display.danger{color:var(--red);animation:blink .5s ease-in-out infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
-.progress-bar{flex:1;height:8px;background:rgba(255,255,255,0.08);border-radius:99px;margin-left:16px;overflow:hidden}
-.progress-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent2),var(--accent));transition:width .1s linear;width:100%}
-.stats-row{display:flex;gap:10px;margin-bottom:14px}
-.stat-chip{flex:1;background:var(--card2);border-radius:10px;padding:8px 12px;text-align:center}
-.stat-chip .sv{font-family:'Boogaloo',cursive;font-size:1.3rem}
-.stat-chip .sk{font-size:0.65rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
-.stat-chip.green .sv{color:var(--green)}
-.stat-chip.red .sv{color:var(--red)}
-.stat-chip.yellow .sv{color:var(--accent2)}
-.question-box{background:linear-gradient(135deg,rgba(255,107,53,0.12),rgba(255,215,0,0.06));border:2px solid rgba(255,107,53,0.3);border-radius:var(--radius);padding:12px 16px;text-align:center;margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:16px}
-.question-text{font-family:'Boogaloo',cursive;font-size:1.8rem}
-.question-text span{color:var(--accent)}
-.resposta-display{font-family:'Boogaloo',cursive;font-size:2rem;min-width:70px;background:rgba(255,255,255,0.07);border:2px solid rgba(255,107,53,0.5);border-radius:10px;padding:6px 12px;color:var(--accent2);letter-spacing:2px}
-.resposta-display.preenchido{color:var(--text);border-color:var(--accent2)}
-.numpad-fixo{margin-bottom:8px}
-.numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
-.nk{background:var(--card2);border:1px solid rgba(255,255,255,0.08);border-radius:10px;color:var(--text);font-family:'Boogaloo',cursive;font-size:1.4rem;padding:14px 0;cursor:pointer;transition:all .15s;text-align:center}
-.nk:hover,.nk:active{background:rgba(255,107,53,0.25);border-color:var(--accent)}
-.nk.del{font-size:1rem;color:var(--red)}
-.nk.ok-key{background:linear-gradient(135deg,var(--accent),#ff8c55);border-color:var(--accent);font-size:1rem}
-.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-bottom:12px}
-.mult-table{border-collapse:collapse;width:100%;min-width:370px}
-.mult-table th,.mult-table td{width:48px;height:48px;text-align:center;font-size:1rem;border:1.5px solid rgba(255,255,255,0.22);cursor:pointer;transition:all .15s;position:relative}
-.mult-table th{background:var(--card2);font-family:'Boogaloo',cursive;font-size:1.15rem;color:var(--accent2);cursor:default;border:1.5px solid rgba(255,215,0,0.3)}
-.mult-table th.corner{background:var(--bg);color:var(--accent);font-size:1.2rem}
-.mult-table td{background:var(--card)}
-.mult-table td:hover{background:rgba(255,107,53,0.15);transform:scale(1.06);z-index:2}
-.mult-table td.answered-correct{background:rgba(57,255,20,0.12);color:var(--green);font-weight:700;cursor:default}
-.mult-table td.answered-wrong{background:rgba(255,51,102,0.12);color:var(--red);cursor:default}
-.mult-table td.active-cell{outline:2px solid var(--accent);outline-offset:-2px;background:rgba(255,107,53,0.18);animation:cellPulse .5s ease-in-out infinite alternate}
-@keyframes cellPulse{from{background:rgba(255,107,53,0.12)}to{background:rgba(255,107,53,0.25)}}
-.result-hero{text-align:center;padding:28px 0 20px}
-.result-trophy{font-size:4rem;margin-bottom:8px}
-.result-time{font-family:'Boogaloo',cursive;font-size:3.5rem;background:linear-gradient(135deg,var(--accent2),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.result-label{color:var(--muted);font-size:0.8rem;text-transform:uppercase;letter-spacing:1px}
-.result-acertos{font-size:1.1rem;margin-top:8px}
-.result-acertos strong{color:var(--green)}
-.rank-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
-.rank-title{font-family:'Boogaloo',cursive;font-size:1.6rem;color:var(--accent2)}
-.rank-tabs{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
-.rank-tab{flex:1;padding:8px;border-radius:8px;border:2px solid rgba(255,255,255,0.08);background:transparent;color:var(--muted);font-family:'Nunito',sans-serif;font-size:0.8rem;cursor:pointer;transition:all .2s}
-.rank-tab.active{border-color:var(--accent2);color:var(--accent2);background:rgba(255,215,0,0.08)}
-.rank-item{display:flex;align-items:center;gap:12px;background:var(--card2);border-radius:12px;padding:12px 16px;margin-bottom:8px;border:1px solid rgba(255,255,255,0.04);transition:all .2s}
-.rank-item:hover{border-color:rgba(255,107,53,0.2)}
-.rank-pos{font-family:'Boogaloo',cursive;font-size:1.2rem;min-width:32px;text-align:center}
-.rank-pos.gold{color:var(--accent2)}
-.rank-pos.silver{color:#c0c0c0}
-.rank-pos.bronze{color:#cd7f32}
-.rank-av{font-size:1.5rem}
-.rank-info{flex:1}
-.rank-name{font-weight:700;font-size:0.95rem}
-.rank-meta{font-size:0.7rem;color:var(--muted)}
-.rank-time{font-family:'Boogaloo',cursive;font-size:1.1rem;color:var(--accent3)}
-.rank-empty{text-align:center;color:var(--muted);padding:32px;font-size:0.9rem}
-.section-title{font-family:'Boogaloo',cursive;font-size:1.2rem;color:var(--accent2);margin-bottom:12px}
-#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px 24px;font-weight:700;font-size:1rem;z-index:999;transition:transform .3s ease;pointer-events:none;white-space:nowrap}
-#toast.show{transform:translateX(-50%) translateY(0)}
-#toast.ok{border-color:var(--green);color:var(--green)}
-#toast.err{border-color:var(--red);color:var(--red)}
-.mt8{margin-top:8px}
-.mt16{margin-top:16px}
-@keyframes inputPulse{0%,100%{border-color:currentColor}50%{border-color:var(--accent)}}
-input.input-acerto{border-color:var(--green)!important;animation:inputPulse .4s ease-out}
-input.input-erro{border-color:var(--red)!important;animation:shake .3s ease-out}
-@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
-#screen-loading{justify-content:center;align-items:center;text-align:center}
-@media(max-width:360px){.mult-table th,.mult-table td{width:36px;height:36px;font-size:0.72rem}.mult-table th{font-size:0.85rem}}
-</style>
-</head>
-<body>
-
-<!-- Loading inicial (aparece instantaneamente) -->
-<div id="screen-loading" class="screen active">
-  <div class="logo">TABUADA<br>TURBO ⚡</div>
-  <div style="margin-top:40px">
-    <div class="loading-spinner"></div>
-    <div style="font-family:'Boogaloo',cursive;font-size:1.5rem;color:var(--accent2)">Conectando...</div>
-    <p style="font-size:0.85rem;color:var(--muted);margin-top:10px;padding:0 40px">Carregando o jogo...</p>
-  </div>
-</div>
-
-<!-- Tela 0: Login/Cadastro -->
-<div id="screen-login" class="screen">
-  <div class="logo">TABUADA<br>TURBO ⚡</div>
-  <p class="tagline">Entre ou cadastre-se</p>
-  <div style="position:absolute;top:10px;right:10px">
-    <button id="btn-som" class="av-btn" style="padding:10px;font-size:1.2rem" onclick="SomManager.toggle()">🔊</button>
-  </div>
-  <div class="card">
-    <p class="section-title">🔐 Login</p>
-    <label class="field-label">Email</label>
-    <input type="email" id="inp-email" placeholder="seu@email.com">
-    <label class="field-label mt8">Senha</label>
-    <input type="password" id="inp-senha" placeholder="••••••••">
-    <button class="btn btn-primary mt8" onclick="fazerLogin()">ENTRAR</button>
-  </div>
-  <div class="card">
-    <p class="section-title">📝 Cadastro</p>
-    <label class="field-label">Nome completo</label>
-    <input type="text" id="inp-cad-nome" placeholder="Seu nome">
-    <label class="field-label mt8">Email</label>
-    <input type="email" id="inp-cad-email" placeholder="seu@email.com">
-    <label class="field-label mt8">Senha</label>
-    <input type="password" id="inp-cad-senha" placeholder="••••••••">
-    <label class="field-label mt8">Confirmar senha</label>
-    <input type="password" id="inp-cad-senha2" placeholder="••••••••">
-    <button class="btn btn-primary mt8" onclick="fazerCadastro()">CADASTRAR</button>
-  </div>
-  <button class="btn-ghost mt8" onclick="irParaCadastro()">Jogar sem conta (visitante)</button>
-</div>
-
-<!-- Tela 1: Cadastro (Visitante) -->
-<div id="screen-cadastro" class="screen">
-  <div class="logo">TABUADA<br>TURBO ⚡</div>
-  <p class="tagline">Quem é o mais rápido?</p>
-  <div style="position:absolute;top:10px;right:10px">
-    <button id="btn-som" class="av-btn" style="padding:10px;font-size:1.2rem" onclick="SomManager.toggle()">🔊</button>
-  </div>
-  <div class="card">
-    <p class="section-title">👤 Quem vai jogar?</p>
-    <label class="field-label">Seu apelido</label>
-    <input type="text" id="inp-nome" placeholder="Ex: Lucas, Ana, Turma 3A…" maxlength="20">
-    <div style="margin-top:20px">
-      <label class="field-label">Escolha seu avatar</label>
-      <div class="avatar-grid" id="avatar-grid"></div>
-    </div>
-  </div>
-  <button class="btn btn-primary" onclick="irParaMenu()">JOGAR ▶</button>
-  <button class="btn-ghost mt8" onclick="irParaRanking()">🏆 Ver Ranking</button>
-</div>
-
-<!-- Tela 2: Menu -->
-<div id="screen-menu" class="screen">
-  <div id="player-bar-menu" class="player-bar"></div>
-  <div style="text-align:center;margin-bottom:20px;padding:12px;background:rgba(255,107,53,0.1);border-radius:12px">
-    <div style="font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Seu Melhor Tempo</div>
-    <div id="high-score-display" style="font-size:1.4rem;font-family:'Boogaloo',cursive;color:var(--accent2)">⏱️ Sem recorde</div>
-  </div>
-  <p class="section-title" style="text-align:center;font-size:1.5rem">Escolha o Nível</p>
-  <button class="btn-level" onclick="iniciarJogo(1)">
-    <span class="lv-icon">📊</span>
-    <div class="lv-info"><span>Nível 1 — Clássico</span><small>Tabela em ordem crescente (1→10)</small></div>
-  </button>
-  <button class="btn-level" onclick="iniciarJogo(2)">
-    <span class="lv-icon">🎲</span>
-    <div class="lv-info"><span>Nível 2 — Embaralhado</span><small>Eixo X e Y em ordem aleatória</small></div>
-  </button>
-  <div style="margin-top:12px"><button class="btn-ghost" onclick="irParaRanking()">🏆 Ranking</button></div>
-  <div style="margin-top:8px"><button class="btn-ghost" onclick="trocarJogador()">🔄 Trocar jogador</button></div>
-</div>
-
-<!-- Tela 3: Jogo -->
-<div id="screen-jogo" class="screen">
-  <div id="player-bar-jogo" class="player-bar"></div>
-  <div class="timer-wrap">
-    <div>
-      <div style="font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px">Tempo</div>
-      <div class="timer-display" id="timer-display">00:00</div>
-    </div>
-    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
-  </div>
-  <div class="stats-row">
-    <div class="stat-chip green"><div class="sv" id="stat-acertos">0</div><div class="sk">✅ Acertos</div></div>
-    <div class="stat-chip red"><div class="sv" id="stat-erros">0</div><div class="sk">❌ Erros</div></div>
-    <div class="stat-chip yellow"><div class="sv" id="stat-restam">100</div><div class="sk">⬜ Restam</div></div>
-  </div>
-  <div class="question-box" id="question-box">
-    <div class="question-text" id="question-text">—</div>
-    <div class="resposta-display" id="resposta-display">?</div>
-  </div>
-  <div class="numpad-fixo">
-    <div class="numpad">
-      <button class="nk" onclick="numpadPress('1')">1</button>
-      <button class="nk" onclick="numpadPress('2')">2</button>
-      <button class="nk" onclick="numpadPress('3')">3</button>
-      <button class="nk" onclick="numpadPress('4')">4</button>
-      <button class="nk" onclick="numpadPress('5')">5</button>
-      <button class="nk" onclick="numpadPress('6')">6</button>
-      <button class="nk" onclick="numpadPress('7')">7</button>
-      <button class="nk" onclick="numpadPress('8')">8</button>
-      <button class="nk" onclick="numpadPress('9')">9</button>
-      <button class="nk del" onclick="numpadPress('del')">⌫</button>
-      <button class="nk" onclick="numpadPress('0')">0</button>
-      <button class="nk ok-key" onclick="numpadPress('ok')">OK ✓</button>
-    </div>
-  </div>
-  <div class="table-scroll">
-    <table class="mult-table" id="mult-table"></table>
-  </div>
-  <button class="btn-ghost mt8" onclick="confirmarDesistir()">↩ Desistir</button>
-</div>
-
-<!-- Tela 4: Resultado -->
-<div id="screen-resultado" class="screen">
-  <div class="result-hero">
-    <div class="result-trophy" id="result-trophy">🏆</div>
-    <div class="result-time" id="result-time">00:00</div>
-    <div class="result-label">TEMPO TOTAL</div>
-    <div class="result-acertos mt8" id="result-acertos"></div>
-  </div>
-  <button class="btn btn-primary mt16" onclick="jogarNovamente()">🔁 Jogar de novo</button>
-  <button class="btn-ghost mt8" onclick="irParaRanking()">🏆 Ver Ranking completo</button>
-  <button class="btn-ghost mt8" onclick="irParaMenu()">◀ Menu</button>
-</div>
-
-<!-- Tela 5: Ranking -->
-<div id="screen-ranking" class="screen">
-  <div class="rank-header">
-    <div class="rank-title">🏆 Ranking</div>
-    <button class="btn-ghost" style="width:auto;padding:8px 14px;font-size:0.8rem" onclick="limparRanking()">🗑 Limpar</button>
-  </div>
-  <div class="rank-tabs">
-    <button class="rank-tab active" id="tab-n1" onclick="switchTab(1)">Nível 1 📊</button>
-    <button class="rank-tab" id="tab-n2" onclick="switchTab(2)">Nível 2 🎲</button>
-    <button class="rank-tab" id="tab-all" onclick="switchTab(0)">Geral 🌟</button>
-    <button class="rank-tab" id="tab-batalha" onclick="switchTab(0,'batalha')">⚔️ Batalha</button>
-  </div>
-  <div id="rank-list"></div>
-  <button class="btn-ghost mt8" onclick="irParaMenu()">◀ Menu</button>
-</div>
-
-<div id="toast"></div>
 </body>
 </html>
