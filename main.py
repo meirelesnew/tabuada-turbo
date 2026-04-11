@@ -7,6 +7,8 @@ from datetime import datetime, timedelta
 import random
 import string
 import uuid
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 import os
 
 app = FastAPI()
@@ -111,7 +113,19 @@ def gerar_codigo():
 # ── HEALTH ──────────────────────────────────────────────────────────
 @app.get("/")
 def root():
+    index_path = os.path.join(os.path.dirname(__file__), "index.html")
+    if os.path.exists(index_path):
+        return FileResponse(index_path)
     return {"status": "ok", "app": "Tabuada Turbo API v1.0"}
+
+@app.get("/{file_path:path}")
+async def serve_static(file_path: str):
+    allowed_files = ['manifest.json', 'sw.js', 'robots.txt', 'sitemap.xml', 'favicon.ico', 'og-image.png']
+    if file_path in allowed_files:
+        file_path_static = os.path.join(os.path.dirname(__file__), file_path)
+        if os.path.exists(file_path_static):
+            return FileResponse(file_path_static)
+    return {"error": "Not found"}, 404
 
 @app.get("/health")
 def health():
