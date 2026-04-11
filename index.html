@@ -482,8 +482,20 @@ function verificarResposta() {
   atualizarStats();
   renderTabela();
   
-  // Próxima célula
-  celulaAtiva++;
+  // Próxima célula - SÓ pula se ACERTOU, se errou fica na mesma
+  if (acertou) {
+    celulaAtiva++;
+  }
+  
+  if (celulaAtiva >= celulas.length) {
+    finalizeJogo();
+  } else {
+    celulas[celulaAtiva].correto = null;
+    renderTabela();
+    mostrarCelula();
+  }
+}
+  
   if (celulaAtiva >= celulas.length) {
     finalizarJogo();
   } else {
@@ -491,6 +503,7 @@ function verificarResposta() {
     renderTabela();
     mostrarCelula();
   }
+}
 }
 
 function finalizarJogo() {
