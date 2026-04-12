@@ -705,150 +705,6 @@
   }
   .high-score-bar span { color: var(--accent2); font-family: 'Boogaloo', cursive; font-size: 1.1rem; }
 
-  /* ══════════════════════════════════════
-     SISTEMA DE CELEBRAÇÃO
-  ══════════════════════════════════════ */
-
-  /* Overlay de celebração */
-  #celebration-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 8000;
-    pointer-events: none;
-    overflow: hidden;
-  }
-
-  /* Balões */
-  .balao {
-    position: absolute;
-    bottom: -120px;
-    font-size: 2.2rem;
-    animation: subirBalao linear forwards;
-    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
-  }
-  @keyframes subirBalao {
-    0%   { transform: translateY(0) rotate(-8deg); opacity: 1; }
-    25%  { transform: translateY(-25vh) rotate(8deg); }
-    50%  { transform: translateY(-50vh) rotate(-6deg); }
-    75%  { transform: translateY(-75vh) rotate(6deg); }
-    100% { transform: translateY(-110vh) rotate(-4deg); opacity: 0; }
-  }
-
-  /* Confetti melhorado */
-  .confetti-v2 {
-    position: fixed;
-    top: -20px;
-    pointer-events: none;
-    z-index: 8001;
-    animation: confettiCair linear forwards;
-    border-radius: 2px;
-  }
-  @keyframes confettiCair {
-    0%   { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
-    80%  { opacity: 1; }
-    100% { transform: translateY(105vh) rotate(720deg) scale(0.5); opacity: 0; }
-  }
-
-  /* Estrelas cintilantes */
-  .estrela-celebracao {
-    position: fixed;
-    pointer-events: none;
-    z-index: 8001;
-    font-size: 1.5rem;
-    animation: estrelaPop ease-out forwards;
-  }
-  @keyframes estrelaPop {
-    0%   { transform: scale(0) rotate(0deg); opacity: 1; }
-    50%  { transform: scale(1.5) rotate(180deg); opacity: 1; }
-    100% { transform: scale(0) rotate(360deg); opacity: 0; }
-  }
-
-  /* Tela resultado — troféu animado */
-  .trophy-winner {
-    animation: trofeuEntrada .8s cubic-bezier(.34,1.56,.64,1) forwards;
-    display: inline-block;
-  }
-  @keyframes trofeuEntrada {
-    0%   { transform: scale(0) rotate(-30deg); opacity: 0; }
-    60%  { transform: scale(1.3) rotate(5deg); opacity: 1; }
-    80%  { transform: scale(0.9) rotate(-2deg); }
-    100% { transform: scale(1) rotate(0deg); opacity: 1; }
-  }
-  .trophy-pulse {
-    animation: trofeuEntrada .8s cubic-bezier(.34,1.56,.64,1) forwards,
-               trofeuPulse 1.5s ease-in-out 1s infinite;
-  }
-  @keyframes trofeuPulse {
-    0%,100% { transform: scale(1); filter: drop-shadow(0 0 0px gold); }
-    50%     { transform: scale(1.08); filter: drop-shadow(0 0 16px gold); }
-  }
-
-  /* Banner VENCEDOR */
-  .banner-vencedor {
-    background: linear-gradient(135deg, #ffd700, #ff8c00);
-    color: #1a1830;
-    font-family: 'Boogaloo', cursive;
-    font-size: 1.8rem;
-    letter-spacing: 3px;
-    text-align: center;
-    padding: 14px;
-    border-radius: 14px;
-    margin: 12px 0;
-    animation: bannerEntrada .6s cubic-bezier(.34,1.56,.64,1) forwards;
-    box-shadow: 0 4px 24px rgba(255,215,0,0.5);
-  }
-  @keyframes bannerEntrada {
-    0%   { transform: scale(0.5) translateY(20px); opacity: 0; }
-    100% { transform: scale(1) translateY(0); opacity: 1; }
-  }
-
-  /* Placar de batalha melhorado */
-  .placar-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 14px 16px;
-    border-radius: 12px;
-    margin-bottom: 8px;
-    border: 2px solid transparent;
-    transition: all .3s;
-  }
-  .placar-item.primeiro {
-    background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,140,0,0.08));
-    border-color: rgba(255,215,0,0.4);
-    animation: placarDestaque .5s ease forwards;
-  }
-  .placar-item.segundo {
-    background: rgba(255,255,255,0.04);
-    border-color: rgba(255,255,255,0.08);
-  }
-  @keyframes placarDestaque {
-    0%   { transform: scale(0.95); opacity: 0; }
-    100% { transform: scale(1); opacity: 1; }
-  }
-
-  /* Novo recorde badge */
-  .novo-recorde-badge {
-    display: inline-block;
-    background: linear-gradient(135deg, #ffd700, #ff8c00);
-    color: #1a1830;
-    font-family: 'Boogaloo', cursive;
-    font-size: 0.85rem;
-    padding: 3px 12px;
-    border-radius: 99px;
-    margin-left: 8px;
-    animation: badgePop .5s cubic-bezier(.34,1.56,.64,1);
-  }
-  @keyframes badgePop {
-    0%   { transform: scale(0); }
-    100% { transform: scale(1); }
-  }
-
-  @keyframes aguardandoPulse {
-    0%,100% { width: 30%; opacity: 0.4; }
-    50%      { width: 100%; opacity: 1; }
-  }
-
   @media (max-width: 360px) {
     .mult-table th, .mult-table td { width: 36px; height: 36px; font-size: 0.72rem; }
     .mult-table th { font-size: 0.85rem; }
@@ -974,21 +830,16 @@
     <table class="mult-table" id="mult-table"></table>
   </div>
 
-  <div style="display:flex;gap:8px;margin-top:8px">
-    <button class="btn-ghost" style="flex:1" onclick="confirmarDesistir()">↩ Desistir</button>
-    <button class="btn-ghost" style="width:52px;flex-shrink:0" id="btn-musica" onclick="toggleMusica()" title="Música">🎵</button>
-  </div>
+  <button class="btn-ghost mt8" onclick="confirmarDesistir()">↩ Desistir</button>
 </div>
 
 <!-- ════════════════ TELA 4: RESULTADO ════════════════ -->
 <div id="screen-resultado" class="screen">
-  <div class="result-hero" style="text-align:center; padding:16px 0">
-    <div id="result-trophy" style="font-size:5rem; display:inline-block">🏆</div>
-    <div id="result-banner"></div>
+  <div class="result-hero">
+    <div class="result-trophy" id="result-trophy">🏆</div>
     <div class="result-time" id="result-time">00:00</div>
     <div class="result-label">TEMPO TOTAL</div>
     <div class="result-acertos mt8" id="result-acertos"></div>
-    <div id="result-recorde-badge"></div>
   </div>
 
   <div class="card" id="result-rank-preview"></div>
@@ -1069,30 +920,13 @@
   <button class="btn-ghost mt8" onclick="sairDaSala()">↩ Sair da sala</button>
 </div>
 
-<!-- ════════════════ TELA: AGUARDANDO ════════════════ -->
-<div id="screen-aguardando" class="screen" style="justify-content:center;align-items:center;text-align:center">
-  <div style="font-size:4rem;animation:trofeuPulse 1.5s ease-in-out infinite">⏳</div>
-  <div style="font-family:'Boogaloo',cursive;font-size:1.6rem;color:var(--accent2);margin:16px 0">
-    Você terminou!
-  </div>
-  <div style="color:var(--muted);font-size:0.9rem;margin-bottom:24px">
-    Aguardando adversário finalizar...
-  </div>
-  <div class="progress-bar" style="width:80%;max-width:300px;height:6px;margin:0 auto">
-    <div class="progress-fill" style="width:100%;animation:aguardandoPulse 2s ease-in-out infinite"></div>
-  </div>
-  <div id="aguardando-placar" style="margin-top:32px;width:100%;max-width:360px;padding:0 20px"></div>
-</div>
-
 <!-- ════════════════ TELA: RESULTADO BATALHA ════════════════ -->
 <div id="screen-resultado-batalha" class="screen">
-  <div style="text-align:center; padding:16px 0 8px">
-    <div id="batalha-trophy" style="font-size:6rem; display:inline-block; line-height:1">🏆</div>
-    <div id="batalha-resultado-titulo" style="font-family:'Boogaloo',cursive; font-size:2.2rem; margin:8px 0"></div>
-    <div id="batalha-banner"></div>
-    <div id="batalha-mensagem" style="color:var(--muted);font-size:0.9rem;margin:8px 0 4px;padding:0 20px;line-height:1.5"></div>
+  <div style="text-align:center; padding:24px 0 16px">
+    <div id="batalha-trophy" style="font-size:5rem">🏆</div>
+    <div id="batalha-resultado-titulo" style="font-family:'Boogaloo',cursive; font-size:2rem; margin:8px 0"></div>
   </div>
-  <div id="batalha-placar" style="padding:0 4px"></div>
+  <div id="batalha-placar" class="card"></div>
   <button class="btn btn-primary mt16" onclick="irParaBatalha()">⚔️ Jogar de novo</button>
   <button class="btn-whatsapp mt8" onclick="compartilharResultadoWhatsApp()">
     <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
@@ -1121,7 +955,6 @@
 </div>
 
 <!-- TOAST -->
-<div id="celebration-overlay"></div>
 <div id="feedback-overlay"></div>
 <div id="toast"></div>
 
@@ -1453,13 +1286,11 @@ function confirmarResposta() {
     acertos++;
     flashTela('correct');
     inputFeedback('success');
-    tocarAcerto();
     toast('✅ ' + c.x + '×' + c.y + '=' + (c.x*c.y), 'ok');
   } else {
     erros++;
     flashTela('wrong');
     inputFeedback('error');
-    tocarErro();
     toast('❌ Era ' + (c.x*c.y), 'err');
   }
 
@@ -1521,7 +1352,6 @@ function formatarTempo(s) {
 function finalizarJogo() {
   jogoAtivo = false;
   clearInterval(timerInterval);
-  pararMusica();
 
   const entrada = {
     nome: jogador.nome,
@@ -1564,57 +1394,24 @@ function finalizarJogo() {
 }
 
 function mostrarResultado(entrada) {
-  const perfeito  = entrada.erros === 0;
-  const muito_bom = entrada.acertos >= 80;
-  const emoji     = perfeito ? '🏆' : muito_bom ? '🥈' : '🎯';
-  const nivCeleb  = perfeito ? 'ouro' : muito_bom ? 'prata' : 'bronze';
-
-  // Troféu
-  const trofeuEl = document.getElementById('result-trophy');
-  trofeuEl.textContent = emoji;
-  setTimeout(() => animarTrofeu('result-trophy', perfeito), 100);
-
-  // Banner
-  const banner = document.getElementById('result-banner');
-  if (banner) {
-    if (perfeito) {
-      banner.innerHTML = '<div class="banner-vencedor">🏆 PERFEITO! SEM ERROS! 🏆</div>';
-    } else if (muito_bom) {
-      banner.innerHTML = '<div class="banner-vencedor" style="background:linear-gradient(135deg,#c0c0c0,#808080);color:#fff">🥈 MUITO BOM! 🥈</div>';
-    } else {
-      banner.innerHTML = '';
-    }
-  }
-
+  document.getElementById('result-trophy').textContent = entrada.erros === 0 ? '🏆' : entrada.acertos >= 80 ? '🥈' : '🎯';
   document.getElementById('result-time').textContent = formatarTempo(entrada.tempo);
   document.getElementById('result-acertos').innerHTML =
-    '<strong>' + entrada.acertos + '</strong> acertos &nbsp;|&nbsp; <span style="color:var(--red)">' + entrada.erros + '</span> erros';
-
-  // Badge novo recorde
-  const badgeEl = document.getElementById('result-recorde-badge');
-  if (badgeEl) {
-    const recorde = carregarRecorde(entrada.nivel);
-    const novoRecorde = recorde === null || entrada.tempo < recorde;
-    badgeEl.innerHTML = novoRecorde
-      ? '<span class="novo-recorde-badge">⚡ NOVO RECORDE!</span>'
-      : '';
-  }
+    `<strong>${entrada.acertos}</strong> acertos &nbsp;|&nbsp; <span style="color:var(--red)">${entrada.erros}</span> erros`;
 
   // Posição no ranking
   const rank = getRanking(entrada.nivel);
   const pos = rank.findIndex(r => r.nome === entrada.nome && r.tempo === entrada.tempo && r.data === entrada.data) + 1;
   const preview = document.getElementById('result-rank-preview');
-  preview.innerHTML = '<div style="text-align:center">' +
-    '<div style="font-size:0.75rem; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px">Sua posição no ranking</div>' +
-    '<div style="font-family:Boogaloo,cursive; font-size:2.5rem; color:var(--accent2)">#' + pos + '</div>' +
-    '<div style="font-size:0.8rem; color:var(--muted)">Nível ' + (entrada.nivel === 1 ? '1 — Clássico' : '2 — Embaralhado') + '</div>' +
-  '</div>';
+  preview.innerHTML = `
+    <div style="text-align:center">
+      <div style="font-size:0.75rem; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px">Sua posição no ranking</div>
+      <div style="font-family:'Boogaloo',cursive; font-size:2.5rem; color:var(--accent2)">#${pos}</div>
+      <div style="font-size:0.8rem; color:var(--muted)">Nível ${entrada.nivel === 1 ? '1 — Clássico' : '2 — Embaralhado'}</div>
+    </div>
+  `;
 
   mostrarTela('screen-resultado');
-  setTimeout(() => {
-    celebracaoCompleta(nivCeleb);
-    if (perfeito || muito_bom) tocarVitoria();
-  }, 300);
 }
 
 function confirmarDesistir() {
@@ -1716,89 +1513,21 @@ function flashTela(tipo) {
   qb.classList.add(tipo === 'correct' ? 'flash-correct' : 'flash-wrong');
 }
 
-// ══════════════════════════════════════════
-//  SISTEMA DE CELEBRAÇÃO
-// ══════════════════════════════════════════
-
 function lancarConfetti() {
-  const colors = ['#ff6b35','#ffd700','#00e5ff','#39ff14','#ff3366','#ff69b4','#9b59b6'];
-  const shapes = ['■', '●', '▲', '◆'];
-  const overlay = document.getElementById('celebration-overlay');
-
-  for (let i = 0; i < 60; i++) {
+  const colors = ['#ff6b35','#ffd700','#00e5ff','#39ff14','#ff3366'];
+  for (let i = 0; i < 30; i++) {
     const el = document.createElement('div');
-    el.className = 'confetti-v2';
-    const size = 6 + Math.random() * 10;
-    el.style.cssText = 'left:' + (Math.random()*100) + 'vw;' +
-      'width:' + size + 'px;height:' + size + 'px;' +
-      'background:' + colors[Math.floor(Math.random()*colors.length)] + ';' +
-      'animation-delay:' + (Math.random()*1.5) + 's;' +
-      'animation-duration:' + (2+Math.random()*2) + 's;' +
-      'border-radius:' + (Math.random()>0.5?'50%':'2px') + ';';
+    el.className = 'confetti-piece';
+    el.style.cssText = `
+      left: ${Math.random()*100}vw;
+      top: 50vh;
+      background: ${colors[Math.floor(Math.random()*colors.length)]};
+      animation-delay: ${Math.random()*0.5}s;
+      animation-duration: ${0.8+Math.random()*0.6}s;
+    `;
     document.body.appendChild(el);
-    setTimeout(() => el.remove(), 4000);
+    setTimeout(() => el.remove(), 1500);
   }
-}
-
-function lancarBaloes(quantidade) {
-  quantidade = quantidade || 12;
-  const emojis = ['🎈','🎈','🎈','🎉','🎊','🎈','🎈','🎈','🎊','🎉'];
-  const cores  = ['🔴','🔵','🟡','🟢','🟠','🟣'];
-  const todos  = [...emojis, ...cores];
-
-  for (let i = 0; i < quantidade; i++) {
-    const el = document.createElement('div');
-    el.className = 'balao';
-    el.textContent = todos[Math.floor(Math.random() * todos.length)];
-    el.style.cssText = 'left:' + (5 + Math.random()*90) + 'vw;' +
-      'animation-delay:' + (Math.random()*2) + 's;' +
-      'animation-duration:' + (4+Math.random()*3) + 's;' +
-      'font-size:' + (1.8+Math.random()*1.2) + 'rem;';
-    document.body.appendChild(el);
-    setTimeout(() => el.remove(), 8000);
-  }
-}
-
-function lancarEstrelas() {
-  const emojis = ['⭐','✨','🌟','💫','⭐','✨'];
-  for (let i = 0; i < 8; i++) {
-    const el = document.createElement('div');
-    el.className = 'estrela-celebracao';
-    el.textContent = emojis[Math.floor(Math.random()*emojis.length)];
-    el.style.cssText = 'left:' + (10+Math.random()*80) + 'vw;' +
-      'top:' + (10+Math.random()*60) + 'vh;' +
-      'animation-delay:' + (Math.random()*0.8) + 's;' +
-      'animation-duration:' + (1+Math.random()*0.5) + 's;';
-    document.body.appendChild(el);
-    setTimeout(() => el.remove(), 2500);
-  }
-}
-
-function celebracaoCompleta(nivel) {
-  // nivel: 'ouro' (perfeito), 'prata' (bom), 'bronze' (concluiu)
-  if (nivel === 'ouro') {
-    lancarConfetti();
-    lancarBaloes(16);
-    lancarEstrelas();
-    setTimeout(() => lancarBaloes(8), 1500);
-    setTimeout(() => lancarEstrelas(), 800);
-  } else if (nivel === 'prata') {
-    lancarConfetti();
-    lancarBaloes(8);
-    lancarEstrelas();
-  } else {
-    lancarConfetti();
-    lancarBaloes(4);
-  }
-}
-
-function animarTrofeu(elementId, ganhou) {
-  const el = document.getElementById(elementId);
-  if (!el) return;
-  el.className = ganhou ? 'trophy-pulse' : '';
-  // Reiniciar animação
-  void el.offsetWidth;
-  el.className = ganhou ? 'trophy-pulse' : 'trophy-winner';
 }
 
 // ══════════════════════════════════════════
@@ -1903,41 +1632,16 @@ function iniciarPolling(codigo) {
       const d = await r.json();
       if (!r.ok) return;
       salaAtual = d;
-
-      const telaAtual = document.querySelector('.screen.active');
-      const idAtual = telaAtual ? telaAtual.id : '';
-
-      // Na sala de espera → atualizar lista
-      if (idAtual === 'screen-sala') {
-        renderJogadoresSala(d.jogadores);
-      }
-
-      // Na tela aguardando → atualizar placar parcial
-      if (idAtual === 'screen-aguardando') {
-        const finalizados = d.jogadores.filter(j => j.finalizado);
-        const el = document.getElementById('aguardando-placar');
-        if (el && finalizados.length > 0) {
-          el.innerHTML = '<div style="font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Já finalizaram</div>' +
-            finalizados.map(j => '<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:rgba(255,255,255,0.04);border-radius:10px;margin-bottom:6px">' +
-              '<span>' + (j.avatar||'🦁') + '</span>' +
-              '<span style="flex:1;font-weight:700">' + j.nome + '</span>' +
-              '<span style="font-family:Boogaloo,cursive;color:var(--accent2)">' + formatarTempo(j.tempo) + '</span>' +
-            '</div>').join('');
-        }
-      }
-
-      // Jogo em andamento → iniciar
+      renderJogadoresSala(d.jogadores);
+      // Se status mudou para em_jogo, iniciar jogo automaticamente
       if (d.status === 'em_jogo' && !jogoAtivo) {
         clearInterval(pollingInterval);
         iniciarJogoBatalha(d.nivel);
-        return;
       }
-
-      // Todos finalizaram → mostrar resultado
+      // Se finalizada, mostrar resultado
       if (d.status === 'finalizada') {
         clearInterval(pollingInterval);
-        setTimeout(() => mostrarResultadoBatalha(d.jogadores), 500);
-        return;
+        mostrarResultadoBatalha(d.jogadores);
       }
     } catch(e) {}
   }, 2000);
@@ -1967,11 +1671,6 @@ function iniciarJogoBatalha(nivel) {
 
 async function enviarResultadoBatalha() {
   if (!salaAtual || !jogadorId) return;
-
-  // Mostrar tela de aguardando imediatamente
-  pararMusica();
-  mostrarTela('screen-aguardando');
-
   try {
     const r = await fetch(API_URL + '/batalha/finalizar', {
       method: 'POST',
@@ -1986,15 +1685,13 @@ async function enviarResultadoBatalha() {
     });
     const d = await r.json();
     if (d.status === 'finalizada') {
-      setTimeout(() => mostrarResultadoBatalha(d.jogadores), 800);
+      mostrarResultadoBatalha(d.jogadores);
     } else {
-      // Aguardar adversário via polling
+      // Aguardar adversário terminar
+      toast('⏳ Aguardando adversário...', 'inf');
       iniciarPolling(salaAtual.codigo);
     }
-  } catch(e) {
-    toast('Erro de conexão', 'err');
-    iniciarPolling(salaAtual.codigo);
-  }
+  } catch(e) {}
 }
 
 function mostrarResultadoBatalha(jogadoresList) {
@@ -2006,69 +1703,28 @@ function mostrarResultadoBatalha(jogadoresList) {
   const vencedor = finalizados[0];
   const ganhei = vencedor && vencedor.id === jogadorId;
 
-  // Parar música ao mostrar resultado
-  pararMusica();
+  document.getElementById('batalha-trophy').textContent = ganhei ? '🏆' : '😤';
+  document.getElementById('batalha-resultado-titulo').innerHTML =
+    ganhei
+      ? '<span style="color:var(--accent2)">VOCÊ VENCEU!</span>'
+      : '<span style="color:var(--muted)">Boa tentativa!</span>';
 
-  // Troféu
-  const trofeuBat = document.getElementById('batalha-trophy');
-  trofeuBat.textContent = ganhei ? '🏆' : '💪';
-  setTimeout(() => animarTrofeu('batalha-trophy', ganhei), 200);
+  document.getElementById('batalha-placar').innerHTML = finalizados.map((j, i) => `
+    <div style="display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.06)">
+      <div style="font-family:'Boogaloo',cursive; font-size:1.4rem; min-width:36px; color:${i===0?'var(--accent2)':'var(--muted)'}">
+        ${i===0?'🥇':i===1?'🥈':'🥉'}
+      </div>
+      <span style="font-size:1.4rem">${j.avatar||'🦁'}</span>
+      <div style="flex:1">
+        <div style="font-weight:700">${j.nome}${j.id===jogadorId?' (você)':''}</div>
+        <div style="font-size:0.75rem; color:var(--muted)">${j.acertos} acertos · ${j.erros} erros</div>
+      </div>
+      <div style="font-family:'Boogaloo',cursive; font-size:1.1rem; color:var(--accent3)">${formatarTempo(j.tempo)}</div>
+    </div>
+  `).join('');
 
-  // Título
-  document.getElementById('batalha-resultado-titulo').innerHTML = ganhei
-    ? '<span style="color:var(--accent2)">VOCÊ VENCEU!</span>'
-    : '<span style="color:var(--muted)">Boa batalha!</span>';
-
-  // Mensagem personalizada
-  const msgEl = document.getElementById('batalha-mensagem');
-  if (msgEl) {
-    const msgsPerdedor = [
-      '💡 Quase lá! Da próxima você vence!',
-      '🔥 Você foi incrível! Bora revanche?',
-      '💪 Cada treino te deixa mais forte!',
-      '⭐ A tabuada te espera de volta!',
-      '🎯 Continue treinando, você consegue!'
-    ];
-    msgEl.textContent = ganhei
-      ? 'Parabéns! Você dominou a tabuada! 🎉'
-      : msgsPerdedor[Math.floor(Math.random() * msgsPerdedor.length)];
-  }
-
-  // Banner
-  const bannerBat = document.getElementById('batalha-banner');
-  if (bannerBat) {
-    bannerBat.innerHTML = ganhei
-      ? '<div class="banner-vencedor">🏆 CAMPEÃO DA BATALHA! 🏆</div>'
-      : '<div class="banner-vencedor" style="background:linear-gradient(135deg,#2d2d44,#1a1830);color:var(--accent3);border:1px solid var(--accent3)">💪 NÃO DESISTA! REVANCHE! 💪</div>';
-  }
-
-  // Placar com estilo
-  const placarEl = document.getElementById('batalha-placar');
-  placarEl.innerHTML = finalizados.map((j, i) => {
-    const eVoce = j.id === jogadorId;
-    const medalha = i===0?'🥇':i===1?'🥈':'🥉';
-    return '<div class="placar-item ' + (i===0?'primeiro':'segundo') + '" style="animation-delay:' + (i*0.15) + 's">' +
-      '<div style="font-size:1.6rem">' + medalha + '</div>' +
-      '<div style="font-size:1.4rem">' + (j.avatar||'🦁') + '</div>' +
-      '<div style="flex:1">' +
-        '<div style="font-weight:700">' + j.nome + (eVoce?' <span style="color:var(--accent);font-size:0.75rem">(você)</span>':'') + '</div>' +
-        '<div style="font-size:0.72rem; color:var(--muted)">' + (j.acertos||0) + ' acertos · ' + (j.erros||0) + ' erros</div>' +
-      '</div>' +
-      '<div style="font-family:Boogaloo,cursive; font-size:1.2rem; color:' + (i===0?'var(--accent2)':'var(--accent3)') + '">' + formatarTempo(j.tempo) + '</div>' +
-    '</div>';
-  }).join('');
-
+  lancarConfetti();
   mostrarTela('screen-resultado-batalha');
-  setTimeout(() => {
-    if (ganhei) {
-      celebracaoCompleta('ouro');
-      tocarVitoria();
-    } else {
-      lancarConfetti();
-      lancarBaloes(4);
-      lancarEstrelas();
-    }
-  }, 400);
 }
 
 function copiarCodigo() {
@@ -2213,153 +1869,6 @@ function limparDados() {
   localStorage.removeItem('tt_ranking_2');
   localStorage.removeItem('tt_jogador');
   mostrarFeedback('Dados limpos!', 'info');
-}
-
-// ══════════════════════════════════════════
-//  SISTEMA DE MÚSICA (Web Audio API)
-// ══════════════════════════════════════════
-let audioCtx = null;
-let musicaNodes = [];
-let musicaAtiva = false;
-let musicaLoop = null;
-
-function getAudioCtx() {
-  if (!audioCtx) {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  }
-  if (audioCtx.state === 'suspended') audioCtx.resume();
-  return audioCtx;
-}
-
-// Notas em Hz — escala pentatônica (alegre, dopaminérgica)
-const NOTAS = {
-  C4:261.63, D4:293.66, E4:329.63, G4:392.00, A4:440.00,
-  C5:523.25, D5:587.33, E5:659.25, G5:783.99, A5:880.00,
-  B4:493.88, F4:349.23
-};
-
-// Melodia principal — loop energético 8-bit style
-const MELODIA_JOGO = [
-  {n:'C5',d:0.12},{n:'E5',d:0.12},{n:'G5',d:0.12},{n:'E5',d:0.12},
-  {n:'C5',d:0.12},{n:'D5',d:0.12},{n:'E5',d:0.25},{n:'_',d:0.1},
-  {n:'G4',d:0.12},{n:'A4',d:0.12},{n:'C5',d:0.12},{n:'A4',d:0.12},
-  {n:'G4',d:0.12},{n:'E4',d:0.12},{n:'G4',d:0.25},{n:'_',d:0.1},
-  {n:'E4',d:0.12},{n:'G4',d:0.12},{n:'A4',d:0.12},{n:'C5',d:0.12},
-  {n:'D5',d:0.12},{n:'E5',d:0.12},{n:'G5',d:0.25},{n:'_',d:0.1},
-  {n:'A5',d:0.12},{n:'G5',d:0.12},{n:'E5',d:0.12},{n:'D5',d:0.12},
-  {n:'C5',d:0.12},{n:'B4',d:0.12},{n:'C5',d:0.35},{n:'_',d:0.15},
-];
-
-// Fanfarra de vitória
-const MELODIA_VITORIA = [
-  {n:'C5',d:0.1},{n:'C5',d:0.1},{n:'C5',d:0.1},{n:'C5',d:0.25},
-  {n:'G4',d:0.25},{n:'A4',d:0.12},{n:'G4',d:0.12},
-  {n:'C5',d:0.15},{n:'E5',d:0.15},{n:'G5',d:0.35},
-  {n:'_',d:0.1},
-  {n:'G5',d:0.12},{n:'F4',d:0.12},{n:'E5',d:0.12},{n:'D5',d:0.12},
-  {n:'C5',d:0.5},
-];
-
-function tocarNota(freq, tempo, duracao, volume, tipo) {
-  if (!audioCtx) return;
-  const osc  = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
-  const vol  = volume || 0.15;
-  const t    = audioCtx.currentTime + tempo;
-
-  osc.type = tipo || 'square';
-  osc.frequency.setValueAtTime(freq, t);
-  // Envelope suave
-  gain.gain.setValueAtTime(0, t);
-  gain.gain.linearRampToValueAtTime(vol, t + 0.01);
-  gain.gain.exponentialRampToValueAtTime(0.001, t + duracao * 0.9);
-
-  osc.connect(gain);
-  gain.connect(audioCtx.destination);
-  osc.start(t);
-  osc.stop(t + duracao);
-  musicaNodes.push(osc);
-}
-
-function tocarBaixo(freq, tempo, duracao) {
-  tocarNota(freq * 0.5, tempo, duracao, 0.08, 'triangle');
-}
-
-function tocarMelodia(melodia, offset, volume) {
-  let t = offset || 0;
-  melodia.forEach(note => {
-    if (note.n !== '_' && NOTAS[note.n]) {
-      tocarNota(NOTAS[note.n], t, note.d * 0.85, volume || 0.15, 'square');
-      if (t % 0.5 < 0.1) {
-        tocarBaixo(NOTAS[note.n], t, note.d * 1.2);
-      }
-    }
-    t += note.d;
-  });
-  return t;
-}
-
-function calcularDuracaoMelodia(melodia) {
-  return melodia.reduce((s, n) => s + n.d, 0);
-}
-
-function iniciarMusicaJogo() {
-  if (musicaAtiva) return;
-  try {
-    getAudioCtx();
-    musicaAtiva = true;
-    const dur = calcularDuracaoMelodia(MELODIA_JOGO);
-
-    function loop() {
-      if (!musicaAtiva) return;
-      tocarMelodia(MELODIA_JOGO, 0, 0.15);
-      musicaLoop = setTimeout(loop, dur * 1000);
-    }
-    loop();
-  } catch(e) {}
-}
-
-function tocarVitoria() {
-  try {
-    getAudioCtx();
-    tocarMelodia(MELODIA_VITORIA, 0, 0.25);
-  } catch(e) {}
-}
-
-function tocarAcerto() {
-  try {
-    getAudioCtx();
-    tocarNota(NOTAS.E5, 0, 0.08, 0.12, 'sine');
-    tocarNota(NOTAS.G5, 0.06, 0.08, 0.1, 'sine');
-  } catch(e) {}
-}
-
-function tocarErro() {
-  try {
-    getAudioCtx();
-    tocarNota(180, 0, 0.12, 0.1, 'sawtooth');
-    tocarNota(150, 0.1, 0.12, 0.08, 'sawtooth');
-  } catch(e) {}
-}
-
-function pararMusica() {
-  musicaAtiva = false;
-  clearTimeout(musicaLoop);
-  musicaNodes.forEach(n => { try { n.stop(); } catch(e) {} });
-  musicaNodes = [];
-}
-
-// Botão mute no jogo
-let musicaMutada = false;
-function toggleMusica() {
-  musicaMutada = !musicaMutada;
-  const btn = document.getElementById('btn-musica');
-  if (btn) btn.textContent = musicaMutada ? '🔇' : '🎵';
-  if (musicaMutada) {
-    pararMusica();
-  } else {
-    iniciarMusicaJogo();
-  }
 }
 
 // ══════════════════════════════════════════
