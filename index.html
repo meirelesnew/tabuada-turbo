@@ -1161,7 +1161,8 @@
 const AVATARES = ['🦁','🐯','🐸','🦊','🐧','🦄','🐉','🤖','👾','🦸'];
 const API_URL = 'https://tabuada-turbo.onrender.com';
 let jogador = { nome: '', avatar: '🦁' };
-let jogadorId = null;
+// Recuperar jogadorId salvo — garante histórico entre sessões
+let jogadorId = localStorage.getItem('tt_jogador_id') || null;
 let respostaAtual = '';
 let salaAtual = null;
 let pollingInterval = null;
@@ -1237,16 +1238,18 @@ function mostrarTela(id) {
 function irParaMenu() {
   if (!validarCadastro()) return;
   // Registrar jogador na API e pegar ID
+  // Registrar/atualizar jogador na API
   fetch(API_URL + '/jogador/salvar', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ nome: jogador.nome, avatar: jogador.avatar })
   }).then(r => r.json()).then(d => {
-    jogadorId = d.jogador_id;
-    localStorage.setItem('tt_jogador_id', jogadorId);
+    // Manter mesmo ID se já existir (histórico preservado)
+    if (!jogadorId) {
+      jogadorId = d.jogador_id;
+      localStorage.setItem('tt_jogador_id', jogadorId);
+    }
   }).catch(() => {});
-  // Recuperar ID salvo se existir
-  if (!jogadorId) jogadorId = localStorage.getItem('tt_jogador_id');
   renderPlayerBar('menu');
   exibirRecordeTela(1); // mostra recorde do nível 1 por padrão
   mostrarTela('screen-menu');
@@ -1669,11 +1672,32 @@ function getRanking(lv) {
 }
 
 function salvarRanking(entrada) {
-  const key = `tt_ranking_${entrada.nivel}`;
+  // 1. Salvar local (fallback offline)
+  const key = 'tt_ranking_' + entrada.nivel;
   const rank = getRanking(entrada.nivel);
   rank.push(entrada);
   rank.sort((a, b) => a.tempo - b.tempo);
   localStorage.setItem(key, JSON.stringify(rank.slice(0, 50)));
+
+  // 2. Salvar na API (ranking global — visto por todos)
+  const payload = {
+    jogador_id: jogadorId || 'anonimo_' + Date.now(),
+    nome: entrada.nome,
+    avatar: entrada.avatar,
+    nivel: entrada.nivel,
+    tempo: entrada.tempo,
+    acertos: entrada.acertos,
+    erros: entrada.erros,
+    modo: 'solo'
+  };
+  fetch(API_URL + '/ranking/salvar', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  }).then(r => {
+    if (r.ok) console.log('Ranking salvo na API com sucesso');
+    else r.json().then(d => console.warn('Ranking API erro:', d));
+  }).catch(e => console.warn('Ranking API offline, mantido local:', e.message));
 }
 
 let tabAtiva = 1;
@@ -1687,17 +1711,31 @@ function switchTab(lv) {
 
 function renderRankList(lv) {
   const el = document.getElementById('rank-list');
-  el.innerHTML = '<div class="rank-empty">Carregando... ⏳</div>';
-  const endpoint = lv === 0 ? '/ranking/global' : '/ranking/global?nivel=' + lv;
+  el.innerHTML = '<div class="rank-empty" style="color:var(--accent3)">🌐 Carregando ranking global... ⏳</div>';
+
+  // Montar endpoint correto
+  let endpoint = '/ranking/global';
+  if (lv === 1) endpoint = '/ranking/global?nivel=1';
+  else if (lv === 2) endpoint = '/ranking/global?nivel=2';
+
   fetch(API_URL + endpoint)
-    .then(r => r.json())
+    .then(r => {
+      if (!r.ok) throw new Error('API status ' + r.status);
+      return r.json();
+    })
     .then(d => {
       if (d.ranking && d.ranking.length > 0) {
-        renderRankItems(d.ranking.slice(0,20), lv); return;
+        renderRankItems(d.ranking.slice(0, 50), lv);
+      } else {
+        // API online mas sem dados — mostrar vazio real
+        el.innerHTML = '<div class="rank-empty">Nenhuma partida registrada ainda.<br>🚀 Seja o primeiro a jogar!</div>';
       }
-      renderRankLocal(lv);
     })
-    .catch(() => renderRankLocal(lv));
+    .catch(() => {
+      // API offline — fallback para local com aviso
+      el.innerHTML = '<div class="rank-empty" style="color:var(--accent);font-size:0.8rem;margin-bottom:8px">⚠️ Sem conexão com o servidor.<br>Exibindo dados locais.</div>';
+      renderRankLocal(lv);
+    });
 }
 
 function renderRankLocal(lv) {
