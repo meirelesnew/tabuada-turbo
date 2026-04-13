@@ -83,6 +83,14 @@
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
+  /* Garantir que H1-H6 semânticos herdem aparência dos elementos originais */
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    color: inherit;
+  }
+
   body {
     background: var(--bg);
     color: var(--text);
@@ -870,16 +878,24 @@
 </head>
 <body>
 
+<!-- Skip navigation para leitores de tela -->
+<a href="#screen-cadastro" 
+   style="position:absolute;left:-9999px;top:0;z-index:9999;background:#ff6b35;color:#fff;padding:8px 16px;border-radius:4px;font-weight:700"
+   onfocus="this.style.left='0'"
+   onblur="this.style.left='-9999px'">
+  Pular para o conteúdo principal
+</a>
+
 <!-- ════════════════ TELA 1: CADASTRO ════════════════ -->
-<div id="screen-cadastro" class="screen active">
+<div id="screen-cadastro" class="screen active" role="main" aria-label="Tela inicial do jogo">
   <div id="ad-container-top" class="ad-container">Publicidade</div>
-  <div class="logo">TABUADA<br>TURBO ⚡</div>
+  <h1 class="logo">TABUADA<br>TURBO ⚡</h1>
   <p class="tagline">Quem é o mais rápido?</p>
 
   <div class="card">
-    <p class="section-title">👤 Quem vai jogar?</p>
+    <h3 class="section-title">👤 Quem vai jogar?</h3>
     <label class="field-label">Seu apelido</label>
-    <input type="text" id="inp-nome" placeholder="Ex: Lucas, Ana, Turma 3A…" maxlength="20">
+    <input type="text" id="inp-nome" placeholder="Ex: Lucas, Ana, Turma 3A…" maxlength="20" aria-label="Digite seu apelido" autocomplete="nickname">
 
     <div style="margin-top:20px">
       <label class="field-label">Escolha seu avatar</label>
@@ -899,7 +915,7 @@
   <div class="high-score-bar" id="high-score-display" style="display:none">
     🏆 Recorde: <span id="high-score-valor">--:--</span>
   </div>
-  <p class="section-title" style="text-align:center; font-size:1.5rem">Escolha o Nível</p>
+  <h2 class="section-title" style="text-align:center; font-size:1.5rem">Escolha o Nível</h2>
 
   <button class="btn-level" onclick="iniciarJogo(1)">
     <span class="lv-icon">📊</span>
@@ -928,7 +944,7 @@
 </div>
 
 <!-- ════════════════ TELA 3: JOGO ════════════════ -->
-<div id="screen-jogo" class="screen">
+<div id="screen-jogo" class="screen" role="main" aria-label="Tela do jogo">
   <div id="player-bar-jogo" class="player-bar"></div>
 
   <!-- Timer -->
@@ -989,7 +1005,7 @@
 
   <div style="display:flex;gap:8px;margin-top:8px">
     <button class="btn-ghost" style="flex:1" onclick="confirmarDesistir()">↩ Desistir</button>
-    <button class="btn-ghost" style="width:52px;flex-shrink:0" id="btn-musica" onclick="toggleMusica()" title="Música">🎵</button>
+    <button class="btn-ghost" style="width:52px;flex-shrink:0" id="btn-musica" onclick="toggleMusica()" title="Música" aria-label="Ativar ou desativar música">🎵</button>
   </div>
 </div>
 
@@ -1014,11 +1030,11 @@
 <!-- ════════════════ TELA: BATALHA MENU ════════════════ -->
 <div id="screen-batalha" class="screen">
   <div id="player-bar-batalha" class="player-bar"></div>
-  <div class="logo" style="font-size:2rem; margin-bottom:4px">⚔️ BATALHA</div>
+  <h2 class="logo" style="font-size:2rem; margin-bottom:4px">⚔️ BATALHA</h2>
   <p class="tagline">Desafie seus amigos!</p>
 
   <div class="card">
-    <p class="section-title">🆕 Criar Nova Sala</p>
+    <h3 class="section-title">🆕 Criar Nova Sala</h3>
     <label class="field-label">Nível</label>
     <div style="display:flex; gap:10px; margin-bottom:12px">
       <button class="btn-level" style="flex:1; padding:12px" onclick="setBatalhaLevel(1)">
@@ -1035,9 +1051,9 @@
   </div>
 
   <div class="card">
-    <p class="section-title">🔑 Entrar em uma Sala</p>
+    <h3 class="section-title">🔑 Entrar em uma Sala</h3>
     <label class="field-label">Código da sala</label>
-    <input type="text" id="inp-codigo-sala" placeholder="Ex: ABCDE-123" maxlength="9"
+    <input type="text" id="inp-codigo-sala" placeholder="Ex: ABCDE-123" maxlength="9" aria-label="Código da sala de batalha"
       style="text-transform:uppercase; letter-spacing:3px; font-size:1.2rem; text-align:center">
     <button class="btn btn-primary mt8" onclick="entrarSala()">🎮 Entrar</button>
   </div>
@@ -1065,15 +1081,15 @@
     <div id="codigo-sala-display" style="font-family:'Boogaloo',cursive; font-size:2.8rem; color:var(--accent); letter-spacing:6px">----</div>
     <div style="display:flex; gap:10px; margin-top:10px">
       <button class="btn-ghost" style="flex:1; padding:8px" onclick="copiarCodigo()">📋 Copiar</button>
-      <button class="btn-whatsapp" style="flex:1; padding:8px; font-size:0.85rem" onclick="compartilharWhatsApp()">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      <button class="btn-whatsapp" style="flex:1; padding:8px; font-size:0.85rem" onclick="compartilharWhatsApp()" aria-label="Compartilhar código da sala no WhatsApp">
+        <svg viewBox="0 0 24 24" role="img" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         Enviar
       </button>
     </div>
   </div>
 
   <div class="card">
-    <p class="section-title">👥 Jogadores na sala</p>
+    <h3 class="section-title">👥 Jogadores na sala</h3>
     <div id="lista-jogadores-sala"></div>
     <div id="sala-status-msg" style="text-align:center; color:var(--muted); font-size:0.85rem; margin-top:8px">Aguardando adversário...</div>
   </div>
@@ -1107,8 +1123,8 @@
   </div>
   <div id="batalha-placar" style="padding:0 4px"></div>
   <button class="btn btn-primary mt16" onclick="irParaBatalha()">⚔️ Jogar de novo</button>
-  <button class="btn-whatsapp mt8" onclick="compartilharResultadoWhatsApp()">
-    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  <button class="btn-whatsapp mt8" onclick="compartilharResultadoWhatsApp()" aria-label="Compartilhar resultado no WhatsApp">
+    <svg viewBox="0 0 24 24" role="img" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
     Compartilhar resultado
   </button>
   <button class="btn-ghost mt8" onclick="irParaRanking()">🏆 Ver Ranking</button>
@@ -1116,9 +1132,9 @@
 </div>
 
 <!-- ════════════════ TELA 5: RANKING ════════════════ -->
-<div id="screen-ranking" class="screen">
+<div id="screen-ranking" class="screen" role="main" aria-label="Ranking de jogadores">
   <div class="rank-header">
-    <div class="rank-title">🏆 Ranking</div>
+    <h2 class="rank-title">🏆 Ranking</h2>
     <button class="btn-ghost" style="width:auto; padding:8px 14px; font-size:0.8rem" onclick="limparRanking()">🗑 Limpar</button>
   </div>
 
@@ -1184,6 +1200,8 @@ function renderAvatares() {
     const btn = document.createElement('button');
     btn.className = 'av-btn' + (i === 0 ? ' selected' : '');
     btn.textContent = av;
+    btn.setAttribute('aria-label', 'Avatar ' + av);
+    btn.setAttribute('role', 'radio');
     btn.onclick = () => {
       document.querySelectorAll('.av-btn').forEach(b => b.classList.remove('selected'));
       btn.classList.add('selected');
