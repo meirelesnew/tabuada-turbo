@@ -1,4 +1,11 @@
 User-agent: *
 Allow: /
+Disallow: /404
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
 
 Sitemap: https://tabuadaturbo.com.br/sitemap.xml
