@@ -58,29 +58,36 @@ const MONGO_URL = process.env.MONGO_URL || 'mongodb+srv://Admin:oAgtNf8ujb6sHKew
 async function connectMongo() {
   try {
     mongoClient = new MongoClient(MONGO_URL, {
-      serverSelectionTimeoutMS: 5000,
-      connectTimeoutMS: 5000
+      serverSelectionTimeoutMS: 10000,
+      connectTimeoutMS: 10000,
+      retryWrites: true,
+      w: 'majority'
     });
+    
+    console.log('📡 Conectando ao MongoDB...');
     await mongoClient.connect();
+    
     db = mongoClient.db('tabuada2026');
     isDbConnected = true;
-    console.log('✅ MongoDB conectado');
+    console.log('✅ MongoDB conectado com sucesso');
     
     // Criar índice TTL para salas
     try {
-      await db.collection('salas').createIndex({ 'expira_em': 1 }, { expireAfterSeconds: 0 });
+      await db.collection('salas').createIndex(
+        { 'expira_em': 1 },
+        { expireAfterSeconds: 0 }
+      );
       console.log('✅ Índice TTL criado');
     } catch (e) {
-      console.log('⚠️ Índice TTL pode já existir');
+      console.log('⚠️ Índice TTL pode já existir:', e.message);
     }
   } catch (err) {
-    console.log('⚠️ MongoDB offline, funcionando em modo limitado');
+    console.error('❌ Erro ao conectar MongoDB:', err.message);
+    console.log('⚠️ Funcionando em modo degradado (sem persistência)');
     isDbConnected = false;
+    // Não relançar erro - deixar servidor subir em modo offline
   }
 }
-
-// Inicializar banco ao iniciar
-connectMongo();
 
 // Middleware para cache
 app.use((req, res, next) => {
@@ -350,8 +357,25 @@ app.get('/ranking/posicao', async (req, res) => {
 // ═══════════════════════════════════════════════════════════════
 
 const PORT = process.env.PORT || 10000;
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`🚀 Tabuada Turbo API rodando na porta ${PORT}`);
-});
+
+// ✅ CORREÇÃO PDCA: Inicializar server APÓS MongoDB estar pronto
+async function iniciarServidor() {
+  try {
+    // Aguardar conexão MongoDB
+    await connectMongo();
+    
+    // SÓ DEPOIS iniciar server
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`🚀 Tabuada Turbo API rodando na porta ${PORT}`);
+      console.log(`✅ Database: ${isDbConnected ? 'CONECTADO' : 'MODO OFFLINE'}`);
+    });
+  } catch (err) {
+    console.error('❌ Erro ao iniciar servidor:', err);
+    process.exit(1);
+  }
+}
+
+// Iniciar servidor
+iniciarServidor();
 
 module.exports = app;
