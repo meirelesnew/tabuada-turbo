@@ -1,24 +1,27 @@
+# 1. TODOS OS IMPORTS NO TOPO
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pymongo import MongoClient
-from pydantic import BaseModel
-from datetime import datetime, timedelta
-import random, string, uuid, os
 from fastapi.responses import FileResponse
-from fastapi.staticfiles import StaticFiles
 import os
+# ... demais imports ...
 
-# Definir o caminho da pasta onde está o index.html
+# 2. CONFIGURAÇÕES
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# 1. Rota para o site (Frontend)
+# 3. CRIAÇÃO DO APP (Mover para cá!)
+app = FastAPI(title="Tabuada Turbo API", version="2.0.0")
+app.add_middleware(CORSMiddleware, allow_origins=["*"], ...)
+
+# 4. ROTAS DO SITE (FRONTEND)
 @app.get("/")
 async def serve_index():
     return FileResponse(os.path.join(BASE_DIR, "index.html"))
 
-# 2. Rota para arquivos de suporte (CSS, JS, Imagens, Manifest)
-# Caso seus arquivos estejam em pastas, use:
-# app.mount("/static", StaticFiles(directory="static"), name="static")
+# 5. ROTAS DA API (BACKEND)
+@app.get("/health")
+def health():
+    # ... código do health ...
+
 
 MONGO_URL = os.environ.get("MONGO_URL", "mongodb+srv://Admin:Bekg9u8pe5SPHiQg@tabuada2026.cjzpxgk.mongodb.net/?retryWrites=true&w=majority&appName=tabuada2026")
 
