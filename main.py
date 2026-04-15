@@ -4,6 +4,21 @@ from pymongo import MongoClient
 from pydantic import BaseModel
 from datetime import datetime, timedelta
 import random, string, uuid, os
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
+import os
+
+# Definir o caminho da pasta onde está o index.html
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# 1. Rota para o site (Frontend)
+@app.get("/")
+async def serve_index():
+    return FileResponse(os.path.join(BASE_DIR, "index.html"))
+
+# 2. Rota para arquivos de suporte (CSS, JS, Imagens, Manifest)
+# Caso seus arquivos estejam em pastas, use:
+# app.mount("/static", StaticFiles(directory="static"), name="static")
 
 MONGO_URL = os.environ.get("MONGO_URL", "mongodb+srv://Admin:Bekg9u8pe5SPHiQg@tabuada2026.cjzpxgk.mongodb.net/?retryWrites=true&w=majority&appName=tabuada2026")
 
