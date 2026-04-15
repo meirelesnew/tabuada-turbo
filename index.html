@@ -1161,8 +1161,9 @@
 const AVATARES = ['🦁','🐯','🐸','🦊','🐧','🦄','🐉','🤖','👾','🦸'];
 const API_URL = 'https://tabuada-turbo.onrender.com';
 let jogador = { nome: '', avatar: '🦁' };
-// Recuperar jogadorId salvo — garante histórico entre sessões
+// jogadorId persistente — SEMPRE recuperar do localStorage para evitar duplicatas
 let jogadorId = localStorage.getItem('tt_jogador_id') || null;
+console.log('[INIT] jogadorId recuperado:', jogadorId ? jogadorId.substring(0,8)+'...' : 'novo jogador');
 let respostaAtual = '';
 let salaAtual = null;
 let pollingInterval = null;
@@ -1249,7 +1250,7 @@ function irParaMenu() {
       jogadorId = d.jogador_id;
       localStorage.setItem('tt_jogador_id', jogadorId);
     }
-  }).catch(() => {});
+  }).catch(e => console.warn("[API] offline:", e.message));
   renderPlayerBar('menu');
   exibirRecordeTela(1); // mostra recorde do nível 1 por padrão
   mostrarTela('screen-menu');
@@ -1594,7 +1595,7 @@ function finalizarJogo() {
         erros,
         modo: 'solo'
       })
-    }).catch(() => {});
+    }).catch(e => console.warn("[API] offline:", e.message));
   }
 
   finalizarComRecorde(nivelAtualJogo, segundos);
@@ -1695,9 +1696,14 @@ function salvarRanking(entrada) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
   }).then(r => {
-    if (r.ok) console.log('Ranking salvo na API com sucesso');
-    else r.json().then(d => console.warn('Ranking API erro:', d));
-  }).catch(e => console.warn('Ranking API offline, mantido local:', e.message));
+    if (r.ok) {
+      console.log('[RANKING] Salvo na API com sucesso — atualizando ranking...');
+      // Re-fetch do ranking após salvar para garantir exibição global
+      if (tabAtiva !== undefined) renderRankList(tabAtiva);
+    } else {
+      r.json().then(d => console.error('[RANKING] Erro ao salvar:', d));
+    }
+  }).catch(e => console.warn('[RANKING] API offline — mantido local:', e.message));
 }
 
 let tabAtiva = 1;
@@ -1731,8 +1737,8 @@ function renderRankList(lv) {
         el.innerHTML = '<div class="rank-empty">Nenhuma partida registrada ainda.<br>🚀 Seja o primeiro a jogar!</div>';
       }
     })
-    .catch(() => {
-      // API offline — fallback para local com aviso
+    .catch(err => {
+      console.error('[RANKING] ERRO ao buscar ranking global:', err);
       el.innerHTML = '<div class="rank-empty" style="color:var(--accent);font-size:0.8rem;margin-bottom:8px">⚠️ Sem conexão com o servidor.<br>Exibindo dados locais.</div>';
       renderRankLocal(lv);
     });
