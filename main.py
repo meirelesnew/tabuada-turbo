@@ -1,49 +1,50 @@
-# 1. TODOS OS IMPORTS NO TOPO
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from pymongo import MongoClient
+from pydantic import BaseModel
+from datetime import datetime, timedelta
 from fastapi.responses import FileResponse
-import os
-# ... demais imports ...
+import random, string, uuid, os
 
-# 2. CONFIGURAÇÕES
+# 1. INSTANCIAR O APP PRIMEIRO
+app = FastAPI(title="Tabuada Turbo API", version="2.0.0")
+
+# 2. CONFIGURAR MIDDLEWARE (SEM OS TRÊS PONTINHOS)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# 3. CRIAÇÃO DO APP (Mover para cá!)
-app = FastAPI(title="Tabuada Turbo API", version="2.0.0")
-app.add_middleware(CORSMiddleware, allow_origins=["*"], ...)
-
-# 4. ROTAS DO SITE (FRONTEND)
+# 3. ROTA DO SITE
 @app.get("/")
 async def serve_index():
     return FileResponse(os.path.join(BASE_DIR, "index.html"))
 
-# 5. ROTAS DA API (BACKEND)
-@app.get("/health")
-def health():
-    # ... código do health ...
-
-
-MONGO_URL = os.environ.get("MONGO_URL", "mongodb+srv://Admin:Bekg9u8pe5SPHiQg@tabuada2026.cjzpxgk.mongodb.net/?retryWrites=true&w=majority&appName=tabuada2026")
+# 4. CONEXÃO COM O BANCO
+MONGO_URL = os.environ.get("MONGO_URL", "mongodb+srv://Admin:oAgtNf8ujb6sHKew@tabuada2026.cjzpxgk.mongodb.net/?retryWrites=true&w=majority&appName=tabuada2026")
 
 client = db = jogadores_col = salas_col = ranking_col = None
 
 def conectar_mongo():
     global client, db, jogadores_col, salas_col, ranking_col
-    print(f"[MONGO] Iniciando conexao...")
     try:
         client = MongoClient(MONGO_URL, serverSelectionTimeoutMS=10000)
         client.admin.command("ping")
         db = client["tabuada2026"]
         jogadores_col = db["jogadores"]
-        salas_col     = db["salas"]
-        ranking_col   = db["ranking"]
+        salas_col = db["salas"]
+        ranking_col = db["ranking"]
         print("[MONGO] Conectado com sucesso!")
-        return True
     except Exception as e:
         print(f"[MONGO] ERRO: {e}")
-        return False
 
 conectar_mongo()
+
 
 app = FastAPI(title="Tabuada Turbo API", version="2.0.0")
 app.add_middleware(CORSMiddleware, allow_origins=["*"],
