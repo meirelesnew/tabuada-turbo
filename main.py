@@ -1,5 +1,6 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from pymongo import MongoClient
 from pydantic import BaseModel
 from datetime import datetime, timedelta
@@ -71,9 +72,9 @@ def check_db():
     if db is None:
         raise HTTPException(status_code=503, detail="Banco indisponivel")
 
-@app.get("/")
-def root():
-    return {"status": "ok", "app": "Tabuada Turbo API v2.0"}
+@app.api_route("/", methods=["GET", "HEAD"])
+async def root():
+    return JSONResponse({"status": "ok", "app": "Tabuada Turbo API v2.0"})
 
 @app.get("/health")
 def health():
@@ -117,11 +118,20 @@ def salvar_ranking(body: RankingIn):
 def ranking_global(nivel: int = 0, modo: str = "todos", limite: int = 50):
     check_db()
     filtro = {}
-    if nivel in [1, 2]: filtro["nivel"] = nivel
-    if modo in ["solo", "batalha"]: filtro["modo"] = modo
+    if nivel in [1, 2]:
+        filtro["nivel"] = nivel
+    if modo in ["solo", "batalha"]:
+        filtro["modo"] = modo
+
+    # Garantir que apenas documentos com tempo numérico entrem no ranking
+    filtro["tempo"] = {"$type": ["int", "long", "double", "decimal"]}
+
     docs = list(ranking_col.find(filtro).sort("tempo", 1).limit(limite))
-    for d in docs: d["_id"] = str(d["_id"])
-    print(f"[RANKING] Retornando {len(docs)} registros")
+    for d in docs:
+        d["_id"] = str(d["_id"])
+        d["tempo"] = int(d["tempo"])  # normalizar para int sempre
+
+    print(f"[RANKING] Retornando {len(docs)} registros (filtro={filtro})")
     return {"ranking": docs, "total": len(docs)}
 
 @app.get("/ranking/nivel/{nivel}")
@@ -130,6 +140,30 @@ def ranking_nivel(nivel: int):
     docs = list(ranking_col.find({"nivel": nivel}).sort("tempo", 1).limit(50))
     for d in docs: d["_id"] = str(d["_id"])
     return {"ranking": docs, "nivel": nivel}
+
+@app.get("/admin/limpar-invalidos")
+def limpar_invalidos():
+    """Remove registros onde 'tempo' é string (formato antigo corrompido)."""
+    check_db()
+    resultado = ranking_col.delete_many({"tempo": {"$type": "string"}})
+    print(f"[ADMIN] Removidos {resultado.deleted_count} registros com tempo inválido")
+    return {"removidos": resultado.deleted_count, "msg": "Registros inválidos removidos"}
+
+@app.get("/admin/diagnostico")
+def diagnostico():
+    """Mostra total de registros e quantos têm tempo inválido."""
+    check_db()
+    total = ranking_col.count_documents({})
+    invalidos = ranking_col.count_documents({"tempo": {"$type": "string"}})
+    validos = total - invalidos
+    sample = list(ranking_col.find({}).limit(3))
+    for d in sample: d["_id"] = str(d["_id"])
+    return {
+        "total": total,
+        "validos": validos,
+        "invalidos_string": invalidos,
+        "amostra": sample
+    }
 
 @app.post("/batalha/criar")
 def criar_sala(body: CriarSalaIn):
