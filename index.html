@@ -12,1494 +12,257 @@
   gtag('config', 'G-531494859');
 </script>
 
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2757076714223993"
-     crossorigin="anonymous"></script>
-<meta name="description" content="Tabuada Turbo - O jogo de tabuada mais rápido do Brasil! Treine multiplicação com timer, ranking por tempo e dois níveis de dificuldade. Ideal para crianças e estudantes.">
-<meta name="keywords" content="tabuada, jogo de tabuada, aprender tabuada, tabuada online, multiplicação, matemática infantil, jogo matemática, tabuada para crianças, tabuada divertida, treinar tabuada">
-<meta name="author" content="Tabuada Turbo">
-<meta name="robots" content="index, follow">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2757076714223993" crossorigin="anonymous"></script>
+
+<meta name="description" content="Tabuada Turbo - O jogo de tabuada mais rápido do Brasil! Treine multiplicação com ranking global e batalhas online.">
 <meta name="theme-color" content="#ff6b35">
-<link rel="canonical" href="https://meirelesnew.github.io/tabuada-turbo/">
-
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://meirelesnew.github.io/tabuada-turbo/">
-<meta property="og:title" content="Tabuada Turbo ⚡ - Jogo de Tabuada com Ranking">
-<meta property="og:description" content="Aprenda a tabuada de forma divertida! Timer, ranking por tempo e dois níveis de dificuldade. Jogue grátis agora!">
-<meta property="og:image" content="https://meirelesnew.github.io/tabuada-turbo/og-image.png">
-<meta property="og:locale" content="pt_BR">
-<meta property="og:site_name" content="Tabuada Turbo">
-
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Tabuada Turbo ⚡ - Jogo de Tabuada com Ranking">
-<meta name="twitter:description" content="Aprenda a tabuada de forma divertida! Timer, ranking por tempo e dois níveis. Jogue grátis!">
-<meta name="twitter:image" content="https://meirelesnew.github.io/tabuada-turbo/og-image.png">
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Tabuada Turbo",
-  "url": "https://meirelesnew.github.io/tabuada-turbo/",
-  "description": "Jogo educativo de tabuada com timer, ranking por tempo e dois níveis de dificuldade. Ideal para crianças do ensino fundamental.",
-  "applicationCategory": "EducationalApplication",
-  "operatingSystem": "Any",
-  "inLanguage": "pt-BR",
-  "isAccessibleForFree": true,
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "BRL"
-  },
-  "educationalLevel": "Ensino Fundamental",
-  "learningResourceType": "Jogo Educativo",
-  "teaches": "Tabuada de multiplicação do 1 ao 10",
-  "audience": {
-    "@type": "EducationalAudience",
-    "educationalRole": "student"
-  }
-}
-</script>
-<title>Tabuada Turbo ⚡ | Jogo de Tabuada Online com Ranking - Aprenda Multiplicação</title>
+<title>Tabuada Turbo ⚡ | Jogo de Tabuada Online</title>
 <link href="https://fonts.googleapis.com/css2?family=Boogaloo&family=Nunito:wght@400;600;700;900&display=swap" rel="stylesheet">
+
 <style>
   :root {
-    --bg: #0f0e17;
-    --card: #1a1830;
-    --card2: #221f38;
-    --accent: #ff6b35;
-    --accent2: #ffd700;
-    --accent3: #00e5ff;
-    --green: #39ff14;
-    --red: #ff3366;
-    --text: #fffffe;
-    --muted: #a7a9be;
-    --radius: 16px;
+    --bg: #0f0e17; --card: #1a1830; --card2: #221f38;
+    --accent: #ff6b35; --accent2: #ffd700; --accent3: #00e5ff;
+    --green: #39ff14; --red: #ff3366; --text: #fffffe;
+    --muted: #a7a9be; --radius: 16px;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  h1, h2, h3, h4, h5, h6 {
-    font-weight: inherit;
-    font-size: inherit;
-    line-height: inherit;
-    color: inherit;
-  }
-
   body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Nunito', sans-serif;
-    min-height: 100vh;
+    background: var(--bg); color: var(--text);
+    font-family: 'Nunito', sans-serif; min-height: 100vh;
     overflow-x: hidden;
   }
-
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: radial-gradient(circle, rgba(255,107,53,0.07) 1px, transparent 1px);
-    background-size: 32px 32px;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .screen {
-    display: none;
-    position: relative;
-    z-index: 1;
-    min-height: 100vh;
-    padding: 20px;
-    max-width: 480px;
-    margin: 0 auto;
-  }
+  .screen { display: none; padding: 20px; max-width: 480px; margin: 0 auto; min-height: 100vh; position: relative; z-index: 1; }
   .screen.active { display: flex; flex-direction: column; }
-
-  .logo {
-    font-family: 'Boogaloo', cursive;
-    font-size: 2.8rem;
-    text-align: center;
-    letter-spacing: 2px;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: 4px;
-    animation: pulse 2s ease-in-out infinite;
-  }
-  .tagline {
-    text-align: center;
-    color: var(--muted);
-    font-size: 0.85rem;
-    margin-bottom: 28px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
-
-  @keyframes pulse {
-    0%,100% { transform: scale(1); }
-    50% { transform: scale(1.03); }
-  }
-
-  .card {
-    background: var(--card);
-    border-radius: var(--radius);
-    padding: 24px;
-    margin-bottom: 16px;
-    border: 1px solid rgba(255,255,255,0.06);
-  }
-
-  .field-label {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: var(--muted);
-    margin-bottom: 8px;
-    display: block;
-  }
-  input[type="text"] {
-    width: 100%;
-    background: rgba(255,255,255,0.05);
-    border: 2px solid rgba(255,255,255,0.1);
-    border-radius: 10px;
-    color: var(--text);
-    font-family: 'Nunito', sans-serif;
-    font-size: 1.1rem;
-    padding: 12px 16px;
-    outline: none;
-    transition: border-color .2s;
-  }
-  input[type="text"]:focus { border-color: var(--accent); }
-
-  .avatar-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 10px;
-    margin-top: 12px;
-  }
-  .av-btn {
-    font-size: 1.8rem;
-    background: rgba(255,255,255,0.05);
-    border: 2px solid transparent;
-    border-radius: 12px;
-    padding: 8px 4px;
-    cursor: pointer;
-    transition: all .2s;
-    text-align: center;
-  }
-  .av-btn:hover { background: rgba(255,107,53,0.15); }
-  .av-btn.selected {
-    border-color: var(--accent);
-    background: rgba(255,107,53,0.2);
-    transform: scale(1.1);
-  }
-
-  .btn {
-    display: block;
-    width: 100%;
-    padding: 16px;
-    border-radius: var(--radius);
-    border: none;
-    font-family: 'Boogaloo', cursive;
-    font-size: 1.3rem;
-    letter-spacing: 1px;
-    cursor: pointer;
-    transition: all .2s;
-    text-transform: uppercase;
-  }
-  .btn-primary {
-    background: linear-gradient(135deg, var(--accent), #ff8c55);
-    color: #fff;
-    box-shadow: 0 4px 20px rgba(255,107,53,0.4);
-  }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 28px rgba(255,107,53,0.5); }
-
-  .btn-level {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 20px 24px;
-    border-radius: var(--radius);
-    border: 2px solid rgba(255,255,255,0.08);
-    background: var(--card2);
-    color: var(--text);
-    font-family: 'Boogaloo', cursive;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: all .2s;
-    margin-bottom: 12px;
-    width: 100%;
-    text-align: left;
-  }
-  .btn-level:hover { border-color: var(--accent); background: rgba(255,107,53,0.1); transform: translateX(4px); }
-  .btn-level .lv-icon { font-size: 2rem; flex-shrink: 0; }
-  .btn-level .lv-info small { font-family: 'Nunito', sans-serif; font-size: 0.75rem; color: var(--muted); display: block; }
-
-  .btn-ghost {
-    background: transparent;
-    border: 2px solid rgba(255,255,255,0.15);
-    color: var(--muted);
-    font-family: 'Nunito', sans-serif;
-    font-size: 0.9rem;
-    padding: 10px;
-    border-radius: 10px;
-    cursor: pointer;
-    width: 100%;
-    transition: all .2s;
-  }
-  .btn-ghost:hover { border-color: var(--accent3); color: var(--accent3); }
-
-  .player-bar {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: var(--card2);
-    border-radius: 12px;
-    padding: 12px 16px;
-    margin-bottom: 16px;
-  }
-  .player-avatar { font-size: 1.6rem; }
-  .player-name { font-weight: 700; font-size: 1rem; }
-  .player-level { font-size: 0.7rem; color: var(--accent2); text-transform: uppercase; letter-spacing: 1px; }
-
-  .timer-wrap {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 16px;
-  }
-  .timer-display {
-    font-family: 'Boogaloo', cursive;
-    font-size: 2.4rem;
-    color: var(--accent2);
-    letter-spacing: 2px;
-    min-width: 100px;
-  }
-  .timer-display.danger { color: var(--red); animation: blink .5s ease-in-out infinite; }
-  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.4} }
-
-  .progress-bar {
-    flex: 1;
-    height: 8px;
-    background: rgba(255,255,255,0.08);
-    border-radius: 99px;
-    margin-left: 16px;
-    overflow: hidden;
-  }
-  .progress-fill {
-    height: 100%;
-    border-radius: 99px;
-    background: linear-gradient(90deg, var(--accent2), var(--accent));
-    transition: width .1s linear;
-  }
-
-  .table-scroll {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    margin-bottom: 12px;
-  }
-  .mult-table {
-    border-collapse: collapse;
-    width: 100%;
-    min-width: 370px;
-  }
-  .mult-table th, .mult-table td {
-    width: 48px;
-    height: 48px;
-    text-align: center;
-    font-size: 1rem;
-    border: 1.5px solid rgba(255,255,255,0.22);
-    cursor: pointer;
-    transition: all .15s;
-    position: relative;
-  }
-  .mult-table th {
-    background: var(--card2);
-    font-family: 'Boogaloo', cursive;
-    font-size: 1.15rem;
-    color: var(--accent2);
-    cursor: default;
-    border: 1.5px solid rgba(255,215,0,0.3);
-  }
-  .mult-table th.corner {
-    background: var(--bg);
-    color: var(--accent);
-    font-size: 1.2rem;
-  }
-  .mult-table td { background: var(--card); }
-  .mult-table td:hover { background: rgba(255,107,53,0.15); transform: scale(1.06); z-index: 2; }
-
-  .mult-table td.answered-correct {
-    background: rgba(57,255,20,0.12);
-    color: var(--green);
-    font-weight: 700;
-    cursor: default;
-  }
-  .mult-table td.answered-wrong {
-    background: rgba(255,51,102,0.12);
-    color: var(--red);
-    cursor: default;
-  }
-  .mult-table td.active-cell {
-    outline: 2px solid var(--accent);
-    outline-offset: -2px;
-    background: rgba(255,107,53,0.18);
-    animation: cellPulse .5s ease-in-out infinite alternate;
-  }
-  @keyframes cellPulse { from{background:rgba(255,107,53,0.12)} to{background:rgba(255,107,53,0.25)} }
-
-  .question-box {
-    background: linear-gradient(135deg, rgba(255,107,53,0.12), rgba(255,215,0,0.06));
-    border: 2px solid rgba(255,107,53,0.3);
-    border-radius: var(--radius);
-    padding: 12px 16px;
-    text-align: center;
-    margin-bottom: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-  }
-  .question-text {
-    font-family: 'Boogaloo', cursive;
-    font-size: 1.8rem;
-  }
-  .question-text span { color: var(--accent); }
-  .resposta-display {
-    font-family: 'Boogaloo', cursive;
-    font-size: 2rem;
-    min-width: 70px;
-    background: rgba(255,255,255,0.07);
-    border: 2px solid rgba(255,107,53,0.5);
-    border-radius: 10px;
-    padding: 6px 12px;
-    color: var(--accent2);
-    letter-spacing: 2px;
-  }
-  .resposta-display.preenchido { color: var(--text); border-color: var(--accent2); }
-
-  .numpad-fixo {
-    margin-bottom: 8px;
-  }
-
-  .stats-row {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 14px;
-  }
-  .stat-chip {
-    flex: 1;
-    background: var(--card2);
-    border-radius: 10px;
-    padding: 8px 12px;
-    text-align: center;
-  }
-  .stat-chip .sv { font-family: 'Boogaloo', cursive; font-size: 1.3rem; }
-  .stat-chip .sk { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
-  .stat-chip.green .sv { color: var(--green); }
-  .stat-chip.red .sv { color: var(--red); }
-  .stat-chip.yellow .sv { color: var(--accent2); }
-
-  .result-hero {
-    text-align: center;
-    padding: 28px 0 20px;
-  }
-  .result-trophy { font-size: 4rem; margin-bottom: 8px; }
-  .result-time {
-    font-family: 'Boogaloo', cursive;
-    font-size: 3.5rem;
-    background: linear-gradient(135deg, var(--accent2), var(--accent));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  .result-label { color: var(--muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
-  .result-acertos { font-size: 1.1rem; margin-top: 8px; }
-  .result-acertos strong { color: var(--green); }
-
-  .rank-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 16px;
-  }
-  .rank-title {
-    font-family: 'Boogaloo', cursive;
-    font-size: 1.6rem;
-    color: var(--accent2);
-  }
-  .rank-tabs {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 14px;
-  }
-  .rank-tab {
-    flex: 1;
-    padding: 8px;
-    border-radius: 8px;
-    border: 2px solid rgba(255,255,255,0.08);
-    background: transparent;
-    color: var(--muted);
-    font-family: 'Nunito', sans-serif;
-    font-size: 0.8rem;
-    cursor: pointer;
-    transition: all .2s;
-  }
-  .rank-tab.active { border-color: var(--accent2); color: var(--accent2); background: rgba(255,215,0,0.08); }
-
-  .rank-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: var(--card2);
-    border-radius: 12px;
-    padding: 12px 16px;
-    margin-bottom: 8px;
-    border: 1px solid rgba(255,255,255,0.04);
-    transition: all .2s;
-  }
-  .rank-item:hover { border-color: rgba(255,107,53,0.2); }
-  .rank-pos {
-    font-family: 'Boogaloo', cursive;
-    font-size: 1.2rem;
-    min-width: 32px;
-    text-align: center;
-  }
-  .rank-pos.gold { color: var(--accent2); }
-  .rank-pos.silver { color: #c0c0c0; }
-  .rank-pos.bronze { color: #cd7f32; }
-  .rank-av { font-size: 1.5rem; }
-  .rank-info { flex: 1; }
-  .rank-name { font-weight: 700; font-size: 0.95rem; }
-  .rank-meta { font-size: 0.7rem; color: var(--muted); }
-  .rank-time {
-    font-family: 'Boogaloo', cursive;
-    font-size: 1.1rem;
-    color: var(--accent3);
-  }
-  .rank-empty {
-    text-align: center;
-    color: var(--muted);
-    padding: 32px;
-    font-size: 0.9rem;
-  }
-
-  #toast {
-    position: fixed;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%) translateY(80px);
-    background: var(--card);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 12px;
-    padding: 12px 24px;
-    font-weight: 700;
-    font-size: 1rem;
-    z-index: 999;
-    transition: transform .3s ease;
-    pointer-events: none;
-    white-space: nowrap;
-  }
-  #toast.show { transform: translateX(-50%) translateY(0); }
-  #toast.ok { border-color: var(--green); color: var(--green); }
-  #toast.err { border-color: var(--red); color: var(--red); }
-
-  .flash-correct { animation: flashGreen .4s ease; }
-  .flash-wrong   { animation: flashRed .4s ease; }
-  @keyframes flashGreen {
-    0%   { background: rgba(57,255,20,0.35); }
-    100% { background: transparent; }
-  }
-  @keyframes flashRed {
-    0%   { background: rgba(255,51,102,0.35); }
-    100% { background: transparent; }
-  }
-
-  .section-title {
-    font-family: 'Boogaloo', cursive;
-    font-size: 1.2rem;
-    color: var(--accent2);
-    margin-bottom: 12px;
-  }
-  .mt8 { margin-top: 8px; }
-  .mt16 { margin-top: 16px; }
-  .gap-row { display: flex; gap: 10px; }
-  .gap-row .btn { margin-bottom: 0; }
-
-  .numpad {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-    margin-top: 10px;
-  }
-  .nk {
-    background: var(--card2);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 10px;
-    color: var(--text);
-    font-family: 'Boogaloo', cursive;
-    font-size: 1.4rem;
-    padding: 14px 0;
-    cursor: pointer;
-    transition: all .15s;
-    text-align: center;
-  }
-  .nk:hover, .nk:active { background: rgba(255,107,53,0.25); border-color: var(--accent); }
-  .nk.del { font-size: 1rem; color: var(--red); }
-  .nk.ok-key { background: linear-gradient(135deg, var(--accent), #ff8c55); border-color: var(--accent); font-size: 1rem; }
-
-  @keyframes confettiBurst {
-    0%   { transform: translateY(0) rotate(0deg); opacity:1; }
-    100% { transform: translateY(-120px) rotate(720deg) scale(0); opacity:0; }
-  }
-  .confetti-piece {
-    position: fixed;
-    width: 10px; height: 10px;
-    border-radius: 2px;
-    pointer-events: none;
-    z-index: 9999;
-    animation: confettiBurst 1s ease forwards;
-  }
-
-  #screen-countdown {
-    background: var(--bg);
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-  }
-  .countdown-numero {
-    font-family: 'Boogaloo', cursive;
-    font-size: 10rem;
-    line-height: 1;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: countPop .8s ease-out forwards;
-  }
-  .countdown-label {
-    font-size: 1rem;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    margin-top: 12px;
-  }
-  .countdown-jogadores {
-    display: flex;
-    gap: 24px;
-    justify-content: center;
-    margin-top: 32px;
-  }
-  .countdown-jogador {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-  }
-  .countdown-av { font-size: 2.5rem; }
-  .countdown-nome { font-size: 0.85rem; color: var(--muted); }
-  @keyframes countPop {
-    0%   { transform: scale(2); opacity: 0; }
-    50%  { transform: scale(0.9); opacity: 1; }
-    100% { transform: scale(1); opacity: 1; }
-  }
-
-  .btn-whatsapp {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    background: #25D366;
-    color: #fff;
-    border: none;
-    border-radius: var(--radius);
-    padding: 14px;
-    font-family: 'Nunito', sans-serif;
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    width: 100%;
-    transition: all .2s;
-    box-shadow: 0 4px 16px rgba(37,211,102,0.35);
-  }
-  .btn-whatsapp:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37,211,102,0.5); }
-  .btn-whatsapp svg { width: 22px; height: 22px; fill: #fff; flex-shrink: 0; }
-
-  #feedback-overlay {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%) translateY(-80px);
-    z-index: 9998;
-    padding: 12px 28px;
-    border-radius: 12px;
-    font-family: 'Boogaloo', cursive;
-    font-size: 1.1rem;
-    pointer-events: none;
-    transition: transform .35s cubic-bezier(.34,1.56,.64,1), opacity .35s;
-    opacity: 0;
-    white-space: nowrap;
-  }
-  #feedback-overlay.show {
-    transform: translateX(-50%) translateY(0);
-    opacity: 1;
-  }
-  #feedback-overlay.success { background: rgba(57,255,20,0.15); border: 2px solid var(--green); color: var(--green); }
-  #feedback-overlay.error   { background: rgba(255,51,102,0.15); border: 2px solid var(--red);   color: var(--red); animation: shake .4s ease; }
-  #feedback-overlay.info    { background: rgba(0,229,255,0.12);  border: 2px solid var(--accent3); color: var(--accent3); }
-  @keyframes shake {
-    0%,100%{transform:translateX(-50%) translateY(0)}
-    20%{transform:translateX(calc(-50% - 8px)) translateY(0)}
-    40%{transform:translateX(calc(-50% + 8px)) translateY(0)}
-    60%{transform:translateX(calc(-50% - 5px)) translateY(0)}
-    80%{transform:translateX(calc(-50% + 5px)) translateY(0)}
-  }
+  .logo { font-family: 'Boogaloo', cursive; font-size: 2.8rem; text-align: center; background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 4px; }
+  .card { background: var(--card); border-radius: var(--radius); padding: 24px; margin-bottom: 16px; border: 1px solid rgba(255,255,255,0.06); }
+  .btn { display: block; width: 100%; padding: 16px; border-radius: var(--radius); border: none; font-family: 'Boogaloo'; font-size: 1.3rem; cursor: pointer; text-transform: uppercase; transition: transform 0.2s; }
+  .btn-primary { background: var(--accent); color: #fff; box-shadow: 0 4px 20px rgba(255,107,53,0.4); }
+  .btn-ghost { background: transparent; border: 2px solid rgba(255,255,255,0.15); color: var(--muted); margin-top: 8px; }
   
-  .input-pulse { animation: inputPulse 0.3s ease; }
-  @keyframes inputPulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-  }
+  /* Lógica da Grade de Tabuada */
+  .table-scroll { overflow-x: auto; margin-bottom: 12px; border-radius: 8px; }
+  .mult-table { border-collapse: collapse; width: 100%; min-width: 320px; }
+  .mult-table th, .mult-table td { border: 1px solid rgba(255,255,255,0.1); text-align: center; height: 35px; font-size: 0.9rem; }
+  .mult-table th { background: var(--card2); color: var(--accent2); }
+  .active-cell { outline: 2px solid var(--accent); background: rgba(255,107,53,0.2) !important; }
+  .answered-correct { color: var(--green); font-weight: bold; }
+  .answered-wrong { color: var(--red); }
+
+  /* Numpad */
+  .numpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
+  .nk { background: var(--card2); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: #fff; font-family: 'Boogaloo'; font-size: 1.5rem; padding: 15px 0; cursor: pointer; }
+  .nk.ok-key { background: var(--accent); }
+  
+  .timer-display { font-family: 'Boogaloo'; font-size: 2.2rem; color: var(--accent2); text-align: center; }
+  .player-bar { display: flex; align-items: center; gap: 12px; background: var(--card2); padding: 10px; border-radius: 12px; margin-bottom: 15px; }
 </style>
 </head>
 <body>
 
-<div id="toast">Ação realizada!</div>
-<div id="feedback-overlay"></div>
-
 <div id="screen-home" class="screen active">
-  <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
-    <h1 class="logo">TABUADA TURBO</h1>
-    <p class="tagline">Seja o mais rápido da turma!</p>
-
-    <div class="card">
-      <label class="field-label" for="input-nome">Qual seu nome?</label>
-      <input type="text" id="input-nome" maxlength="12" placeholder="Ex: Lucas, Ana...">
-
-      <label class="field-label mt16">Escolha seu avatar</label>
-      <div class="avatar-grid" id="avatar-grid"></div>
-    </div>
-
-    <button class="btn btn-primary" onclick="salvarEIniciar()">VAMOS JOGAR!</button>
-    <button class="btn btn-ghost mt8" onclick="abrirRanking()">VER RANKING GLOBAL</button>
+  <h1 class="logo">TABUADA TURBO</h1>
+  <div class="card">
+    <label style="color: var(--muted); font-size: 0.8rem;">SEU NOME:</label>
+    <input type="text" id="input-nome" maxlength="12" style="width:100%; padding:12px; background:rgba(255,255,255,0.05); border:1px solid #444; color:white; border-radius:8px; margin-bottom:15px;">
+    <div id="avatar-grid" style="display:grid; grid-template-columns: repeat(5, 1fr); gap:8px;"></div>
   </div>
+  <button class="btn btn-primary" onclick="salvarEIniciar()">JOGAR AGORA</button>
+  <button class="btn btn-ghost" onclick="abrirRanking()">RANKING GLOBAL</button>
 </div>
 
 <div id="screen-modos" class="screen">
-  <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
-    <div class="player-bar">
-      <div class="player-avatar" id="bar-av"></div>
-      <div class="player-info">
-        <div class="player-name" id="bar-nome"></div>
-        <div class="player-level">Iniciante</div>
-      </div>
-    </div>
-
-    <h2 class="section-title">Escolha o Desafio:</h2>
-
-    <button class="btn-level" onclick="iniciarSolo(1)">
-      <div class="lv-icon">📊</div>
-      <div class="lv-info">
-        <h3>Nível 1 (Básico)</h3>
-        <small>Tabuadas do 1 ao 5 - Ideal para treinar</small>
-      </div>
-    </button>
-
-    <button class="btn-level" onclick="iniciarSolo(2)">
-      <div class="lv-icon">🎲</div>
-      <div class="lv-info">
-        <h3>Nível 2 (Turbo)</h3>
-        <small>Tabuadas do 1 ao 10 - Para mestres</small>
-      </div>
-    </button>
-
-    <div style="margin: 12px 0; border-top: 1px solid rgba(255,255,255,0.06);"></div>
-
-    <button class="btn-level" style="border-color: var(--accent3);" onclick="abrirBatalha()">
-      <div class="lv-icon">⚔️</div>
-      <div class="lv-info">
-        <h3 style="color: var(--accent3);">Batalha Online</h3>
-        <small>Desafie um amigo em tempo real</small>
-      </div>
-    </button>
-
-    <button class="btn-ghost mt16" onclick="goto('home')">VOLTAR</button>
+  <div class="player-bar">
+    <span id="bar-av" style="font-size: 1.5rem;"></span>
+    <span id="bar-nome" style="font-weight: bold;"></span>
   </div>
-</div>
-
-<div id="screen-batalha-menu" class="screen">
-  <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
-    <h2 class="logo" style="font-size: 2.2rem;">BATALHA ONLINE</h2>
-    <div class="card">
-      <h3 class="section-title">Criar nova sala</h3>
-      <p style="color:var(--muted); font-size: 0.85rem; margin-bottom: 12px;">Escolha o nível e mande o código para um amigo:</p>
-      <div class="gap-row">
-        <button class="btn btn-primary" style="font-size: 1rem; padding: 12px;" onclick="criarSala(1)">NÍVEL 1</button>
-        <button class="btn btn-primary" style="font-size: 1rem; padding: 12px; background: #e65100;" onclick="criarSala(2)">NÍVEL 2</button>
-      </div>
-    </div>
-
-    <div class="card">
-      <h3 class="section-title">Entrar em uma sala</h3>
-      <input type="text" id="input-codigo" placeholder="CÓDIGO (EX: AB123)" style="text-align: center; text-transform: uppercase;">
-      <button class="btn btn-primary mt16" style="background: var(--accent3); box-shadow: 0 4px 20px rgba(0,229,255,0.3);" onclick="entrarSala()">ENTRAR NA SALA</button>
-    </div>
-    <button class="btn btn-ghost" onclick="goto('modos')">VOLTAR</button>
-  </div>
-</div>
-
-<div id="screen-sala-espera" class="screen">
-  <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
-    <div class="card" style="text-align: center;">
-      <h3 class="section-title">Aguardando Oponente...</h3>
-      <div style="font-size: 1rem; color: var(--muted); margin: 8px 0;">Código da Sala:</div>
-      <div id="espera-codigo" style="font-size: 3rem; font-family: 'Boogaloo'; color: var(--accent2); letter-spacing: 5px;">-----</div>
-      <button class="btn-ghost mt16" style="font-size: 0.8rem;" onclick="copiarCodigo()">Copiar Código 📋</button>
-    </div>
-
-    <div id="espera-jogadores" style="display: flex; gap: 20px; justify-content: center; margin-top: 10px;">
-      </div>
-
-    <p style="text-align: center; color: var(--muted); font-size: 0.85rem; margin-top: 24px; animation: blink 1.5s infinite;">A batalha começa assim que o segundo jogador entrar!</p>
-    <button class="btn-ghost mt16" onclick="sairDaSala()">SAIR DA SALA</button>
-  </div>
-</div>
-
-<div id="screen-countdown" class="screen">
-  <div class="countdown-numero" id="countdown-num">3</div>
-  <div class="countdown-label" id="countdown-label">Prepare-se!</div>
-  <div class="countdown-jogadores" id="countdown-jogs"></div>
+  <button class="btn btn-primary" style="margin-bottom:10px;" onclick="iniciarSolo(1)">NÍVEL 1 (1-5)</button>
+  <button class="btn btn-primary" style="margin-bottom:10px; background:#e65100;" onclick="iniciarSolo(2)">NÍVEL 2 (1-10)</button>
+  <button class="btn btn-ghost" style="border-color:var(--accent3); color:var(--accent3);" onclick="goto('batalha-menu')">BATALHA ONLINE ⚔️</button>
+  <button class="btn btn-ghost" onclick="goto('home')">VOLTAR</button>
 </div>
 
 <div id="screen-jogo" class="screen">
-  <div class="timer-wrap">
-    <div class="timer-display" id="timer">00:00</div>
-    <div class="progress-bar">
-      <div class="progress-fill" id="progress" style="width: 0%"></div>
-    </div>
-  </div>
-
-  <div class="stats-row">
-    <div class="stat-chip green">
-      <div class="sv" id="stat-acertos">0</div>
-      <div class="sk">Acertos</div>
-    </div>
-    <div class="stat-chip red">
-      <div class="sv" id="stat-erros">0</div>
-      <div class="sk">Erros</div>
-    </div>
-    <div class="stat-chip yellow">
-      <div class="sv" id="stat-restam">--</div>
-      <div class="sk">Faltam</div>
-    </div>
-  </div>
-
+  <div class="timer-display" id="timer">00:00</div>
   <div class="table-scroll">
     <table class="mult-table" id="grade"></table>
   </div>
-
-  <div class="question-box">
-    <div class="question-text" id="pergunta">? × ? =</div>
-    <div class="resposta-display" id="resp-view"></div>
+  <div class="card" style="text-align:center; padding:15px;">
+    <h2 id="pergunta" style="font-family:'Boogaloo'; font-size:2rem;">? x ? =</h2>
+    <div id="resp-view" style="font-size:2.5rem; color:var(--accent2); height:50px;"></div>
   </div>
-
-  <div class="numpad-fixo">
-    <div class="numpad">
-      <button class="nk" onclick="tecla(1)">1</button>
-      <button class="nk" onclick="tecla(2)">2</button>
-      <button class="nk" onclick="tecla(3)">3</button>
-      <button class="nk" onclick="tecla(4)">4</button>
-      <button class="nk" onclick="tecla(5)">5</button>
-      <button class="nk" onclick="tecla(6)">6</button>
-      <button class="nk" onclick="tecla(7)">7</button>
-      <button class="nk" onclick="tecla(8)">8</button>
-      <button class="nk" onclick="tecla(9)">9</button>
-      <button class="nk del" onclick="tecla('C')">Apagar</button>
-      <button class="nk" onclick="tecla(0)">0</button>
-      <button class="nk ok-key" onclick="tecla('OK')">OK</button>
-    </div>
-  </div>
-</div>
-
-<div id="screen-resultado" class="screen">
-  <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
-    <div class="result-hero card">
-      <div class="result-trophy">🏆</div>
-      <div class="result-label">Tempo Final</div>
-      <div class="result-time" id="res-tempo">00:00</div>
-      <div class="result-acertos" id="res-meta">100 acertos • 0 erros</div>
-    </div>
-
-    <div id="res-batalha-card" class="card" style="display: none; padding: 16px;">
-      <h3 class="section-title" style="text-align: center;">Resultado da Batalha</h3>
-      <div id="res-batalha-lista"></div>
-    </div>
-
-    <div class="gap-row">
-      <button class="btn btn-primary" onclick="goto('modos')">JOGAR DE NOVO</button>
-      <button class="btn btn-ghost" onclick="abrirRanking()">RANKING</button>
-    </div>
-    <button class="btn-whatsapp mt16" onclick="compartilharWhatsApp()">
-      <svg viewBox="0 0 24 24"><path d="M12.031 6.172c-2.315 0-4.191 1.876-4.191 4.191 0 2.315 1.876 4.191 4.191 4.191 2.315 0 4.191-1.876 4.191-4.191 0-2.315-1.876-4.191-4.191-4.191zm7.942 3.161c-.423-1.638-1.425-3.047-2.822-3.968C15.655 4.417 13.882 4 12.031 4c-4.411 0-8 3.589-8 8 0 1.642.497 3.167 1.348 4.444L4 20l3.656-1.1c1.284.736 2.766 1.1 4.375 1.1 4.411 0 8-3.589 8-8 0-1.88-.417-3.66-1.058-5.267zM12.031 18c-1.442 0-2.8-.363-4.004-1.002l-.286-.151-2.15.646.657-2.102-.167-.291A5.947 5.947 0 016.031 12c0-3.309 2.691-6 6-6s6 2.691 6 6-2.691 6-6 6z"></path></svg>
-      Desafiar Amigo no Zap
-    </button>
+  <div class="numpad">
+    <button class="nk" onclick="tecla(1)">1</button>
+    <button class="nk" onclick="tecla(2)">2</button>
+    <button class="nk" onclick="tecla(3)">3</button>
+    <button class="nk" onclick="tecla(4)">4</button>
+    <button class="nk" onclick="tecla(5)">5</button>
+    <button class="nk" onclick="tecla(6)">6</button>
+    <button class="nk" onclick="tecla(7)">7</button>
+    <button class="nk" onclick="tecla(8)">8</button>
+    <button class="nk" onclick="tecla(9)">9</button>
+    <button class="nk" style="color:var(--red)" onclick="tecla('C')">C</button>
+    <button class="nk" onclick="tecla(0)">0</button>
+    <button class="nk ok-key" onclick="tecla('OK')">OK</button>
   </div>
 </div>
 
 <div id="screen-ranking" class="screen">
-  <div class="rank-header mt8">
-    <h2 class="rank-title">RANKING GLOBAL</h2>
-    <button class="btn-ghost" style="width: auto; padding: 6px 14px;" onclick="goto('home')">FECHAR</button>
-  </div>
-
-  <div class="rank-tabs">
-    <button class="rank-tab active" id="tab-nv1" onclick="carregarRanking(1)">Nível 1</button>
-    <button class="rank-tab" id="tab-nv2" onclick="carregarRanking(2)">Nível 2</button>
-    <button class="rank-tab" id="tab-geral" onclick="carregarRanking(0)">Geral 🌟</button>
-  </div>
-
-  <div style="flex: 1; overflow-y: auto; padding-bottom: 20px;" id="ranking-lista">
-    </div>
-  
-  <button id="btn-admin-limpar" class="btn-ghost" style="display:none; color: var(--red); margin-top: 10px;" onclick="adminLimpar()">🗑️ Limpar Inválidos</button>
+  <h2 class="logo" style="font-size:1.8rem;">RANKING GLOBAL</h2>
+  <div id="ranking-lista" style="margin: 15px 0; flex:1; overflow-y:auto;"></div>
+  <button class="btn btn-primary" onclick="goto('home')">VOLTAR AO INÍCIO</button>
 </div>
 
 <script>
-/* ── CONFIGURAÇÃO VITAL: O link do servidor no Render ── */
 const API_URL = "https://tabuada-turbo.onrender.com";
-
-/* ── ESTADO GLOBAL ── */
-let JOGADOR = { id: "", nome: "", avatar: "🦊" };
-let JOGO = {
-  nivel: 1, 
-  modo: 'solo', 
-  tempo: 0, 
-  timerInterval: null, 
-  questoes: [], 
-  atualIdx: 0,
-  acertos: 0, 
-  erros: 0, 
-  meta: 0,
-  codigoSala: "",
-  socketCheck: null
-};
+let JOGADOR = { id: "jog_" + Date.now(), nome: "", avatar: "🦊" };
+let JOGO = { nivel: 1, tempo: 0, questoes: [], atualIdx: 0, acertos: 0, erros: 0 };
+let respAtual = "";
+let timerInterval;
 
 const AVATARES = ["🦊", "🦁", "🐼", "🤖", "🐱", "🐶", "🐵", "🐙", "🦖", "🦄"];
-let respAtual = "";
 
-/* ── AUDIO ENGINE ── */
-let audioCtx = null;
-const NOTAS = { C4: 261.63, E4: 329.63, G4: 392.00, C5: 523.25, E5: 659.25, G5: 783.99, C6: 1046.50 };
-let musicaAtiva = true;
-let musicaLoop = null;
-let musicaNodes = [];
-
-function getAudioCtx() {
-  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  if (audioCtx.state === 'suspended') audioCtx.resume();
-  return audioCtx;
-}
-
-function tocarNota(freq, delay, dur, vol, tipo = 'triangle') {
-  try {
-    const ctx = getAudioCtx();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.type = tipo;
-    osc.frequency.setValueAtTime(freq, ctx.currentTime + delay);
-    gain.gain.setValueAtTime(vol, ctx.currentTime + delay);
-    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + delay + dur);
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.start(ctx.currentTime + delay);
-    osc.stop(ctx.currentTime + delay + dur);
-    if (tipo === 'sine') musicaNodes.push(osc);
-  } catch(e) {}
-}
-
-const MELODIA_JOGO = [
-  {f: NOTAS.C4, d: 0.2}, {f: NOTAS.E4, d: 0.2}, {f: NOTAS.G4, d: 0.2}, {f: NOTAS.C5, d: 0.4},
-  {f: NOTAS.G4, d: 0.2}, {f: NOTAS.E4, d: 0.2}, {f: NOTAS.C4, d: 0.4}
-];
-const MELODIA_VITORIA = [
-  {f: NOTAS.C5, d: 0.15}, {f: NOTAS.E5, d: 0.15}, {f: NOTAS.G5, d: 0.15}, 
-  {f: NOTAS.C6, d: 0.5}, {f: NOTAS.G5, d: 0.2}, {f: NOTAS.C6, d: 0.6}
-];
-
-function tocarMelodia(m, delay = 0, vol = 0.1) {
-  let tempo = delay;
-  m.forEach(n => {
-    tocarNota(n.f, tempo, n.d * 2, vol, 'sine');
-    tempo += n.d;
-  });
-}
-
-function calcularDuracaoMelodia(m) { return m.reduce((a, b) => a + b.d, 0); }
-
-function iniciarMusica() {
-  if (!musicaAtiva) return;
-  try {
-    pararMusica();
-    musicaAtiva = true;
-    const dur = calcularDuracaoMelodia(MELODIA_JOGO);
-    function loop() {
-      if (!musicaAtiva) return;
-      tocarMelodia(MELODIA_JOGO, 0, 0.15);
-      musicaLoop = setTimeout(loop, dur * 1000);
-    }
-    loop();
-  } catch(e) {}
-}
-
-function tocarVitoria() {
-  try {
-    getAudioCtx();
-    tocarMelodia(MELODIA_VITORIA, 0, 0.25);
-  } catch(e) {}
-}
-
-function tocarAcerto() {
-  try {
-    getAudioCtx();
-    tocarNota(NOTAS.E5, 0, 0.08, 0.12, 'sine');
-    tocarNota(NOTAS.G5, 0.06, 0.08, 0.1, 'sine');
-  } catch(e) {}
-}
-
-function tocarErro() {
-  try {
-    getAudioCtx();
-    tocarNota(180, 0, 0.12, 0.1, 'sawtooth');
-    tocarNota(150, 0.1, 0.12, 0.08, 'sawtooth');
-  } catch(e) {}
-}
-
-function pararMusica() {
-  musicaAtiva = false;
-  clearTimeout(musicaLoop);
-  musicaNodes.forEach(n => { try { n.stop(); } catch(e) {} });
-  musicaNodes = [];
-}
-
-/* ── LÓGICA DE TELAS ── */
-function goto(screenId) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('screen-' + screenId).classList.add('active');
-  if (screenId !== 'jogo' && screenId !== 'countdown') pararMusica();
-  window.scrollTo(0,0);
-}
-
-function showToast(msg, type='ok') {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'show ' + type;
-  setTimeout(() => t.classList.remove('show'), 2500);
-}
-
-function showFeedback(msg, type='info') {
-  const f = document.getElementById('feedback-overlay');
-  f.textContent = msg;
-  f.className = 'show ' + type;
-  setTimeout(() => f.classList.remove('show'), 1500);
-}
-
-/* ── INICIALIZAÇÃO ── */
+// Inicialização
 window.onload = () => {
   const grid = document.getElementById('avatar-grid');
   AVATARES.forEach(av => {
     const b = document.createElement('div');
-    b.className = 'av-btn';
     b.textContent = av;
+    b.style.cssText = "font-size:1.8rem; cursor:pointer; text-align:center; padding:5px; border-radius:8px; background:rgba(255,255,255,0.05);";
     b.onclick = () => {
-      document.querySelectorAll('.av-btn').forEach(x => x.classList.remove('selected'));
-      b.classList.add('selected');
+      Array.from(grid.children).forEach(c => c.style.background = "none");
+      b.style.background = "var(--accent)";
       JOGADOR.avatar = av;
     };
     grid.appendChild(b);
   });
   grid.children[0].click();
-
-  const salvo = localStorage.getItem('tabuada_turbo_v2');
-  if (salvo) {
-    const p = JSON.parse(salvo);
-    document.getElementById('input-nome').value = p.nome;
-    JOGADOR.nome = p.nome;
-    JOGADOR.id = p.id || "jog_" + Date.now();
-    JOGADOR.avatar = p.avatar;
-    document.querySelectorAll('.av-btn').forEach(b => {
-      if (b.textContent === p.avatar) b.click();
-    });
-  } else {
-    JOGADOR.id = "jog_" + Date.now();
-  }
-  
-  // Admin Check
-  const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.has('token')) {
-    document.getElementById('btn-admin-limpar').style.display = 'block';
-  }
 };
 
-async function salvarEIniciar() {
+function goto(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+}
+
+function salvarEIniciar() {
   const nome = document.getElementById('input-nome').value.trim();
-  if (!nome) return showToast("Digite seu nome!", "err");
-  
+  if (!nome) return alert("Digite seu nome!");
   JOGADOR.nome = nome;
-  localStorage.setItem('tabuada_turbo_v2', JSON.stringify(JOGADOR));
-  
-  document.getElementById('bar-nome').textContent = JOGADOR.nome;
+  document.getElementById('bar-nome').textContent = nome;
   document.getElementById('bar-av').textContent = JOGADOR.avatar;
-  
-  try {
-    // Sincroniza com servidor Render
-    await fetch(`${API_URL}/jogador/salvar`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ jogador_id: JOGADOR.id, nome: JOGADOR.nome, avatar: JOGADOR.avatar })
-    });
-  } catch(e) {}
-  
   goto('modos');
 }
 
-/* ── JOGO SOLO ── */
 function iniciarSolo(nivel) {
   JOGO.nivel = nivel;
-  JOGO.modo = 'solo';
-  JOGO.meta = nivel === 1 ? 25 : 100;
-  prepararJogo();
-  iniciarCountdown();
-}
-
-function prepararJogo() {
-  JOGO.tempo = 0;
-  JOGO.acertos = 0;
-  JOGO.erros = 0;
-  JOGO.atualIdx = 0;
-  respAtual = "";
-  
-  const nums = JOGO.nivel === 1 ? [1,2,3,4,5] : [1,2,3,4,5,6,7,8,9,10];
+  JOGO.acertos = 0; JOGO.erros = 0; JOGO.atualIdx = 0; JOGO.tempo = 0;
+  const max = nivel === 1 ? 5 : 10;
   JOGO.questoes = [];
-  nums.forEach(a => {
-    nums.forEach(b => {
-      JOGO.questoes.push({a, b, r: a*b, ok: false});
-    });
-  });
-  JOGO.questoes = JOGO.questoes.sort(() => Math.random() - 0.5);
-  JOGO.meta = JOGO.questoes.length;
-
-  desenharGrade();
-  atualizarStats();
-  document.getElementById('timer').textContent = "00:00";
-  document.getElementById('timer').classList.remove('danger');
-}
-
-function desenharGrade() {
-  const g = document.getElementById('grade');
-  g.innerHTML = "";
-  const max = JOGO.nivel === 1 ? 5 : 10;
-  
-  let h = '<tr><th class="corner">×</th>';
-  for(let i=1; i<=max; i++) h += `<th>${i}</th>`;
-  h += '</tr>';
-  
   for(let i=1; i<=max; i++) {
-    h += `<tr><th>${i}</th>`;
-    for(let j=1; j<=max; j++) {
-      h += `<td id="cell-${i}-${j}">?</td>`;
-    }
-    h += '</tr>';
+    for(let j=1; j<=max; j++) JOGO.questoes.push({a: i, b: j, r: i*j});
   }
-  g.innerHTML = h;
-}
-
-function iniciarCountdown() {
-  goto('countdown');
-  const num = document.getElementById('countdown-num');
-  const jogs = document.getElementById('countdown-jogs');
-  jogs.innerHTML = `<div class="countdown-jogador"><div class="countdown-av">${JOGADOR.avatar}</div><div class="countdown-nome">${JOGADOR.nome}</div></div>`;
+  JOGO.questoes.sort(() => Math.random() - 0.5);
   
-  let c = 3;
-  num.textContent = c;
-  const timer = setInterval(() => {
-    c--;
-    if (c > 0) {
-      num.textContent = c;
-      num.style.animation = 'none';
-      setTimeout(() => num.style.animation = 'countPop .8s ease-out forwards', 10);
-    } else {
-      clearInterval(timer);
-      goto('jogo');
-      proximaPergunta();
-      iniciarTimer();
-      iniciarMusica();
-    }
-  }, 1000);
+  desenharGrade(max);
+  goto('jogo');
+  proximaPergunta();
+  startTimer();
 }
 
-function iniciarTimer() {
-  clearInterval(JOGO.timerInterval);
-  const start = Date.now();
-  JOGO.timerInterval = setInterval(() => {
+function desenharGrade(max) {
+  const g = document.getElementById('grade');
+  let html = '<tr><th>×</th>';
+  for(let i=1; i<=max; i++) html += `<th>${i}</th>`;
+  html += '</tr>';
+  for(let i=1; i<=max; i++) {
+    html += `<tr><th>${i}</th>`;
+    for(let j=1; j<=max; j++) html += `<td id="cell-${i}-${j}">?</td>`;
+    html += '</tr>';
+  }
+  g.innerHTML = html;
+}
+
+function startTimer() {
+  clearInterval(timerInterval);
+  let start = Date.now();
+  timerInterval = setInterval(() => {
     JOGO.tempo = Math.floor((Date.now() - start) / 1000);
-    const m = Math.floor(JOGO.tempo / 60).toString().padStart(2, '0');
-    const s = (JOGO.tempo % 60).toString().padStart(2, '0');
+    let m = Math.floor(JOGO.tempo/60).toString().padStart(2,'0');
+    let s = (JOGO.tempo%60).toString().padStart(2,'0');
     document.getElementById('timer').textContent = `${m}:${s}`;
   }, 1000);
 }
 
 function proximaPergunta() {
+  if (JOGO.atualIdx >= JOGO.questoes.length) return finalizar();
   const q = JOGO.questoes[JOGO.atualIdx];
-  document.getElementById('pergunta').innerHTML = `${q.a} <span>×</span> ${q.b} =`;
-  document.getElementById('resp-view').textContent = "";
-  document.getElementById('resp-view').classList.remove('preenchido');
+  document.getElementById('pergunta').textContent = `${q.a} × ${q.b} =`;
   respAtual = "";
-  
-  document.querySelectorAll('td').forEach(td => td.classList.remove('active-cell'));
-  const cell = document.getElementById(`cell-${q.a}-${q.b}`);
-  if (cell) cell.classList.add('active-cell');
+  document.getElementById('resp-view').textContent = "";
+  document.querySelectorAll('td').forEach(t => t.classList.remove('active-cell'));
+  document.getElementById(`cell-${q.a}-${q.b}`).classList.add('active-cell');
 }
 
 function tecla(v) {
-  const view = document.getElementById('resp-view');
-  if (v === 'C') {
-    respAtual = "";
-  } else if (v === 'OK') {
-    confirmar();
-    return;
-  } else {
-    if (respAtual.length < 3) respAtual += v;
-    view.classList.add('input-pulse');
-    setTimeout(() => view.classList.remove('input-pulse'), 300);
-  }
-  view.textContent = respAtual;
-  if (respAtual !== "") view.classList.add('preenchido');
-  else view.classList.remove('preenchido');
-}
-
-function confirmar() {
-  if (respAtual === "") return;
-  const q = JOGO.questoes[JOGO.atualIdx];
-  const userR = parseInt(respAtual);
-  const cell = document.getElementById(`cell-${q.a}-${q.b}`);
-  
-  if (userR === q.r) {
-    JOGO.acertos++;
-    tocarAcerto();
-    if (cell) {
+  if (v === 'C') respAtual = "";
+  else if (v === 'OK') {
+    const q = JOGO.questoes[JOGO.atualIdx];
+    const cell = document.getElementById(`cell-${q.a}-${q.b}`);
+    if (parseInt(respAtual) === q.r) {
+      JOGO.acertos++;
       cell.textContent = q.r;
       cell.className = "answered-correct";
-    }
-    showFeedback("ACERTOU! ⚡", "success");
-    explosao(cell);
-  } else {
-    JOGO.erros++;
-    tocarErro();
-    if (cell) {
+    } else {
+      JOGO.erros++;
       cell.textContent = q.r;
       cell.className = "answered-wrong";
     }
-    showFeedback("ERROU! ❌", "error");
-  }
-  
-  JOGO.atualIdx++;
-  atualizarStats();
-  
-  if (JOGO.atualIdx >= JOGO.meta) {
-    finalizar();
-  } else {
+    JOGO.atualIdx++;
     proximaPergunta();
+  } else {
+    if (respAtual.length < 3) respAtual += v;
   }
-}
-
-function atualizarStats() {
-  document.getElementById('stat-acertos').textContent = JOGO.acertos;
-  document.getElementById('stat-erros').textContent = JOGO.erros;
-  document.getElementById('stat-restam').textContent = JOGO.meta - JOGO.atualIdx;
-  document.getElementById('progress').style.width = (JOGO.atualIdx / JOGO.meta * 100) + "%";
+  document.getElementById('resp-view').textContent = respAtual;
 }
 
 async function finalizar() {
-  clearInterval(JOGO.timerInterval);
-  pararMusica();
-  tocarVitoria();
+  clearInterval(timerInterval);
+  alert(`Fim de jogo! Tempo: ${JOGO.tempo}s`);
   
-  const m = Math.floor(JOGO.tempo / 60).toString().padStart(2, '0');
-  const s = (JOGO.tempo % 60).toString().padStart(2, '0');
-  document.getElementById('res-tempo').textContent = `${m}:${s}`;
-  document.getElementById('res-meta').innerHTML = `<strong>${JOGO.acertos}</strong> acertos • <strong>${JOGO.erros}</strong> erros`;
-  
-  goto('resultado');
-  confettiRain();
-
-  if (JOGO.modo === 'solo') {
-    try {
-      await fetch(`${API_URL}/ranking/salvar`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          jogador_id: JOGADOR.id,
-          nome: JOGADOR.nome,
-          avatar: JOGADOR.avatar,
-          nivel: JOGO.nivel,
-          tempo: JOGO.tempo,
-          acertos: JOGO.acertos,
-          erros: JOGO.erros,
-          modo: 'solo'
-        })
-      });
-    } catch(e) {}
-  } else {
-    // Modo Batalha
-    document.getElementById('res-batalha-card').style.display = 'block';
-    finalizarBatalha();
-  }
-}
-
-/* ── MODO BATALHA ── */
-function abrirBatalha() { goto('batalha-menu'); }
-
-async function criarSala(nivel) {
   try {
-    const res = await fetch(`${API_URL}/batalha/criar`, {
+    await fetch(`${API_URL}/ranking/salvar`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ jogador_id: JOGADOR.id, nome: JOGADOR.nome, avatar: JOGADOR.avatar, nivel })
-    });
-    const data = await res.json();
-    JOGO.codigoSala = data.codigo;
-    JOGO.nivel = nivel;
-    JOGO.modo = 'batalha';
-    document.getElementById('espera-codigo').textContent = data.codigo;
-    goto('sala-espera');
-    monitorarSala();
-  } catch(e) { showToast("Erro ao criar sala", "err"); }
-}
-
-async function entrarSala() {
-  const cod = document.getElementById('input-codigo').value.trim().toUpperCase();
-  if (!cod) return;
-  try {
-    const res = await fetch(`${API_URL}/batalha/entrar`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ codigo: cod, jogador_id: JOGADOR.id, nome: JOGADOR.nome, avatar: JOGADOR.avatar })
-    });
-    const data = await res.json();
-    if (data.erro) return showToast(data.erro, "err");
-    
-    JOGO.codigoSala = cod;
-    JOGO.nivel = data.nivel;
-    JOGO.modo = 'batalha';
-    document.getElementById('espera-codigo').textContent = cod;
-    goto('sala-espera');
-    monitorarSala();
-  } catch(e) { showToast("Sala não encontrada", "err"); }
-}
-
-function monitorarSala() {
-  if (JOGO.socketCheck) clearInterval(JOGO.socketCheck);
-  JOGO.socketCheck = setInterval(async () => {
-    try {
-      const res = await fetch(`${API_URL}/batalha/status?codigo=${JOGO.codigoSala}`);
-      const sala = await res.json();
-      
-      const lista = document.getElementById('espera-jogadores');
-      lista.innerHTML = sala.jogadores.map(j => `
-        <div class="countdown-jogador">
-          <div class="countdown-av">${j.avatar}</div>
-          <div class="countdown-nome">${j.nome}</div>
-        </div>
-      `).join('');
-
-      if (sala.status === 'jogando') {
-        clearInterval(JOGO.socketCheck);
-        prepararJogo();
-        iniciarCountdownBatalha(sala.jogadores);
-      }
-    } catch(e) { clearInterval(JOGO.socketCheck); }
-  }, 2000);
-}
-
-function iniciarCountdownBatalha(jogs) {
-  goto('countdown');
-  const num = document.getElementById('countdown-num');
-  const divJogs = document.getElementById('countdown-jogs');
-  divJogs.innerHTML = jogs.map(j => `
-    <div class="countdown-jogador">
-      <div class="countdown-av">${j.avatar}</div>
-      <div class="countdown-nome">${j.nome}</div>
-    </div>
-  `).join('<div style="font-family:Boogaloo; font-size:2rem; align-self:center;">VS</div>');
-  
-  let c = 3;
-  num.textContent = c;
-  const timer = setInterval(() => {
-    c--;
-    if (c > 0) num.textContent = c;
-    else {
-      clearInterval(timer);
-      goto('jogo');
-      proximaPergunta();
-      iniciarTimer();
-      iniciarMusica();
-    }
-  }, 1000);
-}
-
-async function finalizarBatalha() {
-  try {
-    await fetch(`${API_URL}/batalha/finalizar`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 
-        codigo: JOGO.codigoSala, 
-        jogador_id: JOGADOR.id, 
-        tempo: JOGO.tempo, 
-        acertos: JOGO.acertos, 
-        erros: JOGO.erros 
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        jogador_id: JOGADOR.id,
+        nome: JOGADOR.nome,
+        avatar: JOGADOR.avatar,
+        nivel: JOGO.nivel,
+        tempo: JOGO.tempo,
+        acertos: JOGO.acertos,
+        erros: JOGO.erros,
+        modo: 'solo'
       })
     });
-    
-    const checkRes = setInterval(async () => {
-      const res = await fetch(`${API_URL}/batalha/status?codigo=${JOGO.codigoSala}`);
-      const sala = await res.json();
-      if (sala.status === 'finalizado') {
-        clearInterval(checkRes);
-        mostrarVencedorBatalha(sala.jogadores);
-      }
-    }, 2000);
-  } catch(e) {}
+  } catch(e) { console.error(e); }
+  goto('home');
 }
 
-function mostrarVencedorBatalha(jogs) {
-  const lista = document.getElementById('res-batalha-lista');
-  // Ordena por tempo (quem terminou primeiro ganha)
-  const ordenados = [...jogs].sort((a,b) => a.tempo - b.tempo);
-  lista.innerHTML = ordenados.map((j, i) => `
-    <div class="rank-item" style="${j.id === JOGADOR.id ? 'border-color:var(--accent);' : ''}">
-      <div class="rank-pos ${i===0?'gold':''}">${i===0?'👑':(i+1)+'º'}</div>
-      <div class="rank-av">${j.avatar}</div>
-      <div class="rank-info">
-        <div class="rank-name">${j.nome} ${j.id === JOGADOR.id ? '(Você)' : ''}</div>
-        <div class="rank-meta">${j.acertos} acertos</div>
-      </div>
-      <div class="rank-time">${Math.floor(j.tempo/60)}:${(j.tempo%60).toString().padStart(2,'0')}</div>
-    </div>
-  `).join('');
-}
-
-/* ── RANKING GLOBAL ── */
-async function carregarRanking(nivel) {
-  document.querySelectorAll('.rank-tab').forEach(t => t.classList.remove('active'));
-  if (nivel === 1) document.getElementById('tab-nv1').classList.add('active');
-  else if (nivel === 2) document.getElementById('tab-nv2').classList.add('active');
-  else document.getElementById('tab-geral').classList.add('active');
-
-  const lista = document.getElementById('ranking-lista');
-  lista.innerHTML = '<div class="rank-empty">Carregando mestre da tabuada...</div>';
-  
+async function abrirRanking() {
   goto('ranking');
-
+  const lista = document.getElementById('ranking-lista');
+  lista.innerHTML = "Carregando...";
   try {
-    const res = await fetch(`${API_URL}/ranking/global?nivel=${nivel}`);
+    const res = await fetch(`${API_URL}/ranking/global?nivel=1`);
     const data = await res.json();
-    
-    if (!data.ranking || data.ranking.length === 0) {
-      lista.innerHTML = '<div class="rank-empty">Nenhum recorde ainda. Seja o primeiro!</div>';
-      return;
-    }
-
     lista.innerHTML = data.ranking.map((r, i) => `
-      <div class="rank-item">
-        <div class="rank-pos ${i===0?'gold':i===1?'silver':i===2?'bronze':''}">${i+1}º</div>
-        <div class="rank-av">${r.avatar}</div>
-        <div class="rank-info">
-          <div class="rank-name">${r.nome}</div>
-          <div class="rank-meta">Nível ${r.nivel} • ${r.acertos} acertos • ${r.data}</div>
-        </div>
-        <div class="rank-time">${Math.floor(r.tempo/60)}:${(r.tempo%60).toString().padStart(2,'0')}</div>
+      <div style="display:flex; justify-content:space-between; padding:10px; background:var(--card2); margin-bottom:5px; border-radius:8px;">
+        <span>${i+1}º ${r.avatar} ${r.nome}</span>
+        <span style="color:var(--accent3)">${r.tempo}s</span>
       </div>
     `).join('');
-  } catch(e) {
-    lista.innerHTML = '<div class="rank-empty">Erro ao carregar. Verifique sua internet.</div>';
-  }
-}
-
-function abrirRanking() { carregarRanking(1); }
-
-/* ── ADMIN ── */
-async function adminLimpar() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const token = urlParams.get('token');
-  if (!token) return;
-  
-  if (!confirm("Deseja mesmo limpar registos inválidos?")) return;
-  
-  try {
-    const res = await fetch(`${API_URL}/admin/limpar-invalidos?token=${token}`);
-    const data = await res.json();
-    showToast(`Limpeza concluída: ${data.removidos} removidos`);
-    carregarRanking(1);
-  } catch(e) { showToast("Erro na limpeza", "err"); }
-}
-
-/* ── EFEITOS VISUAIS ── */
-function explosao(el) {
-  if (!el) return;
-  const rect = el.getBoundingClientRect();
-  for (let i = 0; i < 8; i++) {
-    const p = document.createElement('div');
-    p.className = 'confetti-piece';
-    p.style.left = (rect.left + rect.width/2) + 'px';
-    p.style.top = (rect.top + rect.height/2) + 'px';
-    p.style.background = JOGADOR.avatar === '🦊' ? '#ff6b35' : ['#ff6b35','#ffd700','#00e5ff','#39ff14'][Math.floor(Math.random()*4)];
-    const angle = Math.random() * Math.PI * 2;
-    const velocity = 2 + Math.random() * 4;
-    p.animate([
-      { transform: 'translate(0,0) scale(1)', opacity: 1 },
-      { transform: `translate(${Math.cos(angle)*100}px, ${Math.sin(angle)*100}px) scale(0)`, opacity: 0 }
-    ], { duration: 600, easing: 'ease-out' });
-    document.body.appendChild(p);
-    setTimeout(() => p.remove(), 600);
-  }
-}
-
-function confettiRain() {
-  for (let i = 0; i < 50; i++) {
-    const p = document.createElement('div');
-    p.className = 'confetti-piece';
-    p.style.left = Math.random() * 100 + 'vw';
-    p.style.top = '-20px';
-    p.style.background = ['#ff6b35','#ffd700','#00e5ff','#39ff14','#ff3366'][Math.floor(Math.random()*5)];
-    p.style.width = (5 + Math.random()*10) + 'px';
-    p.style.height = p.style.width;
-    p.style.borderRadius = '50%';
-    p.animate([
-      { transform: `translate(0,0) rotate(0deg)`, opacity: 1 },
-      { transform: `translate(${(Math.random()-0.5)*200}px, 100vh) rotate(${Math.random()*360}deg)`, opacity: 0 }
-    ], { duration: 2000 + Math.random()*3000, easing: 'cubic-bezier(.37,0,.63,1)' });
-    document.body.appendChild(p);
-    setTimeout(() => p.remove(), 5000);
-  }
-}
-
-function compartilharWhatsApp() {
-  const m = Math.floor(JOGO.tempo/60);
-  const s = (JOGO.tempo%60).toString().padStart(2, '0');
-  const texto = `Fiz ${JOGO.acertos} acertos na tabuada nível ${JOGO.nivel} em apenas ${m}:${s}! ⚡ Desafio você a bater meu tempo no Tabuada Turbo! 🎮\n\nJogue grátis em: https://tabuadaturbo.com.br`;
-  window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(texto)}`);
-}
-
-function sairDaSala() {
-  clearInterval(JOGO.socketCheck);
-  goto('modos');
-}
-
-function copiarCodigo() {
-  navigator.clipboard.writeText(JOGO.codigoSala);
-  showToast("Código copiado! Cole para seu amigo.");
+  } catch(e) { lista.innerHTML = "Erro ao carregar ranking."; }
 }
 </script>
-
 </body>
 </html>
