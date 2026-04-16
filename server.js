@@ -14,7 +14,11 @@ app.use(compression({ threshold: 512, level: 6 }));
 
 // CORS otimizado
 app.use(cors({
-  origin: ['https://tabuadaturbo.com.br', 'https://www.tabuadaturbo.com.br'],
+  origin: [
+    'https://tabuadaturbo.com.br',
+    'https://www.tabuadaturbo.com.br',
+    'https://meirelesnew.github.io'
+  ],
   methods: ['GET', 'POST'],
   credentials: true
 }));
@@ -112,18 +116,25 @@ app.get('/ping', (req, res) => {
 
 // Salvar jogador
 app.post('/jogador/salvar', async (req, res) => {
-  const { nome, avatar } = req.body;
-  const jogadorId = uuidv4();
+  const { jogador_id, nome, avatar } = req.body;
+  
+  // Se o cliente enviar um ID válido, usa ele. Senão gera um novo (UUIDv4).
+  const idFinal = (jogador_id && jogador_id.length > 5) ? jogador_id : uuidv4();
   
   if (isDbConnected && db) {
-    await db.collection('jogadores').replaceOne(
-      { _id: jogadorId },
-      { _id: jogadorId, nome, avatar, criado_em: new Date() },
-      { upsert: true }
-    );
+    try {
+      await db.collection('jogadores').replaceOne(
+        { _id: idFinal },
+        { _id: idFinal, nome, avatar, atualizado_em: new Date() },
+        { upsert: true }
+      );
+      console.log(`👤 Jogador ${idFinal.substring(0,8)}... salvo/atualizado`);
+    } catch (err) {
+      console.error('❌ Erro ao salvar jogador no DB:', err.message);
+    }
   }
   
-  res.json({ jogador_id: jogadorId, nome, avatar });
+  res.json({ jogador_id: idFinal, nome, avatar });
 });
 
 // ═══════════════════════════════════════════════════════════════
@@ -256,7 +267,8 @@ app.post('/batalha/finalizar', async (req, res) => {
     acertos,
     erros,
     modo: 'batalha',
-    data: new Date().toLocaleDateString('pt-BR')
+    data: new Date().toLocaleDateString('pt-BR'),
+    enviado_em: new Date()
   });
   
   res.json({ status: todosProntos ? 'finalizada' : salaAtt.status, jogadores: salaAtt.jogadores });
@@ -282,7 +294,8 @@ app.post('/ranking/salvar', async (req, res) => {
     acertos: parseInt(acertos),
     erros: parseInt(erros),
     modo,
-    data: new Date().toLocaleDateString('pt-BR')
+    data: new Date().toLocaleDateString('pt-BR'),
+    enviado_em: new Date()
   });
   res.json({ ok: true });
 });
@@ -299,13 +312,14 @@ app.get('/ranking/global', async (req, res) => {
   
   const pipeline = [
     { $match: match },
-    { $sort: { tempo: 1 } },
+    // Ordenar por tempo e depois por data de envio para consistência
+    { $sort: { tempo: 1, enviado_em: 1 } },
     { $group: {
       _id: '$jogador_id',
       nome: { $first: '$nome' },
       avatar: { $first: '$avatar' },
       nivel: { $first: '$nivel' },
-      tempo: { $min: '$tempo' },
+      tempo: { $first: '$tempo' },
       acertos: { $first: '$acertos' },
       erros: { $first: '$erros' },
       modo: { $first: '$modo' },
