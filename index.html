@@ -14,8 +14,7 @@
 
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2757076714223993" crossorigin="anonymous"></script>
 
-<meta name="description" content="Tabuada Turbo - O jogo de tabuada mais rápido do Brasil! Treine multiplicação com ranking global e batalhas online.">
-<meta name="theme-color" content="#ff6b35">
+<meta name="description" content="Tabuada Turbo - O jogo de tabuada mais rápido do Brasil!">
 <title>Tabuada Turbo ⚡ | Jogo de Tabuada Online</title>
 <link href="https://fonts.googleapis.com/css2?family=Boogaloo&family=Nunito:wght@400;600;700;900&display=swap" rel="stylesheet">
 
@@ -32,65 +31,74 @@
     font-family: 'Nunito', sans-serif; min-height: 100vh;
     overflow-x: hidden;
   }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background-image: radial-gradient(circle, rgba(255,107,53,0.07) 1px, transparent 1px);
+    background-size: 32px 32px; pointer-events: none;
+  }
   .screen { display: none; padding: 20px; max-width: 480px; margin: 0 auto; min-height: 100vh; position: relative; z-index: 1; }
   .screen.active { display: flex; flex-direction: column; }
-  .logo { font-family: 'Boogaloo', cursive; font-size: 2.8rem; text-align: center; background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 4px; }
-  .card { background: var(--card); border-radius: var(--radius); padding: 24px; margin-bottom: 16px; border: 1px solid rgba(255,255,255,0.06); }
-  .btn { display: block; width: 100%; padding: 16px; border-radius: var(--radius); border: none; font-family: 'Boogaloo'; font-size: 1.3rem; cursor: pointer; text-transform: uppercase; transition: transform 0.2s; }
-  .btn-primary { background: var(--accent); color: #fff; box-shadow: 0 4px 20px rgba(255,107,53,0.4); }
-  .btn-ghost { background: transparent; border: 2px solid rgba(255,255,255,0.15); color: var(--muted); margin-top: 8px; }
   
-  /* Lógica da Grade de Tabuada */
-  .table-scroll { overflow-x: auto; margin-bottom: 12px; border-radius: 8px; }
-  .mult-table { border-collapse: collapse; width: 100%; min-width: 320px; }
-  .mult-table th, .mult-table td { border: 1px solid rgba(255,255,255,0.1); text-align: center; height: 35px; font-size: 0.9rem; }
-  .mult-table th { background: var(--card2); color: var(--accent2); }
-  .active-cell { outline: 2px solid var(--accent); background: rgba(255,107,53,0.2) !important; }
-  .answered-correct { color: var(--green); font-weight: bold; }
-  .answered-wrong { color: var(--red); }
+  .logo { font-family: 'Boogaloo', cursive; font-size: 2.8rem; text-align: center; background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 4px; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.03)} }
 
-  /* Numpad */
-  .numpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
-  .nk { background: var(--card2); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: #fff; font-family: 'Boogaloo'; font-size: 1.5rem; padding: 15px 0; cursor: pointer; }
-  .nk.ok-key { background: var(--accent); }
-  
-  .timer-display { font-family: 'Boogaloo'; font-size: 2.2rem; color: var(--accent2); text-align: center; }
-  .player-bar { display: flex; align-items: center; gap: 12px; background: var(--card2); padding: 10px; border-radius: 12px; margin-bottom: 15px; }
+  .card { background: var(--card); border-radius: var(--radius); padding: 24px; margin-bottom: 16px; border: 1px solid rgba(255,255,255,0.06); }
+  .btn { display: block; width: 100%; padding: 16px; border-radius: var(--radius); border: none; font-family: 'Boogaloo'; font-size: 1.3rem; cursor: pointer; text-transform: uppercase; transition: all 0.2s; }
+  .btn-primary { background: var(--accent); color: #fff; box-shadow: 0 4px 20px rgba(255,107,53,0.4); }
+  .btn-primary:hover { transform: translateY(-2px); }
+  .btn-ghost { background: transparent; border: 2px solid rgba(255,255,255,0.15); color: var(--muted); margin-top: 8px; }
+
+  .avatar-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 12px; }
+  .av-btn { font-size: 1.8rem; background: rgba(255,255,255,0.05); border: 2px solid transparent; border-radius: 12px; padding: 8px; cursor: pointer; text-align: center; }
+  .av-btn.selected { border-color: var(--accent); background: rgba(255,107,53,0.2); transform: scale(1.1); }
+
+  .table-scroll { overflow-x: auto; margin-bottom: 12px; }
+  .mult-table { border-collapse: collapse; width: 100%; }
+  .mult-table th, .mult-table td { border: 1.5px solid rgba(255,255,255,0.2); text-align: center; width: 40px; height: 40px; font-size: 0.9rem; }
+  .mult-table th { background: var(--card2); color: var(--accent2); font-family: 'Boogaloo'; }
+  .active-cell { outline: 2px solid var(--accent); background: rgba(255,107,53,0.2) !important; animation: blink 0.5s infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.7} }
+  .answered-correct { color: var(--green); font-weight: 900; background: rgba(57,255,20,0.1); }
+  .answered-wrong { color: var(--red); background: rgba(255,51,102,0.1); }
+
+  .numpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .nk { background: var(--card2); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: #fff; font-family: 'Boogaloo'; font-size: 1.5rem; padding: 12px 0; cursor: pointer; }
+  .nk.ok-key { background: linear-gradient(135deg, var(--accent), #ff8c55); }
+
+  #feedback-overlay { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px); padding: 12px 24px; border-radius: 12px; font-family: 'Boogaloo'; z-index: 1000; transition: 0.3s; opacity: 0; }
+  #feedback-overlay.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 </style>
 </head>
 <body>
 
+<div id="feedback-overlay"></div>
+
 <div id="screen-home" class="screen active">
   <h1 class="logo">TABUADA TURBO</h1>
   <div class="card">
-    <label style="color: var(--muted); font-size: 0.8rem;">SEU NOME:</label>
-    <input type="text" id="input-nome" maxlength="12" style="width:100%; padding:12px; background:rgba(255,255,255,0.05); border:1px solid #444; color:white; border-radius:8px; margin-bottom:15px;">
-    <div id="avatar-grid" style="display:grid; grid-template-columns: repeat(5, 1fr); gap:8px;"></div>
+    <label style="color:var(--muted); font-size:0.7rem; letter-spacing:1px;">QUAL SEU NOME?</label>
+    <input type="text" id="input-nome" maxlength="12" style="width:100%; padding:12px; background:rgba(255,255,255,0.05); border:2px solid rgba(255,255,255,0.1); color:white; border-radius:10px; margin:10px 0;">
+    <div class="avatar-grid" id="avatar-grid"></div>
   </div>
-  <button class="btn btn-primary" onclick="salvarEIniciar()">JOGAR AGORA</button>
+  <button class="btn btn-primary" onclick="salvarEIniciar()">VAMOS JOGAR!</button>
   <button class="btn btn-ghost" onclick="abrirRanking()">RANKING GLOBAL</button>
 </div>
 
-<div id="screen-modos" class="screen">
-  <div class="player-bar">
-    <span id="bar-av" style="font-size: 1.5rem;"></span>
-    <span id="bar-nome" style="font-weight: bold;"></span>
-  </div>
-  <button class="btn btn-primary" style="margin-bottom:10px;" onclick="iniciarSolo(1)">NÍVEL 1 (1-5)</button>
-  <button class="btn btn-primary" style="margin-bottom:10px; background:#e65100;" onclick="iniciarSolo(2)">NÍVEL 2 (1-10)</button>
-  <button class="btn btn-ghost" style="border-color:var(--accent3); color:var(--accent3);" onclick="goto('batalha-menu')">BATALHA ONLINE ⚔️</button>
-  <button class="btn btn-ghost" onclick="goto('home')">VOLTAR</button>
-</div>
-
 <div id="screen-jogo" class="screen">
-  <div class="timer-display" id="timer">00:00</div>
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+    <div id="timer" style="font-family:'Boogaloo'; font-size:2rem; color:var(--accent2);">00:00</div>
+    <div id="progress-text" style="font-size:0.9rem; color:var(--muted);">Faltam: --</div>
+  </div>
+  
   <div class="table-scroll">
     <table class="mult-table" id="grade"></table>
   </div>
-  <div class="card" style="text-align:center; padding:15px;">
-    <h2 id="pergunta" style="font-family:'Boogaloo'; font-size:2rem;">? x ? =</h2>
-    <div id="resp-view" style="font-size:2.5rem; color:var(--accent2); height:50px;"></div>
+
+  <div class="card" style="text-align:center; display:flex; align-items:center; justify-content:center; gap:20px;">
+    <div id="pergunta" style="font-family:'Boogaloo'; font-size:2.2rem;">? × ? =</div>
+    <div id="resp-view" style="font-family:'Boogaloo'; font-size:2.5rem; color:var(--accent2); min-width:60px; border-bottom:3px solid var(--accent);"></div>
   </div>
+
   <div class="numpad">
     <button class="nk" onclick="tecla(1)">1</button>
     <button class="nk" onclick="tecla(2)">2</button>
@@ -101,16 +109,16 @@
     <button class="nk" onclick="tecla(7)">7</button>
     <button class="nk" onclick="tecla(8)">8</button>
     <button class="nk" onclick="tecla(9)">9</button>
-    <button class="nk" style="color:var(--red)" onclick="tecla('C')">C</button>
+    <button class="nk" style="color:var(--red)" onclick="tecla('C')">⌫</button>
     <button class="nk" onclick="tecla(0)">0</button>
     <button class="nk ok-key" onclick="tecla('OK')">OK</button>
   </div>
 </div>
 
 <div id="screen-ranking" class="screen">
-  <h2 class="logo" style="font-size:1.8rem;">RANKING GLOBAL</h2>
-  <div id="ranking-lista" style="margin: 15px 0; flex:1; overflow-y:auto;"></div>
-  <button class="btn btn-primary" onclick="goto('home')">VOLTAR AO INÍCIO</button>
+  <h2 class="logo" style="font-size:2rem;">RANKING GLOBAL</h2>
+  <div id="ranking-lista" style="flex:1; overflow-y:auto; margin-bottom:20px;"></div>
+  <button class="btn btn-primary" onclick="goto('home')">VOLTAR</button>
 </div>
 
 <script>
@@ -120,19 +128,29 @@ let JOGO = { nivel: 1, tempo: 0, questoes: [], atualIdx: 0, acertos: 0, erros: 0
 let respAtual = "";
 let timerInterval;
 
-const AVATARES = ["🦊", "🦁", "🐼", "🤖", "🐱", "🐶", "🐵", "🐙", "🦖", "🦄"];
+// ÁUDIO ENGINE (O seu original)
+let audioCtx = null;
+function playSound(freq, type='sine', dur=0.1) {
+  if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.type = type; osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+  gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + dur);
+  osc.connect(gain); gain.connect(audioCtx.destination);
+  osc.start(); osc.stop(audioCtx.currentTime + dur);
+}
 
-// Inicialização
+// Inicializa Avatares
 window.onload = () => {
   const grid = document.getElementById('avatar-grid');
-  AVATARES.forEach(av => {
+  const avs = ["🦊", "🦁", "🐼", "🤖", "🐱", "🐶", "🐵", "🐙", "🦖", "🦄"];
+  avs.forEach(av => {
     const b = document.createElement('div');
-    b.textContent = av;
-    b.style.cssText = "font-size:1.8rem; cursor:pointer; text-align:center; padding:5px; border-radius:8px; background:rgba(255,255,255,0.05);";
+    b.className = 'av-btn'; b.textContent = av;
     b.onclick = () => {
-      Array.from(grid.children).forEach(c => c.style.background = "none");
-      b.style.background = "var(--accent)";
-      JOGADOR.avatar = av;
+      document.querySelectorAll('.av-btn').forEach(x => x.classList.remove('selected'));
+      b.classList.add('selected'); JOGADOR.avatar = av;
     };
     grid.appendChild(b);
   });
@@ -144,25 +162,30 @@ function goto(id) {
   document.getElementById('screen-' + id).classList.add('active');
 }
 
+function showFeedback(msg, type) {
+  const f = document.getElementById('feedback-overlay');
+  f.textContent = msg;
+  f.style.background = type === 'success' ? 'var(--green)' : 'var(--red)';
+  f.style.color = '#000';
+  f.classList.add('show');
+  setTimeout(() => f.classList.remove('show'), 1000);
+}
+
 function salvarEIniciar() {
-  const nome = document.getElementById('input-nome').value.trim();
-  if (!nome) return alert("Digite seu nome!");
-  JOGADOR.nome = nome;
-  document.getElementById('bar-nome').textContent = nome;
-  document.getElementById('bar-av').textContent = JOGADOR.avatar;
-  goto('modos');
+  const n = document.getElementById('input-nome').value.trim();
+  if(!n) return alert("Digite seu nome!");
+  JOGADOR.nome = n;
+  iniciarSolo(1); // Inicia nível 1 por padrão ou mude para tela de modos
 }
 
 function iniciarSolo(nivel) {
-  JOGO.nivel = nivel;
-  JOGO.acertos = 0; JOGO.erros = 0; JOGO.atualIdx = 0; JOGO.tempo = 0;
-  const max = nivel === 1 ? 5 : 10;
+  JOGO.nivel = nivel; JOGO.acertos = 0; JOGO.erros = 0; JOGO.atualIdx = 0;
+  const max = 5; // Você pode mudar para 10 se quiser nível difícil
   JOGO.questoes = [];
   for(let i=1; i<=max; i++) {
-    for(let j=1; j<=max; j++) JOGO.questoes.push({a: i, b: j, r: i*j});
+    for(let j=1; j<=max; j++) JOGO.questoes.push({a:i, b:j, r:i*j});
   }
   JOGO.questoes.sort(() => Math.random() - 0.5);
-  
   desenharGrade(max);
   goto('jogo');
   proximaPergunta();
@@ -171,94 +194,88 @@ function iniciarSolo(nivel) {
 
 function desenharGrade(max) {
   const g = document.getElementById('grade');
-  let html = '<tr><th>×</th>';
-  for(let i=1; i<=max; i++) html += `<th>${i}</th>`;
-  html += '</tr>';
+  let h = '<tr><th>×</th>';
+  for(let i=1; i<=max; i++) h += `<th>${i}</th>`;
+  h += '</tr>';
   for(let i=1; i<=max; i++) {
-    html += `<tr><th>${i}</th>`;
-    for(let j=1; j<=max; j++) html += `<td id="cell-${i}-${j}">?</td>`;
-    html += '</tr>';
+    h += `<tr><th>${i}</th>`;
+    for(let j=1; j<=max; j++) h += `<td id="cell-${i}-${j}">?</td>`;
+    h += '</tr>';
   }
-  g.innerHTML = html;
+  g.innerHTML = h;
 }
 
 function startTimer() {
-  clearInterval(timerInterval);
   let start = Date.now();
   timerInterval = setInterval(() => {
-    JOGO.tempo = Math.floor((Date.now() - start) / 1000);
-    let m = Math.floor(JOGO.tempo/60).toString().padStart(2,'0');
-    let s = (JOGO.tempo%60).toString().padStart(2,'0');
+    JOGO.tempo = Math.floor((Date.now()-start)/1000);
+    const m = Math.floor(JOGO.tempo/60).toString().padStart(2,'0');
+    const s = (JOGO.tempo%60).toString().padStart(2,'0');
     document.getElementById('timer').textContent = `${m}:${s}`;
   }, 1000);
 }
 
 function proximaPergunta() {
-  if (JOGO.atualIdx >= JOGO.questoes.length) return finalizar();
+  if(JOGO.atualIdx >= JOGO.questoes.length) return finalizar();
   const q = JOGO.questoes[JOGO.atualIdx];
-  document.getElementById('pergunta').textContent = `${q.a} × ${q.b} =`;
-  respAtual = "";
-  document.getElementById('resp-view').textContent = "";
+  document.getElementById('pergunta').innerHTML = `${q.a} <span>×</span> ${q.b} =`;
+  document.getElementById('progress-text').textContent = `Faltam: ${JOGO.questoes.length - JOGO.atualIdx}`;
+  respAtual = ""; document.getElementById('resp-view').textContent = "";
   document.querySelectorAll('td').forEach(t => t.classList.remove('active-cell'));
   document.getElementById(`cell-${q.a}-${q.b}`).classList.add('active-cell');
 }
 
 function tecla(v) {
-  if (v === 'C') respAtual = "";
-  else if (v === 'OK') {
+  if(v==='C') respAtual = "";
+  else if(v==='OK') {
     const q = JOGO.questoes[JOGO.atualIdx];
     const cell = document.getElementById(`cell-${q.a}-${q.b}`);
-    if (parseInt(respAtual) === q.r) {
-      JOGO.acertos++;
-      cell.textContent = q.r;
-      cell.className = "answered-correct";
+    if(parseInt(respAtual) === q.r) {
+      JOGO.acertos++; cell.textContent = q.r; cell.className = "answered-correct";
+      playSound(880, 'sine', 0.1); showFeedback("CORRETO!", "success");
     } else {
-      JOGO.erros++;
-      cell.textContent = q.r;
-      cell.className = "answered-wrong";
+      JOGO.erros++; cell.textContent = q.r; cell.className = "answered-wrong";
+      playSound(220, 'sawtooth', 0.2); showFeedback("ERROU!", "error");
     }
-    JOGO.atualIdx++;
-    proximaPergunta();
+    JOGO.atualIdx++; proximaPergunta();
   } else {
-    if (respAtual.length < 3) respAtual += v;
+    if(respAtual.length < 3) respAtual += v;
   }
   document.getElementById('resp-view').textContent = respAtual;
 }
 
 async function finalizar() {
   clearInterval(timerInterval);
-  alert(`Fim de jogo! Tempo: ${JOGO.tempo}s`);
-  
+  alert("Parabéns! Enviando seu tempo para o ranking...");
   try {
     await fetch(`${API_URL}/ranking/salvar`, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
-        jogador_id: JOGADOR.id,
-        nome: JOGADOR.nome,
-        avatar: JOGADOR.avatar,
-        nivel: JOGO.nivel,
-        tempo: JOGO.tempo,
-        acertos: JOGO.acertos,
-        erros: JOGO.erros,
-        modo: 'solo'
+        jogador_id: JOGADOR.id, nome: JOGADOR.nome, avatar: JOGADOR.avatar,
+        nivel: JOGO.nivel, tempo: JOGO.tempo, acertos: JOGO.acertos, erros: JOGO.erros, modo: 'solo'
       })
     });
-  } catch(e) { console.error(e); }
-  goto('home');
+  } catch(e) {}
+  abrirRanking();
 }
 
 async function abrirRanking() {
   goto('ranking');
   const lista = document.getElementById('ranking-lista');
-  lista.innerHTML = "Carregando...";
+  lista.innerHTML = "<p style='text-align:center'>Buscando recordes...</p>";
   try {
-    const res = await fetch(`${API_URL}/ranking/global?nivel=1`);
+    const res = await fetch(`${API_URL}/ranking/global?nivel=${JOGO.nivel}`);
     const data = await res.json();
     lista.innerHTML = data.ranking.map((r, i) => `
-      <div style="display:flex; justify-content:space-between; padding:10px; background:var(--card2); margin-bottom:5px; border-radius:8px;">
-        <span>${i+1}º ${r.avatar} ${r.nome}</span>
-        <span style="color:var(--accent3)">${r.tempo}s</span>
+      <div style="display:flex; align-items:center; gap:15px; background:var(--card2); padding:12px; border-radius:12px; margin-bottom:8px;">
+        <span style="font-family:'Boogaloo'; font-size:1.2rem; color:var(--accent2)">${i+1}º</span>
+        <span style="font-size:1.5rem">${r.avatar}</span>
+        <div style="flex:1">
+          <div style="font-weight:bold">${r.nome}</div>
+          <div style="font-size:0.7rem; color:var(--muted)">${r.acertos} acertos</div>
+        </div>
+        <div style="font-family:'Boogaloo'; color:var(--accent3)">${r.tempo}s</div>
       </div>
     `).join('');
   } catch(e) { lista.innerHTML = "Erro ao carregar ranking."; }
