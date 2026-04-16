@@ -1236,23 +1236,30 @@ function mostrarTela(id) {
   window.scrollTo(0, 0);
 }
 
-function irParaMenu() {
+async function irParaMenu() {
   if (!validarCadastro()) return;
-  // Registrar jogador na API e pegar ID
-  // Registrar/atualizar jogador na API
-  fetch(API_URL + '/jogador/salvar', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ nome: jogador.nome, avatar: jogador.avatar })
-  }).then(r => r.json()).then(d => {
-    // Manter mesmo ID se já existir (histórico preservado)
-    if (!jogadorId) {
-      jogadorId = d.jogador_id;
-      localStorage.setItem('tt_jogador_id', jogadorId);
-    }
-  }).catch(e => console.warn("[API] offline:", e.message));
+  // ✅ Fix A: aguarda o jogadorId ser definido antes de navegar
+  try {
+    const r = await fetch(API_URL + '/jogador/salvar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        jogador_id: jogadorId || '',
+        nome: jogador.nome,
+        avatar: jogador.avatar
+      })
+    });
+    const d = await r.json();
+    // Sempre usa o ID retornado pela API (garante consistência)
+    jogadorId = d.jogador_id;
+    localStorage.setItem('tt_jogador_id', jogadorId);
+    console.log('[JOGADOR] ID confirmado:', jogadorId.substring(0,8)+'...');
+  } catch(e) {
+    console.warn('[API] offline — usando ID local:', e.message);
+    if (!jogadorId) jogadorId = 'local_' + Date.now();
+  }
   renderPlayerBar('menu');
-  exibirRecordeTela(1); // mostra recorde do nível 1 por padrão
+  exibirRecordeTela(1);
   mostrarTela('screen-menu');
 }
 
@@ -1579,24 +1586,8 @@ function finalizarJogo() {
     return;
   }
 
-  // Modo solo
+  // Modo solo — salvarRanking já cuida do local + API
   salvarRanking(entrada);
-  if (jogadorId) {
-    fetch(API_URL + '/ranking/salvar', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        jogador_id: jogadorId,
-        nome: jogador.nome,
-        avatar: jogador.avatar,
-        nivel: nivelAtualJogo,
-        tempo: segundos,
-        acertos,
-        erros,
-        modo: 'solo'
-      })
-    }).catch(e => console.warn("[API] offline:", e.message));
-  }
 
   finalizarComRecorde(nivelAtualJogo, segundos);
   mostrarResultado(entrada);
@@ -1680,28 +1671,35 @@ function salvarRanking(entrada) {
   rank.sort((a, b) => a.tempo - b.tempo);
   localStorage.setItem(key, JSON.stringify(rank.slice(0, 50)));
 
+  // ✅ Fix C: garante que jogadorId existe antes de enviar para a API
+  const jid = jogadorId || localStorage.getItem('tt_jogador_id');
+  if (!jid) {
+    console.warn('[RANKING] jogadorId não disponível — salvo apenas local');
+    return;
+  }
+
   // 2. Salvar na API (ranking global — visto por todos)
   const payload = {
-    jogador_id: jogadorId || 'anonimo_' + Date.now(),
+    jogador_id: jid,
     nome: entrada.nome,
     avatar: entrada.avatar,
     nivel: entrada.nivel,
-    tempo: entrada.tempo,
-    acertos: entrada.acertos,
-    erros: entrada.erros,
+    tempo: Number(entrada.tempo),
+    acertos: Number(entrada.acertos),
+    erros: Number(entrada.erros),
     modo: 'solo'
   };
+  console.log('[RANKING] Enviando para API:', payload);
   fetch(API_URL + '/ranking/salvar', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
   }).then(r => {
     if (r.ok) {
-      console.log('[RANKING] Salvo na API com sucesso — atualizando ranking...');
-      // Re-fetch do ranking após salvar para garantir exibição global
+      console.log('[RANKING] ✅ Salvo na API — atualizando ranking global...');
       if (tabAtiva !== undefined) renderRankList(tabAtiva);
     } else {
-      r.json().then(d => console.error('[RANKING] Erro ao salvar:', d));
+      r.text().then(t => console.error('[RANKING] ❌ Erro ao salvar:', r.status, t));
     }
   }).catch(e => console.warn('[RANKING] API offline — mantido local:', e.message));
 }
