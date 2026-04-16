@@ -146,7 +146,8 @@ def salvar_ranking(body: RankingIn):
         "acertos": int(body.acertos),
         "erros": int(body.erros),
         "modo": body.modo,
-        "data": datetime.utcnow().strftime("%d/%m/%Y")
+        "data": datetime.utcnow().strftime("%d/%m/%Y"),
+        "enviado_em": datetime.utcnow()
     })
     return {"ok": True}
 
@@ -157,12 +158,36 @@ def ranking_global(nivel: int = 0, modo: str = "todos", limite: int = 50):
     if nivel in [1, 2]: filtro["nivel"] = nivel
     if modo in ["solo", "batalha"]: filtro["modo"] = modo
     
-    # ✅ Garante que o tempo seja número para ordenação correta
-    filtro["tempo"] = {"$type": ["int", "long", "double", "decimal"]}
-
-    docs = list(ranking_col.find(filtro).sort("tempo", 1).limit(limite))
+    # Pipeline de agregação para consolidar o melhor tempo de cada jogador
+    pipeline = [
+        {"$match": filtro},
+        # Garante que o tempo seja número
+        {"$match": {"tempo": {"$type": ["int", "long", "double", "decimal"]}}},
+        # Ordena por tempo (menor primeiro) e data de envio
+        {"$sort": {"tempo": 1, "enviado_em": 1}},
+        # Agrupa pelo jogador_id para pegar apenas a melhor marca de cada um
+        {"$group": {
+            "_id": "$jogador_id",
+            "nome": {"$first": "$nome"},
+            "avatar": {"$first": "$avatar"},
+            "nivel": {"$first": "$nivel"},
+            "tempo": {"$first": "$tempo"},
+            "acertos": {"$first": "$acertos"},
+            "erros": {"$first": "$erros"},
+            "modo": {"$first": "$modo"},
+            "data": {"$first": "$data"}
+        }},
+        # Ordena o ranking final consolidado
+        {"$sort": {"tempo": 1}},
+        {"$limit": limite}
+    ]
+    
+    docs = list(ranking_col.aggregate(pipeline))
     for d in docs:
-        d["_id"] = str(d["_id"])
+        # Renomear _id para jogador_id e converter para string se necessário
+        d["jogador_id"] = str(d["_id"])
+        if "_id" in d: del d["_id"]
+        
     return {"ranking": docs}
 
 # ─── Admin (Limpeza) ─────────────────────────────────────────────────────────
