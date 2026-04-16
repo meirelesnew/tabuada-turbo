@@ -1,24 +1,17 @@
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
 from pymongo import MongoClient
 from pydantic import BaseModel
 from datetime import datetime, timedelta
 import random, string, uuid, os
 
-# ✅ Fix 1: Credencial NUNCA hardcoded — configure MONGO_URL no painel do Render
-MONGO_URL = os.environ.get("MONGO_URL")
-if not MONGO_URL:
-    raise RuntimeError("Variável de ambiente MONGO_URL não definida! Configure no Render.")
-
-# ✅ Fix 2: Token admin — configure ADMIN_TOKEN no painel do Render
-ADMIN_TOKEN = os.environ.get("ADMIN_TOKEN", "")
+MONGO_URL = os.environ.get("MONGO_URL", "mongodb+srv://Admin:Bekg9u8pe5SPHiQg@tabuada2026.cjzpxgk.mongodb.net/?retryWrites=true&w=majority&appName=tabuada2026")
 
 client = db = jogadores_col = salas_col = ranking_col = None
 
 def conectar_mongo():
     global client, db, jogadores_col, salas_col, ranking_col
-    print("[MONGO] Iniciando conexao...")
+    print(f"[MONGO] Iniciando conexao...")
     try:
         client = MongoClient(MONGO_URL, serverSelectionTimeoutMS=10000)
         client.admin.command("ping")
@@ -34,16 +27,13 @@ def conectar_mongo():
 
 conectar_mongo()
 
-app = FastAPI(title="Tabuada Turbo API", version="2.1.0")
+app = FastAPI(title="Tabuada Turbo API", version="2.0.0")
 app.add_middleware(CORSMiddleware, allow_origins=["*"],
     allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
-
-# ─── Models ───────────────────────────────────────────────────────────────────
 
 class JogadorIn(BaseModel):
     nome: str
     avatar: str
-    jogador_id: str = ""  # ✅ Fix 4: aceita ID existente para não criar duplicatas
 
 class CriarSalaIn(BaseModel):
     jogador_id: str
@@ -74,8 +64,6 @@ class RankingIn(BaseModel):
     erros: int
     modo: str
 
-# ─── Helpers ──────────────────────────────────────────────────────────────────
-
 def gerar_codigo():
     return ''.join(random.choices(string.ascii_uppercase, k=5)) + '-' + ''.join(random.choices(string.digits, k=3))
 
@@ -83,16 +71,9 @@ def check_db():
     if db is None:
         raise HTTPException(status_code=503, detail="Banco indisponivel")
 
-def check_admin(token: str):
-    """✅ Fix 2: Protege endpoints admin com token."""
-    if not ADMIN_TOKEN or token != ADMIN_TOKEN:
-        raise HTTPException(status_code=403, detail="Acesso negado. Token inválido.")
-
-# ─── Rotas principais ─────────────────────────────────────────────────────────
-
-@app.api_route("/", methods=["GET", "HEAD"])
-async def root():
-    return JSONResponse({"status": "ok", "app": "Tabuada Turbo API v2.1"})
+@app.get("/")
+def root():
+    return {"status": "ok", "app": "Tabuada Turbo API v2.0"}
 
 @app.get("/health")
 def health():
@@ -105,27 +86,14 @@ def health():
     except Exception as e:
         return {"status": "erro", "db": str(e)}
 
-# ─── Jogador ──────────────────────────────────────────────────────────────────
-
 @app.post("/jogador/salvar")
 def salvar_jogador(body: JogadorIn):
-    """✅ Fix 4: Reutiliza jogador_id existente se enviado, evitando duplicatas."""
     check_db()
-    jid = body.jogador_id if body.jogador_id else str(uuid.uuid4())
-    jogadores_col.update_one(
-        {"_id": jid},
-        {"$set": {
-            "nome": body.nome,
-            "avatar": body.avatar,
-            "atualizado_em": datetime.utcnow().isoformat()
-        }, "$setOnInsert": {
-            "criado_em": datetime.utcnow().isoformat()
-        }},
-        upsert=True
-    )
+    jid = str(uuid.uuid4())
+    jogadores_col.replace_one({"_id": jid},
+        {"_id": jid, "nome": body.nome, "avatar": body.avatar,
+         "criado_em": datetime.utcnow().isoformat()}, upsert=True)
     return {"jogador_id": jid, "nome": body.nome, "avatar": body.avatar}
-
-# ─── Ranking ──────────────────────────────────────────────────────────────────
 
 @app.post("/ranking/salvar")
 def salvar_ranking(body: RankingIn):
@@ -134,106 +102,49 @@ def salvar_ranking(body: RankingIn):
     ranking_col.insert_one({
         "_id": str(uuid.uuid4()),
         "jogador_id": body.jogador_id,
-        "nome": body.nome,
-        "avatar": body.avatar,
+        "nome": body.nome, "avatar": body.avatar,
         "nivel": int(body.nivel),
-        "tempo": int(body.tempo),
+        "tempo": int(body.tempo),  # garantido como int
         "acertos": int(body.acertos),
         "erros": int(body.erros),
         "modo": body.modo,
         "data": datetime.utcnow().strftime("%d/%m/%Y")
     })
-    print("[RANKING] Salvo com sucesso!")
+    print(f"[RANKING] Salvo com sucesso!")
     return {"ok": True}
 
 @app.get("/ranking/global")
 def ranking_global(nivel: int = 0, modo: str = "todos", limite: int = 50):
     check_db()
     filtro = {}
-    if nivel in [1, 2]:
-        filtro["nivel"] = nivel
-    if modo in ["solo", "batalha"]:
-        filtro["modo"] = modo
-    # ✅ Só retorna registros com tempo numérico (evita dados corrompidos)
-    filtro["tempo"] = {"$type": ["int", "long", "double", "decimal"]}
-
+    if nivel in [1, 2]: filtro["nivel"] = nivel
+    if modo in ["solo", "batalha"]: filtro["modo"] = modo
     docs = list(ranking_col.find(filtro).sort("tempo", 1).limit(limite))
-    for d in docs:
-        d["_id"] = str(d["_id"])
-        d["tempo"] = int(d["tempo"])
-
+    for d in docs: d["_id"] = str(d["_id"])
     print(f"[RANKING] Retornando {len(docs)} registros")
     return {"ranking": docs, "total": len(docs)}
 
 @app.get("/ranking/nivel/{nivel}")
 def ranking_nivel(nivel: int):
     check_db()
-    # ✅ Fix 8: Também filtra tempo numérico aqui
-    filtro = {
-        "nivel": nivel,
-        "tempo": {"$type": ["int", "long", "double", "decimal"]}
-    }
-    docs = list(ranking_col.find(filtro).sort("tempo", 1).limit(50))
-    for d in docs:
-        d["_id"] = str(d["_id"])
-        d["tempo"] = int(d["tempo"])
+    docs = list(ranking_col.find({"nivel": nivel}).sort("tempo", 1).limit(50))
+    for d in docs: d["_id"] = str(d["_id"])
     return {"ranking": docs, "nivel": nivel}
-
-# ─── Admin (protegido por token) ──────────────────────────────────────────────
-
-@app.get("/admin/diagnostico")
-def diagnostico(token: str = Query(default="")):
-    """✅ Fix 2: Protegido por token. Use ?token=SEU_TOKEN"""
-    check_admin(token)
-    check_db()
-    total = ranking_col.count_documents({})
-    invalidos = ranking_col.count_documents({"tempo": {"$type": "string"}})
-    sample = list(ranking_col.find({}).limit(3))
-    for d in sample:
-        d["_id"] = str(d["_id"])
-    return {
-        "total": total,
-        "validos": total - invalidos,
-        "invalidos_string": invalidos,
-        "amostra": sample
-    }
-
-@app.get("/admin/limpar-invalidos")
-def limpar_invalidos(token: str = Query(default="")):
-    """✅ Fix 2: Protegido por token. Remove registros com tempo em formato string."""
-    check_admin(token)
-    check_db()
-    resultado = ranking_col.delete_many({"tempo": {"$type": "string"}})
-    print(f"[ADMIN] Removidos {resultado.deleted_count} registros inválidos")
-    return {"removidos": resultado.deleted_count, "msg": "Registros inválidos removidos"}
-
-# ─── Batalha ──────────────────────────────────────────────────────────────────
 
 @app.post("/batalha/criar")
 def criar_sala(body: CriarSalaIn):
     check_db()
-    # ✅ Fix 6: Limite de tentativas para evitar loop infinito
-    codigo = None
-    for _ in range(20):
-        tentativa = gerar_codigo()
-        if not salas_col.find_one({"codigo": tentativa, "status": {"$ne": "finalizada"}}):
-            codigo = tentativa
-            break
-    if not codigo:
-        raise HTTPException(500, "Não foi possível gerar código único. Tente novamente.")
-
+    codigo = gerar_codigo()
+    while salas_col.find_one({"codigo": codigo, "status": {"$ne": "finalizada"}}):
+        codigo = gerar_codigo()
     sala = {
-        "_id": str(uuid.uuid4()),
-        "codigo": codigo,
-        "nivel": body.nivel,
-        "status": "aguardando",
+        "_id": str(uuid.uuid4()), "codigo": codigo,
+        "nivel": body.nivel, "status": "aguardando",
         "criado_em": datetime.utcnow().isoformat(),
         "expira_em": (datetime.utcnow() + timedelta(minutes=30)).isoformat(),
-        "jogadores": [{
-            "id": body.jogador_id, "nome": body.nome, "avatar": body.avatar,
+        "jogadores": [{"id": body.jogador_id, "nome": body.nome, "avatar": body.avatar,
             "tempo": None, "acertos": None, "erros": None, "finalizado": False,
-            "entrou_em": datetime.utcnow().isoformat()
-        }]
+            "entrou_em": datetime.utcnow().isoformat()}]
     }
     salas_col.insert_one(sala)
     return {"codigo": codigo, "nivel": body.nivel, "status": "aguardando"}
@@ -242,44 +153,32 @@ def criar_sala(body: CriarSalaIn):
 def entrar_sala(body: EntrarSalaIn):
     check_db()
     sala = salas_col.find_one({"codigo": body.codigo.upper()})
-    if not sala:
-        raise HTTPException(404, "Sala nao encontrada")
-    if sala["status"] == "finalizada":
-        raise HTTPException(400, "Sala finalizada")
-    if sala["status"] == "em_jogo":
-        raise HTTPException(400, "Partida já iniciada")
+    if not sala: raise HTTPException(404, "Sala nao encontrada")
+    if sala["status"] == "finalizada": raise HTTPException(400, "Sala finalizada")
+    if sala["status"] == "em_jogo": raise HTTPException(400, "Partida iniciada")
     if body.jogador_id not in [j["id"] for j in sala["jogadores"]]:
         salas_col.update_one({"codigo": body.codigo.upper()},
-            {"$push": {"jogadores": {
-                "id": body.jogador_id, "nome": body.nome, "avatar": body.avatar,
-                "tempo": None, "acertos": None, "erros": None, "finalizado": False,
-                "entrou_em": datetime.utcnow().isoformat()
-            }}})
+            {"$push": {"jogadores": {"id": body.jogador_id, "nome": body.nome,
+                "avatar": body.avatar, "tempo": None, "acertos": None, "erros": None,
+                "finalizado": False, "entrou_em": datetime.utcnow().isoformat()}}})
     sala_att = salas_col.find_one({"codigo": body.codigo.upper()})
-    return {
-        "codigo": sala_att["codigo"], "nivel": sala_att["nivel"],
-        "status": sala_att["status"], "jogadores": sala_att["jogadores"]
-    }
+    return {"codigo": sala_att["codigo"], "nivel": sala_att["nivel"],
+            "status": sala_att["status"], "jogadores": sala_att["jogadores"]}
 
 @app.get("/batalha/{codigo}")
 def status_sala(codigo: str):
     check_db()
     sala = salas_col.find_one({"codigo": codigo.upper()})
-    if not sala:
-        raise HTTPException(404, "Sala nao encontrada")
-    return {
-        "codigo": sala["codigo"], "nivel": sala["nivel"],
-        "status": sala["status"], "jogadores": sala["jogadores"]
-    }
+    if not sala: raise HTTPException(404, "Sala nao encontrada")
+    return {"codigo": sala["codigo"], "nivel": sala["nivel"],
+            "status": sala["status"], "jogadores": sala["jogadores"]}
 
 @app.post("/batalha/{codigo}/iniciar")
 def iniciar_sala(codigo: str):
     check_db()
     sala = salas_col.find_one({"codigo": codigo.upper()})
-    if not sala:
-        raise HTTPException(404, "Sala nao encontrada")
-    if len(sala["jogadores"]) < 2:
-        raise HTTPException(400, "Aguardando mais jogadores")
+    if not sala: raise HTTPException(404, "Sala nao encontrada")
+    if len(sala["jogadores"]) < 2: raise HTTPException(400, "Aguardando jogadores")
     salas_col.update_one({"codigo": codigo.upper()},
         {"$set": {"status": "em_jogo", "iniciado_em": datetime.utcnow().isoformat()}})
     return {"status": "em_jogo"}
@@ -288,37 +187,22 @@ def iniciar_sala(codigo: str):
 def finalizar_jogador(body: FinalizarIn):
     check_db()
     sala = salas_col.find_one({"codigo": body.codigo.upper()})
-    if not sala:
-        raise HTTPException(404, "Sala nao encontrada")
-    # ✅ Fix 5: Valida se a sala está realmente em jogo
-    if sala["status"] != "em_jogo":
-        raise HTTPException(400, f"Sala não está em jogo (status atual: {sala['status']})")
-
+    if not sala: raise HTTPException(404, "Sala nao encontrada")
     salas_col.update_one(
         {"codigo": body.codigo.upper(), "jogadores.id": body.jogador_id},
-        {"$set": {
-            "jogadores.$.tempo": body.tempo,
-            "jogadores.$.acertos": body.acertos,
-            "jogadores.$.erros": body.erros,
-            "jogadores.$.finalizado": True
-        }})
+        {"$set": {"jogadores.$.tempo": body.tempo, "jogadores.$.acertos": body.acertos,
+                  "jogadores.$.erros": body.erros, "jogadores.$.finalizado": True}})
     sala_att = salas_col.find_one({"codigo": body.codigo.upper()})
     if all(j["finalizado"] for j in sala_att["jogadores"]):
         salas_col.update_one({"codigo": body.codigo.upper()},
                              {"$set": {"status": "finalizada"}})
     j_info = next((j for j in sala_att["jogadores"] if j["id"] == body.jogador_id), {})
     ranking_col.insert_one({
-        "_id": str(uuid.uuid4()),
-        "jogador_id": body.jogador_id,
-        "nome": j_info.get("nome", "?"),
-        "avatar": j_info.get("avatar", "?"),
-        "nivel": sala_att["nivel"],
-        "tempo": int(body.tempo),
-        "acertos": int(body.acertos),
-        "erros": int(body.erros),
-        "modo": "batalha",
-        "data": datetime.utcnow().strftime("%d/%m/%Y")
-    })
+        "_id": str(uuid.uuid4()), "jogador_id": body.jogador_id,
+        "nome": j_info.get("nome", "?"), "avatar": j_info.get("avatar", "?"),
+        "nivel": sala_att["nivel"], "tempo": body.tempo,
+        "acertos": body.acertos, "erros": body.erros,
+        "modo": "batalha", "data": datetime.utcnow().strftime("%d/%m/%Y")})
     sala_final = salas_col.find_one({"codigo": body.codigo.upper()})
     return {"status": sala_final["status"], "jogadores": sala_final["jogadores"]}
 
