@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Google Analytics GA4 -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-531494859"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -13,7 +12,6 @@
   gtag('config', 'G-531494859');
 </script>
 
-<!-- Google AdSense -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2757076714223993"
      crossorigin="anonymous"></script>
 <meta name="description" content="Tabuada Turbo - O jogo de tabuada mais rápido do Brasil! Treine multiplicação com timer, ranking por tempo e dois níveis de dificuldade. Ideal para crianças e estudantes.">
@@ -23,7 +21,6 @@
 <meta name="theme-color" content="#ff6b35">
 <link rel="canonical" href="https://meirelesnew.github.io/tabuada-turbo/">
 
-<!-- Open Graph (WhatsApp, Facebook) -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://meirelesnew.github.io/tabuada-turbo/">
 <meta property="og:title" content="Tabuada Turbo ⚡ - Jogo de Tabuada com Ranking">
@@ -32,13 +29,11 @@
 <meta property="og:locale" content="pt_BR">
 <meta property="og:site_name" content="Tabuada Turbo">
 
-<!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Tabuada Turbo ⚡ - Jogo de Tabuada com Ranking">
 <meta name="twitter:description" content="Aprenda a tabuada de forma divertida! Timer, ranking por tempo e dois níveis. Jogue grátis!">
 <meta name="twitter:image" content="https://meirelesnew.github.io/tabuada-turbo/og-image.png">
 
-<!-- Schema.org JSON-LD -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -83,7 +78,6 @@
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
-  /* Garantir que H1-H6 semânticos herdem aparência dos elementos originais */
   h1, h2, h3, h4, h5, h6 {
     font-weight: inherit;
     font-size: inherit;
@@ -99,7 +93,6 @@
     overflow-x: hidden;
   }
 
-  /* BG animated dots */
   body::before {
     content: '';
     position: fixed;
@@ -121,7 +114,6 @@
   }
   .screen.active { display: flex; flex-direction: column; }
 
-  /* ── HEADER ── */
   .logo {
     font-family: 'Boogaloo', cursive;
     font-size: 2.8rem;
@@ -148,7 +140,6 @@
     50% { transform: scale(1.03); }
   }
 
-  /* ── CARDS ── */
   .card {
     background: var(--card);
     border-radius: var(--radius);
@@ -157,7 +148,6 @@
     border: 1px solid rgba(255,255,255,0.06);
   }
 
-  /* ── INPUTS ── */
   .field-label {
     font-size: 0.75rem;
     text-transform: uppercase;
@@ -180,7 +170,6 @@
   }
   input[type="text"]:focus { border-color: var(--accent); }
 
-  /* ── AVATARES ── */
   .avatar-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -204,7 +193,6 @@
     transform: scale(1.1);
   }
 
-  /* ── BOTÕES ── */
   .btn {
     display: block;
     width: 100%;
@@ -224,7 +212,6 @@
     box-shadow: 0 4px 20px rgba(255,107,53,0.4);
   }
   .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 28px rgba(255,107,53,0.5); }
-  .btn-primary:active { transform: translateY(0); }
 
   .btn-level {
     display: flex;
@@ -261,7 +248,6 @@
   }
   .btn-ghost:hover { border-color: var(--accent3); color: var(--accent3); }
 
-  /* ── PLAYER BAR ── */
   .player-bar {
     display: flex;
     align-items: center;
@@ -275,7 +261,6 @@
   .player-name { font-weight: 700; font-size: 1rem; }
   .player-level { font-size: 0.7rem; color: var(--accent2); text-transform: uppercase; letter-spacing: 1px; }
 
-  /* ── TIMER ── */
   .timer-wrap {
     display: flex;
     align-items: center;
@@ -307,7 +292,6 @@
     transition: width .1s linear;
   }
 
-  /* ── TABELA ── */
   .table-scroll {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
@@ -363,7 +347,6 @@
   }
   @keyframes cellPulse { from{background:rgba(255,107,53,0.12)} to{background:rgba(255,107,53,0.25)} }
 
-  /* ── PERGUNTA ── */
   .question-box {
     background: linear-gradient(135deg, rgba(255,107,53,0.12), rgba(255,215,0,0.06));
     border: 2px solid rgba(255,107,53,0.3);
@@ -394,12 +377,10 @@
   }
   .resposta-display.preenchido { color: var(--text); border-color: var(--accent2); }
 
-  /* ── NUMPAD FIXO (sem teclado nativo nunca) ── */
   .numpad-fixo {
     margin-bottom: 8px;
   }
 
-  /* ── STATS BAR ── */
   .stats-row {
     display: flex;
     gap: 10px;
@@ -418,7 +399,6 @@
   .stat-chip.red .sv { color: var(--red); }
   .stat-chip.yellow .sv { color: var(--accent2); }
 
-  /* ── RESULTADO ── */
   .result-hero {
     text-align: center;
     padding: 28px 0 20px;
@@ -436,7 +416,6 @@
   .result-acertos { font-size: 1.1rem; margin-top: 8px; }
   .result-acertos strong { color: var(--green); }
 
-  /* ── RANKING ── */
   .rank-header {
     display: flex;
     align-items: center;
@@ -504,7 +483,6 @@
     font-size: 0.9rem;
   }
 
-  /* ── TOAST ── */
   #toast {
     position: fixed;
     bottom: 24px;
@@ -525,7 +503,6 @@
   #toast.ok { border-color: var(--green); color: var(--green); }
   #toast.err { border-color: var(--red); color: var(--red); }
 
-  /* ── ANSWER FEEDBACK FLASH ── */
   .flash-correct { animation: flashGreen .4s ease; }
   .flash-wrong   { animation: flashRed .4s ease; }
   @keyframes flashGreen {
@@ -537,7 +514,6 @@
     100% { background: transparent; }
   }
 
-  /* ── MISC ── */
   .section-title {
     font-family: 'Boogaloo', cursive;
     font-size: 1.2rem;
@@ -549,7 +525,6 @@
   .gap-row { display: flex; gap: 10px; }
   .gap-row .btn { margin-bottom: 0; }
 
-  /* ── KEYBOARD numérico no mobile ── */
   .numpad {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -572,7 +547,6 @@
   .nk.del { font-size: 1rem; color: var(--red); }
   .nk.ok-key { background: linear-gradient(135deg, var(--accent), #ff8c55); border-color: var(--accent); font-size: 1rem; }
 
-  /* confetti burst */
   @keyframes confettiBurst {
     0%   { transform: translateY(0) rotate(0deg); opacity:1; }
     100% { transform: translateY(-120px) rotate(720deg) scale(0); opacity:0; }
@@ -586,7 +560,6 @@
     animation: confettiBurst 1s ease forwards;
   }
 
-  /* ── COUNTDOWN ── */
   #screen-countdown {
     background: var(--bg);
     justify-content: center;
@@ -630,7 +603,6 @@
     100% { transform: scale(1); opacity: 1; }
   }
 
-  /* ── BOTÃO WHATSAPP ── */
   .btn-whatsapp {
     display: flex;
     align-items: center;
@@ -652,7 +624,6 @@
   .btn-whatsapp:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37,211,102,0.5); }
   .btn-whatsapp svg { width: 22px; height: 22px; fill: #fff; flex-shrink: 0; }
 
-  /* ── FEEDBACK VISUAL ── */
   #feedback-overlay {
     position: fixed;
     top: 20px;
@@ -682,1712 +653,294 @@
     60%{transform:translateX(calc(-50% - 5px)) translateY(0)}
     80%{transform:translateX(calc(-50% + 5px)) translateY(0)}
   }
-  .input-pulse { animation: inputPulse .4s ease; }
-  .input-shake { animation: inputShake .4s ease; }
+  
+  .input-pulse { animation: inputPulse 0.3s ease; }
   @keyframes inputPulse {
-    0%,100%{box-shadow:0 0 0 0 rgba(57,255,20,0)}
-    50%{box-shadow:0 0 0 8px rgba(57,255,20,0.3)}
-  }
-  @keyframes inputShake {
-    0%,100%{transform:translateX(0)}
-    25%{transform:translateX(-6px)}
-    75%{transform:translateX(6px)}
-  }
-
-  /* ── ADSENSE PLACEHOLDERS (CLS=0) ── */
-  .ad-container {
-    width: 100%;
-    background: rgba(255,255,255,0.02);
-    border: 1px dashed rgba(255,255,255,0.08);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: rgba(255,255,255,0.1);
-    font-size: 0.65rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
-  #ad-container-top    { min-height: 60px;  margin-bottom: 12px; }
-  #ad-container-bottom { min-height: 280px; margin-top: 16px; }
-
-  /* ── HIGH SCORE ── */
-  .high-score-bar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    background: rgba(255,215,0,0.08);
-    border: 1px solid rgba(255,215,0,0.2);
-    border-radius: 10px;
-    padding: 8px 16px;
-    margin-bottom: 12px;
-    font-size: 0.85rem;
-  }
-  .high-score-bar span { color: var(--accent2); font-family: 'Boogaloo', cursive; font-size: 1.1rem; }
-
-  /* ══════════════════════════════════════
-     SISTEMA DE CELEBRAÇÃO
-  ══════════════════════════════════════ */
-
-  /* Overlay de celebração */
-  #celebration-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 8000;
-    pointer-events: none;
-    overflow: hidden;
-  }
-
-  /* Balões */
-  .balao {
-    position: absolute;
-    bottom: -120px;
-    font-size: 2.2rem;
-    animation: subirBalao linear forwards;
-    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
-  }
-  @keyframes subirBalao {
-    0%   { transform: translateY(0) rotate(-8deg); opacity: 1; }
-    25%  { transform: translateY(-25vh) rotate(8deg); }
-    50%  { transform: translateY(-50vh) rotate(-6deg); }
-    75%  { transform: translateY(-75vh) rotate(6deg); }
-    100% { transform: translateY(-110vh) rotate(-4deg); opacity: 0; }
-  }
-
-  /* Confetti melhorado */
-  .confetti-v2 {
-    position: fixed;
-    top: -20px;
-    pointer-events: none;
-    z-index: 8001;
-    animation: confettiCair linear forwards;
-    border-radius: 2px;
-  }
-  @keyframes confettiCair {
-    0%   { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
-    80%  { opacity: 1; }
-    100% { transform: translateY(105vh) rotate(720deg) scale(0.5); opacity: 0; }
-  }
-
-  /* Estrelas cintilantes */
-  .estrela-celebracao {
-    position: fixed;
-    pointer-events: none;
-    z-index: 8001;
-    font-size: 1.5rem;
-    animation: estrelaPop ease-out forwards;
-  }
-  @keyframes estrelaPop {
-    0%   { transform: scale(0) rotate(0deg); opacity: 1; }
-    50%  { transform: scale(1.5) rotate(180deg); opacity: 1; }
-    100% { transform: scale(0) rotate(360deg); opacity: 0; }
-  }
-
-  /* Tela resultado — troféu animado */
-  .trophy-winner {
-    animation: trofeuEntrada .8s cubic-bezier(.34,1.56,.64,1) forwards;
-    display: inline-block;
-  }
-  @keyframes trofeuEntrada {
-    0%   { transform: scale(0) rotate(-30deg); opacity: 0; }
-    60%  { transform: scale(1.3) rotate(5deg); opacity: 1; }
-    80%  { transform: scale(0.9) rotate(-2deg); }
-    100% { transform: scale(1) rotate(0deg); opacity: 1; }
-  }
-  .trophy-pulse {
-    animation: trofeuEntrada .8s cubic-bezier(.34,1.56,.64,1) forwards,
-               trofeuPulse 1.5s ease-in-out 1s infinite;
-  }
-  @keyframes trofeuPulse {
-    0%,100% { transform: scale(1); filter: drop-shadow(0 0 0px gold); }
-    50%     { transform: scale(1.08); filter: drop-shadow(0 0 16px gold); }
-  }
-
-  /* Banner VENCEDOR */
-  .banner-vencedor {
-    background: linear-gradient(135deg, #ffd700, #ff8c00);
-    color: #1a1830;
-    font-family: 'Boogaloo', cursive;
-    font-size: 1.8rem;
-    letter-spacing: 3px;
-    text-align: center;
-    padding: 14px;
-    border-radius: 14px;
-    margin: 12px 0;
-    animation: bannerEntrada .6s cubic-bezier(.34,1.56,.64,1) forwards;
-    box-shadow: 0 4px 24px rgba(255,215,0,0.5);
-  }
-  @keyframes bannerEntrada {
-    0%   { transform: scale(0.5) translateY(20px); opacity: 0; }
-    100% { transform: scale(1) translateY(0); opacity: 1; }
-  }
-
-  /* Placar de batalha melhorado */
-  .placar-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 14px 16px;
-    border-radius: 12px;
-    margin-bottom: 8px;
-    border: 2px solid transparent;
-    transition: all .3s;
-  }
-  .placar-item.primeiro {
-    background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,140,0,0.08));
-    border-color: rgba(255,215,0,0.4);
-    animation: placarDestaque .5s ease forwards;
-  }
-  .placar-item.segundo {
-    background: rgba(255,255,255,0.04);
-    border-color: rgba(255,255,255,0.08);
-  }
-  @keyframes placarDestaque {
-    0%   { transform: scale(0.95); opacity: 0; }
-    100% { transform: scale(1); opacity: 1; }
-  }
-
-  /* Novo recorde badge */
-  .novo-recorde-badge {
-    display: inline-block;
-    background: linear-gradient(135deg, #ffd700, #ff8c00);
-    color: #1a1830;
-    font-family: 'Boogaloo', cursive;
-    font-size: 0.85rem;
-    padding: 3px 12px;
-    border-radius: 99px;
-    margin-left: 8px;
-    animation: badgePop .5s cubic-bezier(.34,1.56,.64,1);
-  }
-  @keyframes badgePop {
-    0%   { transform: scale(0); }
-    100% { transform: scale(1); }
-  }
-
-  @keyframes aguardandoPulse {
-    0%,100% { width: 30%; opacity: 0.4; }
-    50%      { width: 100%; opacity: 1; }
-  }
-
-  @media (max-width: 360px) {
-    .mult-table th, .mult-table td { width: 36px; height: 36px; font-size: 0.72rem; }
-    .mult-table th { font-size: 0.85rem; }
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
   }
 </style>
 </head>
 <body>
 
-<!-- Skip navigation para leitores de tela -->
-<a href="#screen-cadastro" 
-   style="position:absolute;left:-9999px;top:0;z-index:9999;background:#ff6b35;color:#fff;padding:8px 16px;border-radius:4px;font-weight:700"
-   onfocus="this.style.left='0'"
-   onblur="this.style.left='-9999px'">
-  Pular para o conteúdo principal
-</a>
+<div id="toast">Ação realizada!</div>
+<div id="feedback-overlay"></div>
 
-<!-- ════════════════ TELA 1: CADASTRO ════════════════ -->
-<div id="screen-cadastro" class="screen active" role="main" aria-label="Tela inicial do jogo">
-  <div id="ad-container-top" class="ad-container">Publicidade</div>
-  <h1 class="logo">TABUADA<br>TURBO ⚡</h1>
-  <p class="tagline">Quem é o mais rápido?</p>
+<div id="screen-home" class="screen active">
+  <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+    <h1 class="logo">TABUADA TURBO</h1>
+    <p class="tagline">Seja o mais rápido da turma!</p>
 
-  <div class="card">
-    <h3 class="section-title">👤 Quem vai jogar?</h3>
-    <label class="field-label">Seu apelido</label>
-    <input type="text" id="inp-nome" placeholder="Ex: Lucas, Ana, Turma 3A…" maxlength="20" aria-label="Digite seu apelido" autocomplete="nickname">
+    <div class="card">
+      <label class="field-label" for="input-nome">Qual seu nome?</label>
+      <input type="text" id="input-nome" maxlength="12" placeholder="Ex: Lucas, Ana...">
 
-    <div style="margin-top:20px">
-      <label class="field-label">Escolha seu avatar</label>
+      <label class="field-label mt16">Escolha seu avatar</label>
       <div class="avatar-grid" id="avatar-grid"></div>
     </div>
-  </div>
 
-  <button class="btn btn-primary" onclick="irParaMenu()">JOGAR ▶</button>
-
-  <button class="btn-ghost mt8" onclick="irParaRanking()">🏆 Ver Ranking</button>
-</div>
-
-<!-- ════════════════ TELA 2: MENU ════════════════ -->
-<div id="screen-menu" class="screen">
-  <div id="player-bar-menu" class="player-bar"></div>
-
-  <div class="high-score-bar" id="high-score-display" style="display:none">
-    🏆 Recorde: <span id="high-score-valor">--:--</span>
-  </div>
-  <h2 class="section-title" style="text-align:center; font-size:1.5rem">Escolha o Nível</h2>
-
-  <button class="btn-level" onclick="iniciarJogo(1)">
-    <span class="lv-icon">📊</span>
-    <div class="lv-info">
-      <span>Nível 1 — Clássico</span>
-      <small>Tabela em ordem crescente (1→10)</small>
-    </div>
-  </button>
-
-  <button class="btn-level" onclick="iniciarJogo(2)">
-    <span class="lv-icon">🎲</span>
-    <div class="lv-info">
-      <span>Nível 2 — Embaralhado</span>
-      <small>Eixo X e Y em ordem aleatória</small>
-    </div>
-  </button>
-
-  <button class="btn" style="background:linear-gradient(135deg,#ff3366,#ff6b35);color:#fff;box-shadow:0 4px 20px rgba(255,51,102,0.4);margin-top:16px" onclick="irParaBatalha()">⚔️ Modo Batalha</button>
-
-  <div style="margin-top: 12px">
-    <button class="btn-ghost" onclick="irParaRanking()">🏆 Ranking</button>
-  </div>
-  <div style="margin-top: 8px">
-    <button class="btn-ghost" onclick="trocarJogador()">🔄 Trocar jogador</button>
+    <button class="btn btn-primary" onclick="salvarEIniciar()">VAMOS JOGAR!</button>
+    <button class="btn btn-ghost mt8" onclick="abrirRanking()">VER RANKING GLOBAL</button>
   </div>
 </div>
 
-<!-- ════════════════ TELA 3: JOGO ════════════════ -->
-<div id="screen-jogo" class="screen" role="main" aria-label="Tela do jogo">
-  <div id="player-bar-jogo" class="player-bar"></div>
+<div id="screen-modos" class="screen">
+  <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+    <div class="player-bar">
+      <div class="player-avatar" id="bar-av"></div>
+      <div class="player-info">
+        <div class="player-name" id="bar-nome"></div>
+        <div class="player-level">Iniciante</div>
+      </div>
+    </div>
 
-  <!-- Timer -->
+    <h2 class="section-title">Escolha o Desafio:</h2>
+
+    <button class="btn-level" onclick="iniciarSolo(1)">
+      <div class="lv-icon">📊</div>
+      <div class="lv-info">
+        <h3>Nível 1 (Básico)</h3>
+        <small>Tabuadas do 1 ao 5 - Ideal para treinar</small>
+      </div>
+    </button>
+
+    <button class="btn-level" onclick="iniciarSolo(2)">
+      <div class="lv-icon">🎲</div>
+      <div class="lv-info">
+        <h3>Nível 2 (Turbo)</h3>
+        <small>Tabuadas do 1 ao 10 - Para mestres</small>
+      </div>
+    </button>
+
+    <div style="margin: 12px 0; border-top: 1px solid rgba(255,255,255,0.06);"></div>
+
+    <button class="btn-level" style="border-color: var(--accent3);" onclick="abrirBatalha()">
+      <div class="lv-icon">⚔️</div>
+      <div class="lv-info">
+        <h3 style="color: var(--accent3);">Batalha Online</h3>
+        <small>Desafie um amigo em tempo real</small>
+      </div>
+    </button>
+
+    <button class="btn-ghost mt16" onclick="goto('home')">VOLTAR</button>
+  </div>
+</div>
+
+<div id="screen-batalha-menu" class="screen">
+  <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+    <h2 class="logo" style="font-size: 2.2rem;">BATALHA ONLINE</h2>
+    <div class="card">
+      <h3 class="section-title">Criar nova sala</h3>
+      <p style="color:var(--muted); font-size: 0.85rem; margin-bottom: 12px;">Escolha o nível e mande o código para um amigo:</p>
+      <div class="gap-row">
+        <button class="btn btn-primary" style="font-size: 1rem; padding: 12px;" onclick="criarSala(1)">NÍVEL 1</button>
+        <button class="btn btn-primary" style="font-size: 1rem; padding: 12px; background: #e65100;" onclick="criarSala(2)">NÍVEL 2</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 class="section-title">Entrar em uma sala</h3>
+      <input type="text" id="input-codigo" placeholder="CÓDIGO (EX: AB123)" style="text-align: center; text-transform: uppercase;">
+      <button class="btn btn-primary mt16" style="background: var(--accent3); box-shadow: 0 4px 20px rgba(0,229,255,0.3);" onclick="entrarSala()">ENTRAR NA SALA</button>
+    </div>
+    <button class="btn btn-ghost" onclick="goto('modos')">VOLTAR</button>
+  </div>
+</div>
+
+<div id="screen-sala-espera" class="screen">
+  <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+    <div class="card" style="text-align: center;">
+      <h3 class="section-title">Aguardando Oponente...</h3>
+      <div style="font-size: 1rem; color: var(--muted); margin: 8px 0;">Código da Sala:</div>
+      <div id="espera-codigo" style="font-size: 3rem; font-family: 'Boogaloo'; color: var(--accent2); letter-spacing: 5px;">-----</div>
+      <button class="btn-ghost mt16" style="font-size: 0.8rem;" onclick="copiarCodigo()">Copiar Código 📋</button>
+    </div>
+
+    <div id="espera-jogadores" style="display: flex; gap: 20px; justify-content: center; margin-top: 10px;">
+      </div>
+
+    <p style="text-align: center; color: var(--muted); font-size: 0.85rem; margin-top: 24px; animation: blink 1.5s infinite;">A batalha começa assim que o segundo jogador entrar!</p>
+    <button class="btn-ghost mt16" onclick="sairDaSala()">SAIR DA SALA</button>
+  </div>
+</div>
+
+<div id="screen-countdown" class="screen">
+  <div class="countdown-numero" id="countdown-num">3</div>
+  <div class="countdown-label" id="countdown-label">Prepare-se!</div>
+  <div class="countdown-jogadores" id="countdown-jogs"></div>
+</div>
+
+<div id="screen-jogo" class="screen">
   <div class="timer-wrap">
-    <div>
-      <div style="font-size:0.65rem; color:var(--muted); text-transform:uppercase; letter-spacing:1px">Tempo</div>
-      <div class="timer-display" id="timer-display">00:00</div>
-    </div>
+    <div class="timer-display" id="timer">00:00</div>
     <div class="progress-bar">
-      <div class="progress-fill" id="progress-fill" style="width:100%"></div>
+      <div class="progress-fill" id="progress" style="width: 0%"></div>
     </div>
   </div>
 
-  <!-- Stats -->
   <div class="stats-row">
     <div class="stat-chip green">
       <div class="sv" id="stat-acertos">0</div>
-      <div class="sk">✅ Acertos</div>
+      <div class="sk">Acertos</div>
     </div>
     <div class="stat-chip red">
       <div class="sv" id="stat-erros">0</div>
-      <div class="sk">❌ Erros</div>
+      <div class="sk">Erros</div>
     </div>
     <div class="stat-chip yellow">
-      <div class="sv" id="stat-restam">100</div>
-      <div class="sk">⬜ Restam</div>
+      <div class="sv" id="stat-restam">--</div>
+      <div class="sk">Faltam</div>
     </div>
   </div>
 
-  <!-- Pergunta atual -->
-  <div class="question-box" id="question-box">
-    <div class="question-text" id="question-text">—</div>
-    <div class="resposta-display" id="resposta-display">?</div>
+  <div class="table-scroll">
+    <table class="mult-table" id="grade"></table>
   </div>
 
-  <!-- Numpad FIXO — nunca some, nunca abre teclado nativo -->
+  <div class="question-box">
+    <div class="question-text" id="pergunta">? × ? =</div>
+    <div class="resposta-display" id="resp-view"></div>
+  </div>
+
   <div class="numpad-fixo">
     <div class="numpad">
-      <button class="nk" onclick="numpadPress('1')">1</button>
-      <button class="nk" onclick="numpadPress('2')">2</button>
-      <button class="nk" onclick="numpadPress('3')">3</button>
-      <button class="nk" onclick="numpadPress('4')">4</button>
-      <button class="nk" onclick="numpadPress('5')">5</button>
-      <button class="nk" onclick="numpadPress('6')">6</button>
-      <button class="nk" onclick="numpadPress('7')">7</button>
-      <button class="nk" onclick="numpadPress('8')">8</button>
-      <button class="nk" onclick="numpadPress('9')">9</button>
-      <button class="nk del" onclick="numpadPress('del')">⌫</button>
-      <button class="nk" onclick="numpadPress('0')">0</button>
-      <button class="nk ok-key" onclick="numpadPress('ok')">OK ✓</button>
+      <button class="nk" onclick="tecla(1)">1</button>
+      <button class="nk" onclick="tecla(2)">2</button>
+      <button class="nk" onclick="tecla(3)">3</button>
+      <button class="nk" onclick="tecla(4)">4</button>
+      <button class="nk" onclick="tecla(5)">5</button>
+      <button class="nk" onclick="tecla(6)">6</button>
+      <button class="nk" onclick="tecla(7)">7</button>
+      <button class="nk" onclick="tecla(8)">8</button>
+      <button class="nk" onclick="tecla(9)">9</button>
+      <button class="nk del" onclick="tecla('C')">Apagar</button>
+      <button class="nk" onclick="tecla(0)">0</button>
+      <button class="nk ok-key" onclick="tecla('OK')">OK</button>
     </div>
-  </div>
-
-  <!-- Tabela -->
-  <div class="table-scroll">
-    <table class="mult-table" id="mult-table"></table>
-  </div>
-
-  <div style="display:flex;gap:8px;margin-top:8px">
-    <button class="btn-ghost" style="flex:1" onclick="confirmarDesistir()">↩ Desistir</button>
-    <button class="btn-ghost" style="width:52px;flex-shrink:0" id="btn-musica" onclick="toggleMusica()" title="Música" aria-label="Ativar ou desativar música">🎵</button>
   </div>
 </div>
 
-<!-- ════════════════ TELA 4: RESULTADO ════════════════ -->
 <div id="screen-resultado" class="screen">
-  <div class="result-hero" style="text-align:center; padding:16px 0">
-    <div id="result-trophy" style="font-size:5rem; display:inline-block">🏆</div>
-    <div id="result-banner"></div>
-    <div class="result-time" id="result-time">00:00</div>
-    <div class="result-label">TEMPO TOTAL</div>
-    <div class="result-acertos mt8" id="result-acertos"></div>
-    <div id="result-recorde-badge"></div>
-  </div>
-
-  <div class="card" id="result-rank-preview"></div>
-
-  <button class="btn btn-primary mt16" onclick="jogarNovamente()">🔁 Jogar de novo</button>
-  <button class="btn-ghost mt8" onclick="irParaRanking()">🏆 Ver Ranking completo</button>
-  <button class="btn-ghost mt8" onclick="irParaMenu()">◀ Menu</button>
-</div>
-
-<!-- ════════════════ TELA: BATALHA MENU ════════════════ -->
-<div id="screen-batalha" class="screen">
-  <div id="player-bar-batalha" class="player-bar"></div>
-  <h2 class="logo" style="font-size:2rem; margin-bottom:4px">⚔️ BATALHA</h2>
-  <p class="tagline">Desafie seus amigos!</p>
-
-  <div class="card">
-    <h3 class="section-title">🆕 Criar Nova Sala</h3>
-    <label class="field-label">Nível</label>
-    <div style="display:flex; gap:10px; margin-bottom:12px">
-      <button class="btn-level" style="flex:1; padding:12px" onclick="setBatalhaLevel(1)">
-        <span class="lv-icon">📊</span>
-        <div class="lv-info"><span>Nível 1</span><small>Crescente</small></div>
-      </button>
-      <button class="btn-level" style="flex:1; padding:12px" onclick="setBatalhaLevel(2)">
-        <span class="lv-icon">🎲</span>
-        <div class="lv-info"><span>Nível 2</span><small>Aleatório</small></div>
-      </button>
+  <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+    <div class="result-hero card">
+      <div class="result-trophy">🏆</div>
+      <div class="result-label">Tempo Final</div>
+      <div class="result-time" id="res-tempo">00:00</div>
+      <div class="result-acertos" id="res-meta">100 acertos • 0 erros</div>
     </div>
-    <div id="nivel-batalha-selecionado" style="text-align:center; color:var(--muted); font-size:0.8rem; margin-bottom:12px">Nenhum nível selecionado</div>
-    <button class="btn btn-primary" onclick="criarSala()">🚀 Criar Sala</button>
-  </div>
 
-  <div class="card">
-    <h3 class="section-title">🔑 Entrar em uma Sala</h3>
-    <label class="field-label">Código da sala</label>
-    <input type="text" id="inp-codigo-sala" placeholder="Ex: ABCDE-123" maxlength="9" aria-label="Código da sala de batalha"
-      style="text-transform:uppercase; letter-spacing:3px; font-size:1.2rem; text-align:center">
-    <button class="btn btn-primary mt8" onclick="entrarSala()">🎮 Entrar</button>
-  </div>
-
-  <button class="btn-ghost mt8" onclick="irParaMenu()">◀ Menu</button>
-</div>
-
-<!-- ════════════════ TELA: COUNTDOWN ════════════════ -->
-<div id="screen-countdown" class="screen">
-  <div class="countdown-numero" id="countdown-numero">3</div>
-  <div class="countdown-label" id="countdown-label">Prepara!</div>
-  <div class="countdown-jogadores" id="countdown-jogadores"></div>
-</div>
-
-<!-- ════════════════ TELA: SALA DE ESPERA ════════════════ -->
-<div id="screen-sala" class="screen">
-  <div style="text-align:center; padding:32px 0 16px">
-    <div style="font-size:3rem">⏳</div>
-    <div style="font-family:'Boogaloo',cursive; font-size:1.4rem; color:var(--accent2); margin:8px 0">Sala de Espera</div>
-    <div style="font-size:0.8rem; color:var(--muted)">Compartilhe o código com seu adversário</div>
-  </div>
-
-  <div class="card" style="text-align:center">
-    <div style="font-size:0.75rem; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px">Código da Sala</div>
-    <div id="codigo-sala-display" style="font-family:'Boogaloo',cursive; font-size:2.8rem; color:var(--accent); letter-spacing:6px">----</div>
-    <div style="display:flex; gap:10px; margin-top:10px">
-      <button class="btn-ghost" style="flex:1; padding:8px" onclick="copiarCodigo()">📋 Copiar</button>
-      <button class="btn-whatsapp" style="flex:1; padding:8px; font-size:0.85rem" onclick="compartilharWhatsApp()" aria-label="Compartilhar código da sala no WhatsApp">
-        <svg viewBox="0 0 24 24" role="img" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        Enviar
-      </button>
+    <div id="res-batalha-card" class="card" style="display: none; padding: 16px;">
+      <h3 class="section-title" style="text-align: center;">Resultado da Batalha</h3>
+      <div id="res-batalha-lista"></div>
     </div>
-  </div>
 
-  <div class="card">
-    <h3 class="section-title">👥 Jogadores na sala</h3>
-    <div id="lista-jogadores-sala"></div>
-    <div id="sala-status-msg" style="text-align:center; color:var(--muted); font-size:0.85rem; margin-top:8px">Aguardando adversário...</div>
+    <div class="gap-row">
+      <button class="btn btn-primary" onclick="goto('modos')">JOGAR DE NOVO</button>
+      <button class="btn btn-ghost" onclick="abrirRanking()">RANKING</button>
+    </div>
+    <button class="btn-whatsapp mt16" onclick="compartilharWhatsApp()">
+      <svg viewBox="0 0 24 24"><path d="M12.031 6.172c-2.315 0-4.191 1.876-4.191 4.191 0 2.315 1.876 4.191 4.191 4.191 2.315 0 4.191-1.876 4.191-4.191 0-2.315-1.876-4.191-4.191-4.191zm7.942 3.161c-.423-1.638-1.425-3.047-2.822-3.968C15.655 4.417 13.882 4 12.031 4c-4.411 0-8 3.589-8 8 0 1.642.497 3.167 1.348 4.444L4 20l3.656-1.1c1.284.736 2.766 1.1 4.375 1.1 4.411 0 8-3.589 8-8 0-1.88-.417-3.66-1.058-5.267zM12.031 18c-1.442 0-2.8-.363-4.004-1.002l-.286-.151-2.15.646.657-2.102-.167-.291A5.947 5.947 0 016.031 12c0-3.309 2.691-6 6-6s6 2.691 6 6-2.691 6-6 6z"></path></svg>
+      Desafiar Amigo no Zap
+    </button>
   </div>
-
-  <button id="btn-iniciar-batalha" class="btn btn-primary" style="display:none" onclick="iniciarBatalha()">⚔️ Iniciar Batalha!</button>
-  <button class="btn-ghost mt8" onclick="sairDaSala()">↩ Sair da sala</button>
 </div>
 
-<!-- ════════════════ TELA: AGUARDANDO ════════════════ -->
-<div id="screen-aguardando" class="screen" style="justify-content:center;align-items:center;text-align:center">
-  <div style="font-size:4rem;animation:trofeuPulse 1.5s ease-in-out infinite">⏳</div>
-  <div style="font-family:'Boogaloo',cursive;font-size:1.6rem;color:var(--accent2);margin:16px 0">
-    Você terminou!
-  </div>
-  <div style="color:var(--muted);font-size:0.9rem;margin-bottom:24px">
-    Aguardando adversário finalizar...
-  </div>
-  <div class="progress-bar" style="width:80%;max-width:300px;height:6px;margin:0 auto">
-    <div class="progress-fill" style="width:100%;animation:aguardandoPulse 2s ease-in-out infinite"></div>
-  </div>
-  <div id="aguardando-placar" style="margin-top:32px;width:100%;max-width:360px;padding:0 20px"></div>
-</div>
-
-<!-- ════════════════ TELA: RESULTADO BATALHA ════════════════ -->
-<div id="screen-resultado-batalha" class="screen">
-  <div style="text-align:center; padding:16px 0 8px">
-    <div id="batalha-trophy" style="font-size:6rem; display:inline-block; line-height:1">🏆</div>
-    <div id="batalha-resultado-titulo" style="font-family:'Boogaloo',cursive; font-size:2.2rem; margin:8px 0"></div>
-    <div id="batalha-banner"></div>
-    <div id="batalha-mensagem" style="color:var(--muted);font-size:0.9rem;margin:8px 0 4px;padding:0 20px;line-height:1.5"></div>
-  </div>
-  <div id="batalha-placar" style="padding:0 4px"></div>
-  <button class="btn btn-primary mt16" onclick="irParaBatalha()">⚔️ Jogar de novo</button>
-  <button class="btn-whatsapp mt8" onclick="compartilharResultadoWhatsApp()" aria-label="Compartilhar resultado no WhatsApp">
-    <svg viewBox="0 0 24 24" role="img" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-    Compartilhar resultado
-  </button>
-  <button class="btn-ghost mt8" onclick="irParaRanking()">🏆 Ver Ranking</button>
-  <button class="btn-ghost mt8" onclick="irParaMenu()">◀ Menu</button>
-</div>
-
-<!-- ════════════════ TELA 5: RANKING ════════════════ -->
-<div id="screen-ranking" class="screen" role="main" aria-label="Ranking de jogadores">
-  <div class="rank-header">
-    <h2 class="rank-title">🏆 Ranking</h2>
-    <button class="btn-ghost" style="width:auto; padding:8px 14px; font-size:0.8rem" onclick="limparRanking()">🗑 Limpar</button>
+<div id="screen-ranking" class="screen">
+  <div class="rank-header mt8">
+    <h2 class="rank-title">RANKING GLOBAL</h2>
+    <button class="btn-ghost" style="width: auto; padding: 6px 14px;" onclick="goto('home')">FECHAR</button>
   </div>
 
   <div class="rank-tabs">
-    <button class="rank-tab active" id="tab-n1" onclick="switchTab(1)">Nível 1 📊</button>
-    <button class="rank-tab" id="tab-n2" onclick="switchTab(2)">Nível 2 🎲</button>
-    <button class="rank-tab" id="tab-all" onclick="switchTab(0)">Geral 🌟</button>
+    <button class="rank-tab active" id="tab-nv1" onclick="carregarRanking(1)">Nível 1</button>
+    <button class="rank-tab" id="tab-nv2" onclick="carregarRanking(2)">Nível 2</button>
+    <button class="rank-tab" id="tab-geral" onclick="carregarRanking(0)">Geral 🌟</button>
   </div>
 
-  <div id="rank-list"></div>
-
-  <button class="btn-ghost mt8" onclick="irParaMenu()">◀ Menu</button>
+  <div style="flex: 1; overflow-y: auto; padding-bottom: 20px;" id="ranking-lista">
+    </div>
+  
+  <button id="btn-admin-limpar" class="btn-ghost" style="display:none; color: var(--red); margin-top: 10px;" onclick="adminLimpar()">🗑️ Limpar Inválidos</button>
 </div>
 
-<!-- TOAST -->
-<div id="celebration-overlay"></div>
-<div id="feedback-overlay"></div>
-<div id="toast"></div>
-
 <script>
-// ══════════════════════════════════════════
-//  ESTADO GLOBAL
-// ══════════════════════════════════════════
-const AVATARES = ['🦁','🐯','🐸','🦊','🐧','🦄','🐉','🤖','👾','🦸'];
-const API_URL = 'https://tabuada-turbo.onrender.com';
-let jogador = { nome: '', avatar: '🦁' };
-// jogadorId persistente — SEMPRE recuperar do localStorage para evitar duplicatas
-let jogadorId = localStorage.getItem('tt_jogador_id') || null;
-console.log('[INIT] jogadorId recuperado:', jogadorId ? jogadorId.substring(0,8)+'...' : 'novo jogador');
-let respostaAtual = '';
-let salaAtual = null;
-let pollingInterval = null;
-let modoAtual = 'solo'; // 'solo' | 'batalha'
-let nivel = 1;
-let timerInterval = null;
-let segundos = 0;
-let celulas = [];        // [{x, y, correto: bool|null}]
-let celulaAtiva = null;  // índice em celulas
-let axisX = [];
-let axisY = [];
-let acertos = 0;
-let erros = 0;
-let jogoAtivo = false;
-let nivelAtualJogo = 1;
-
-// ══════════════════════════════════════════
-//  INIT
-// ══════════════════════════════════════════
-document.addEventListener('DOMContentLoaded', () => {
-  renderAvatares();
-  carregarJogador();
-  // Teclado físico também funciona (para quem usa no PC)
-  document.addEventListener('keydown', e => {
-    if (!jogoAtivo) return;
-    if (e.key >= '0' && e.key <= '9') numpadPress(e.key);
-    else if (e.key === 'Backspace') numpadPress('del');
-    else if (e.key === 'Enter') numpadPress('ok');
-  });
-});
-
-function renderAvatares() {
-  const grid = document.getElementById('avatar-grid');
-  grid.innerHTML = '';
-  AVATARES.forEach((av, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'av-btn' + (i === 0 ? ' selected' : '');
-    btn.textContent = av;
-    btn.setAttribute('aria-label', 'Avatar ' + av);
-    btn.setAttribute('role', 'radio');
-    btn.onclick = () => {
-      document.querySelectorAll('.av-btn').forEach(b => b.classList.remove('selected'));
-      btn.classList.add('selected');
-      jogador.avatar = av;
-    };
-    grid.appendChild(btn);
-  });
-}
-
-function carregarJogador() {
-  const salvo = localStorage.getItem('tt_jogador');
-  if (salvo) {
-    jogador = JSON.parse(salvo);
-    document.getElementById('inp-nome').value = jogador.nome;
-    document.querySelectorAll('.av-btn').forEach(b => {
-      if (b.textContent === jogador.avatar) {
-        document.querySelectorAll('.av-btn').forEach(x => x.classList.remove('selected'));
-        b.classList.add('selected');
-      }
-    });
-  }
-}
-
-// ══════════════════════════════════════════
-//  NAVEGAÇÃO
-// ══════════════════════════════════════════
-function mostrarTela(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  window.scrollTo(0, 0);
-}
-
-async function irParaMenu() {
-  if (!validarCadastro()) return;
-  // ✅ Fix A: aguarda o jogadorId ser definido antes de navegar
-  try {
-    const r = await fetch(API_URL + '/jogador/salvar', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        jogador_id: jogadorId || '',
-        nome: jogador.nome,
-        avatar: jogador.avatar
-      })
-    });
-    const d = await r.json();
-    // Sempre usa o ID retornado pela API (garante consistência)
-    jogadorId = d.jogador_id;
-    localStorage.setItem('tt_jogador_id', jogadorId);
-    console.log('[JOGADOR] ID confirmado:', jogadorId.substring(0,8)+'...');
-  } catch(e) {
-    console.warn('[API] offline — usando ID local:', e.message);
-    if (!jogadorId) jogadorId = 'local_' + Date.now();
-  }
-  renderPlayerBar('menu');
-  exibirRecordeTela(1);
-  mostrarTela('screen-menu');
-}
-
-function trocarJogador() {
-  mostrarTela('screen-cadastro');
-}
-
-function irParaRanking() {
-  switchTab(1);
-  mostrarTela('screen-ranking');
-}
-
-function jogarNovamente() {
-  iniciarJogo(nivelAtualJogo);
-}
-
-// ══════════════════════════════════════════
-//  CADASTRO
-// ══════════════════════════════════════════
-function validarCadastro() {
-  const nome = document.getElementById('inp-nome').value.trim();
-  if (!nome) { toast('Digite seu apelido! 😅', 'err'); return false; }
-  jogador.nome = nome;
-  const sel = document.querySelector('.av-btn.selected');
-  if (sel) jogador.avatar = sel.textContent;
-  localStorage.setItem('tt_jogador', JSON.stringify(jogador));
-  return true;
-}
-
-// ══════════════════════════════════════════
-//  PLAYER BAR
-// ══════════════════════════════════════════
-function renderPlayerBar(ctx) {
-  const el = document.getElementById('player-bar-' + ctx);
-  if (!el) return;
-  el.innerHTML = `
-    <div class="player-avatar">${jogador.avatar}</div>
-    <div>
-      <div class="player-name">${jogador.nome}</div>
-      <div class="player-level">${ctx === 'jogo' ? (nivelAtualJogo === 1 ? '📊 Nível 1 — Clássico' : '🎲 Nível 2 — Embaralhado') : ''}</div>
-    </div>
-  `;
-}
-
-// ══════════════════════════════════════════
-//  JOGO — SETUP
-// ══════════════════════════════════════════
-function shuffle(arr) {
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr;
-}
-
-function iniciarJogo(lv) {
-  nivelAtualJogo = lv;
-  nivel = lv;
-  acertos = 0;
-  erros = 0;
-  segundos = 0;
-  jogoAtivo = true;
-  celulaAtiva = null;
-  respostaAtual = '';
-  if (modoAtual !== 'batalha') modoAtual = 'solo';
-
-  // Eixos
-  const base = [1,2,3,4,5,6,7,8,9,10];
-  axisX = lv === 1 ? [...base] : shuffle([...base]);
-  axisY = lv === 1 ? [...base] : shuffle([...base]);
-
-  // Células (todas sem resposta)
-  celulas = [];
-  for (let yi = 0; yi < 10; yi++) {
-    for (let xi = 0; xi < 10; xi++) {
-      celulas.push({ x: axisX[xi], y: axisY[yi], correto: null, xi, yi });
-    }
-  }
-
-  renderPlayerBar('jogo');
-  renderTabela();
-  atualizarStats();
-  proximaPergunta();
-  iniciarTimer();
-  mostrarTela('screen-jogo');
-  // sem foco em input nativo
-}
-
-// ══════════════════════════════════════════
-//  TABELA VISUAL
-// ══════════════════════════════════════════
-function renderTabela() {
-  const table = document.getElementById('mult-table');
-  table.innerHTML = '';
-
-  // Cabeçalho
-  const thead = document.createElement('thead');
-  const hrw = document.createElement('tr');
-  const corner = document.createElement('th');
-  corner.className = 'corner';
-  corner.textContent = '✖';
-  hrw.appendChild(corner);
-  axisX.forEach(x => {
-    const th = document.createElement('th');
-    th.textContent = x;
-    hrw.appendChild(th);
-  });
-  thead.appendChild(hrw);
-  table.appendChild(thead);
-
-  // Body
-  const tbody = document.createElement('tbody');
-  axisY.forEach((y, yi) => {
-    const tr = document.createElement('tr');
-    const th = document.createElement('th');
-    th.textContent = y;
-    tr.appendChild(th);
-    axisX.forEach((x, xi) => {
-      const td = document.createElement('td');
-      td.id = `cell-${xi}-${yi}`;
-      td.dataset.xi = xi;
-      td.dataset.yi = yi;
-      td.onclick = () => selecionarCelula(xi, yi);
-      tr.appendChild(td);
-    });
-    tbody.appendChild(tr);
-  });
-  table.appendChild(tbody);
-}
-
-function atualizarCelulaVisual(idx) {
-  const c = celulas[idx];
-  const td = document.getElementById(`cell-${c.xi}-${c.yi}`);
-  if (!td) return;
-  td.className = '';
-  td.textContent = '';
-  if (c.correto === true) {
-    td.classList.add('answered-correct');
-    td.textContent = c.x * c.y;
-  } else if (c.correto === false) {
-    td.classList.add('answered-wrong');
-    td.textContent = c.x * c.y;
-  } else if (idx === celulaAtiva) {
-    td.classList.add('active-cell');
-  }
-}
-
-function atualizarHighlight(xi, yi) {
-  // Limpar todos highlights
-  document.querySelectorAll('.mult-table th').forEach(th => {
-    th.classList.remove('col-ativa', 'row-ativa');
-  });
-  document.querySelectorAll('.mult-table td').forEach(td => {
-    td.classList.remove('col-highlight', 'row-highlight', 'cross-highlight');
-  });
-  if (xi === undefined || yi === undefined) return;
-
-  // Header da coluna (linha 0, posição xi+1)
-  const thead = document.querySelector('.mult-table thead tr');
-  if (thead) {
-    const ths = thead.querySelectorAll('th');
-    if (ths[xi + 1]) ths[xi + 1].classList.add('col-ativa');
-  }
-  // Header da linha (tbody, linha yi, primeiro th)
-  const tbody = document.querySelector('.mult-table tbody');
-  if (tbody) {
-    const rows = tbody.querySelectorAll('tr');
-    if (rows[yi]) {
-      const rowTh = rows[yi].querySelector('th');
-      if (rowTh) rowTh.classList.add('row-ativa');
-    }
-  }
-  // Highlight células col e row
-  celulas.forEach((c, i) => {
-    if (c.correto !== null) return; // já respondida, não recolore
-    const td = document.getElementById('cell-' + c.xi + '-' + c.yi);
-    if (!td) return;
-    const naCol = c.xi === xi;
-    const naRow = c.yi === yi;
-    if (naCol && naRow) return; // é a active-cell, já tem classe própria
-    if (naCol && naRow) td.classList.add('cross-highlight');
-    else if (naCol) td.classList.add('col-highlight');
-    else if (naRow) td.classList.add('row-highlight');
-  });
-}
-
-// ══════════════════════════════════════════
-//  PERGUNTA
-// ══════════════════════════════════════════
-function proximaPergunta() {
-  const pendentes = celulas.map((c, i) => ({...c, i})).filter(c => c.correto === null);
-  if (pendentes.length === 0) { finalizarJogo(); return; }
-  const idx = pendentes[0].i;
-  celulaAtiva = idx;
-  const c = celulas[idx];
-
-  document.getElementById('question-text').innerHTML = '<span>' + c.x + '</span> × <span>' + c.y + '</span> =';
-  respostaAtual = '';
-  const el = document.getElementById('resposta-display');
-  if (el) { el.textContent = '?'; el.classList.remove('preenchido'); }
-
-  celulas.forEach((_, i) => atualizarCelulaVisual(i));
-  atualizarHighlight(c.xi, c.yi);
-  atualizarStats();
-}
-
-function selecionarCelula(xi, yi) {
-  const idx = celulas.findIndex(c => c.xi === xi && c.yi === yi && c.correto === null);
-  if (idx === -1) return;
-  celulaAtiva = idx;
-  const c = celulas[idx];
-  document.getElementById('question-text').innerHTML = '<span>' + c.x + '</span> × <span>' + c.y + '</span> =';
-  respostaAtual = '';
-  const el = document.getElementById('resposta-display');
-  if (el) { el.textContent = '?'; el.classList.remove('preenchido'); }
-  celulas.forEach((_, i) => atualizarCelulaVisual(i));
-  atualizarHighlight(xi, yi);
-}
-  // sem foco em input nativo
-
-function confirmarResposta() {
-  if (!jogoAtivo || celulaAtiva === null) return;
-  const val = parseInt(respostaAtual);
-  if (isNaN(val) || respostaAtual === '') { toast('Digite um número!', 'err'); return; }
-  const c = celulas[celulaAtiva];
-  const correto = val === c.x * c.y;
-
-  // Limpar display da resposta
-  respostaAtual = '';
-  const el = document.getElementById('resposta-display');
-  if (el) { el.textContent = '?'; el.classList.remove('preenchido'); }
-
-  if (correto) {
-    // ✅ ACERTOU — marca e avança
-    acertos++;
-    celulas[celulaAtiva].correto = true;
-    flashTela('correct');
-    inputFeedback('success');
-    tocarAcerto();
-    toast('✅ ' + c.x + '×' + c.y + '=' + (c.x*c.y), 'ok');
-    atualizarCelulaVisual(celulaAtiva);
-    celulaAtiva = null;
-    setTimeout(proximaPergunta, 400);
-  } else {
-    // ❌ ERROU — conta erro mas FICA na mesma célula
-    erros++;
-    flashTela('wrong');
-    inputFeedback('error');
-    tocarErro();
-    toast('❌ Errado! Tente novamente: ' + c.x + ' × ' + c.y + ' = ?', 'err');
-    atualizarStats();
-    // Célula permanece ativa — NÃO avança, NÃO chama proximaPergunta
-  }
-}
-
-function numpadPress(v) {
-  if (!jogoAtivo) return;
-  if (v === 'del') {
-    respostaAtual = respostaAtual.slice(0, -1);
-  } else if (v === 'ok') {
-    confirmarResposta();
-    return;
-  } else {
-    if (respostaAtual.length < 3) respostaAtual += v;
-  }
-  const el = document.getElementById('resposta-display');
-  el.textContent = respostaAtual || '?';
-  el.classList.toggle('preenchido', respostaAtual.length > 0);
-}
-
-// ══════════════════════════════════════════
-//  STATS & TIMER
-// ══════════════════════════════════════════
-function atualizarStats() {
-  const restam = celulas.filter(c => c.correto === null).length;
-  document.getElementById('stat-acertos').textContent = acertos;
-  document.getElementById('stat-erros').textContent = erros;
-  document.getElementById('stat-restam').textContent = restam;
-  const pct = ((100 - restam) / 100) * 100;
-  document.getElementById('progress-fill').style.width = pct + '%';
-}
-
-function iniciarTimer() {
-  clearInterval(timerInterval);
-  segundos = 0;
-  timerInterval = setInterval(() => {
-    if (!jogoAtivo) return;
-    segundos++;
-    const m = String(Math.floor(segundos/60)).padStart(2,'0');
-    const s = String(segundos%60).padStart(2,'0');
-    const el = document.getElementById('timer-display');
-    el.textContent = `${m}:${s}`;
-    el.classList.toggle('danger', segundos > 120);
-  }, 1000);
-}
-
-function formatarTempo(s) {
-  const m = String(Math.floor(s/60)).padStart(2,'0');
-  const sec = String(s%60).padStart(2,'0');
-  return `${m}:${sec}`;
-}
-
-// ══════════════════════════════════════════
-//  FINALIZAR
-// ══════════════════════════════════════════
-function finalizarJogo() {
-  jogoAtivo = false;
-  clearInterval(timerInterval);
-  pararMusica();
-
-  const entrada = {
-    nome: jogador.nome,
-    avatar: jogador.avatar,
-    nivel: nivelAtualJogo,
-    tempo: segundos,
-    acertos,
-    erros,
-    data: new Date().toLocaleDateString('pt-BR')
-  };
-
-  // Modo batalha — envia resultado para a API e espera adversário
-  if (modoAtual === 'batalha' && salaAtual) {
-    enviarResultadoBatalha();
-    return;
-  }
-
-  // Modo solo — salvarRanking já cuida do local + API
-  salvarRanking(entrada);
-
-  finalizarComRecorde(nivelAtualJogo, segundos);
-  mostrarResultado(entrada);
-  lancarConfetti();
-}
-
-function mostrarResultado(entrada) {
-  const perfeito  = entrada.erros === 0;
-  const muito_bom = entrada.acertos >= 80;
-  const emoji     = perfeito ? '🏆' : muito_bom ? '🥈' : '🎯';
-  const nivCeleb  = perfeito ? 'ouro' : muito_bom ? 'prata' : 'bronze';
-
-  // Troféu
-  const trofeuEl = document.getElementById('result-trophy');
-  trofeuEl.textContent = emoji;
-  setTimeout(() => animarTrofeu('result-trophy', perfeito), 100);
-
-  // Banner
-  const banner = document.getElementById('result-banner');
-  if (banner) {
-    if (perfeito) {
-      banner.innerHTML = '<div class="banner-vencedor">🏆 PERFEITO! SEM ERROS! 🏆</div>';
-    } else if (muito_bom) {
-      banner.innerHTML = '<div class="banner-vencedor" style="background:linear-gradient(135deg,#c0c0c0,#808080);color:#fff">🥈 MUITO BOM! 🥈</div>';
-    } else {
-      banner.innerHTML = '';
-    }
-  }
-
-  document.getElementById('result-time').textContent = formatarTempo(entrada.tempo);
-  document.getElementById('result-acertos').innerHTML =
-    '<strong>' + entrada.acertos + '</strong> acertos &nbsp;|&nbsp; <span style="color:var(--red)">' + entrada.erros + '</span> erros';
-
-  // Badge novo recorde
-  const badgeEl = document.getElementById('result-recorde-badge');
-  if (badgeEl) {
-    const recorde = carregarRecorde(entrada.nivel);
-    const novoRecorde = recorde === null || entrada.tempo < recorde;
-    badgeEl.innerHTML = novoRecorde
-      ? '<span class="novo-recorde-badge">⚡ NOVO RECORDE!</span>'
-      : '';
-  }
-
-  // Posição no ranking
-  const rank = getRanking(entrada.nivel);
-  const pos = rank.findIndex(r => r.nome === entrada.nome && r.tempo === entrada.tempo && r.data === entrada.data) + 1;
-  const preview = document.getElementById('result-rank-preview');
-  preview.innerHTML = '<div style="text-align:center">' +
-    '<div style="font-size:0.75rem; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px">Sua posição no ranking</div>' +
-    '<div style="font-family:Boogaloo,cursive; font-size:2.5rem; color:var(--accent2)">#' + pos + '</div>' +
-    '<div style="font-size:0.8rem; color:var(--muted)">Nível ' + (entrada.nivel === 1 ? '1 — Clássico' : '2 — Embaralhado') + '</div>' +
-  '</div>';
-
-  mostrarTela('screen-resultado');
-  setTimeout(() => {
-    celebracaoCompleta(nivCeleb);
-    if (perfeito || muito_bom) tocarVitoria();
-  }, 300);
-}
-
-function confirmarDesistir() {
-  jogoAtivo = false;
-  clearInterval(timerInterval);
-  mostrarFeedback('Jogo encerrado! Voltando ao menu...', 'info');
-  setTimeout(() => irParaMenu(), 1500);
-}
-
-// ══════════════════════════════════════════
-//  RANKING
-// ══════════════════════════════════════════
-function getRanking(lv) {
-  const key = `tt_ranking_${lv}`;
-  return JSON.parse(localStorage.getItem(key) || '[]');
-}
-
-function salvarRanking(entrada) {
-  // 1. Salvar local (fallback offline)
-  const key = 'tt_ranking_' + entrada.nivel;
-  const rank = getRanking(entrada.nivel);
-  rank.push(entrada);
-  rank.sort((a, b) => a.tempo - b.tempo);
-  localStorage.setItem(key, JSON.stringify(rank.slice(0, 50)));
-
-  // ✅ Fix C: garante que jogadorId existe antes de enviar para a API
-  const jid = jogadorId || localStorage.getItem('tt_jogador_id');
-  if (!jid) {
-    console.warn('[RANKING] jogadorId não disponível — salvo apenas local');
-    return;
-  }
-
-  // 2. Salvar na API (ranking global — visto por todos)
-  const payload = {
-    jogador_id: jid,
-    nome: entrada.nome,
-    avatar: entrada.avatar,
-    nivel: entrada.nivel,
-    tempo: Number(entrada.tempo),
-    acertos: Number(entrada.acertos),
-    erros: Number(entrada.erros),
-    modo: 'solo'
-  };
-  console.log('[RANKING] Enviando para API:', payload);
-  fetch(API_URL + '/ranking/salvar', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
-  }).then(r => {
-    if (r.ok) {
-      console.log('[RANKING] ✅ Salvo na API — atualizando ranking global...');
-      if (tabAtiva !== undefined) renderRankList(tabAtiva);
-    } else {
-      r.text().then(t => console.error('[RANKING] ❌ Erro ao salvar:', r.status, t));
-    }
-  }).catch(e => console.warn('[RANKING] API offline — mantido local:', e.message));
-}
-
-let tabAtiva = 1;
-function switchTab(lv) {
-  tabAtiva = lv;
-  document.getElementById('tab-n1').classList.toggle('active', lv === 1);
-  document.getElementById('tab-n2').classList.toggle('active', lv === 2);
-  document.getElementById('tab-all').classList.toggle('active', lv === 0);
-  renderRankList(lv);
-}
-
-function renderRankList(lv) {
-  const el = document.getElementById('rank-list');
-  el.innerHTML = '<div class="rank-empty" style="color:var(--accent3)">🌐 Carregando ranking global... ⏳</div>';
-
-  // Montar endpoint correto
-  let endpoint = '/ranking/global';
-  if (lv === 1) endpoint = '/ranking/global?nivel=1';
-  else if (lv === 2) endpoint = '/ranking/global?nivel=2';
-
-  fetch(API_URL + endpoint)
-    .then(r => {
-      if (!r.ok) throw new Error('API status ' + r.status);
-      return r.json();
-    })
-    .then(d => {
-      if (d.ranking && d.ranking.length > 0) {
-        renderRankItems(d.ranking.slice(0, 50), lv);
-      } else {
-        // API online mas sem dados — mostrar vazio real
-        el.innerHTML = '<div class="rank-empty">Nenhuma partida registrada ainda.<br>🚀 Seja o primeiro a jogar!</div>';
-      }
-    })
-    .catch(err => {
-      console.error('[RANKING] ERRO ao buscar ranking global:', err);
-      el.innerHTML = '<div class="rank-empty" style="color:var(--accent);font-size:0.8rem;margin-bottom:8px">⚠️ Sem conexão com o servidor.<br>Exibindo dados locais.</div>';
-      renderRankLocal(lv);
-    });
-}
-
-function renderRankLocal(lv) {
-  let items = [];
-  if (lv === 0) {
-    const r1 = getRanking(1).map(r => ({...r, _lv:1}));
-    const r2 = getRanking(2).map(r => ({...r, _lv:2}));
-    items = [...r1, ...r2].sort((a,b) => a.tempo-b.tempo).slice(0,20);
-  } else {
-    items = getRanking(lv).slice(0,20);
-  }
-  renderRankItems(items, lv);
-}
-
-function renderRankItems(items, lv) {
-  const el = document.getElementById('rank-list');
-  if (!items || items.length === 0) {
-    el.innerHTML = '<div class="rank-empty">Nenhum resultado ainda.<br>Seja o primeiro! 🚀</div>';
-    return;
-  }
-  el.innerHTML = items.map((r, i) => {
-    const posClass = i===0?'gold':i===1?'silver':i===2?'bronze':'';
-    const posMedal = i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1);
-    const lvTag = lv===0 ? '<span style="color:var(--accent);font-size:0.65rem"> · Nv'+(r._lv||r.nivel)+'</span>' : '';
-    const modoTag = r.modo==='batalha' ? ' <span style="color:var(--accent3);font-size:0.65rem">⚔️</span>' : '';
-    return '<div class="rank-item">' +
-      '<div class="rank-pos '+posClass+'">'+posMedal+'</div>' +
-      '<div class="rank-av">'+(r.avatar||'🦁')+'</div>' +
-      '<div class="rank-info">' +
-        '<div class="rank-name">'+r.nome+lvTag+modoTag+'</div>' +
-        '<div class="rank-meta">'+(r.acertos||0)+' acertos · '+(r.erros||0)+' erros · '+(r.data||'')+'</div>' +
-      '</div>' +
-      '<div class="rank-time">'+formatarTempo(r.tempo)+'</div>' +
-    '</div>';
-  }).join('');
-}
-
-function limparRanking() {
-  localStorage.removeItem('tt_ranking_1');
-  localStorage.removeItem('tt_ranking_2');
-  renderRankList(tabAtiva);
-  toast('Ranking limpo! 🗑', 'ok');
-}
-
-// ══════════════════════════════════════════
-//  EFEITOS
-// ══════════════════════════════════════════
-function flashTela(tipo) {
-  const qb = document.getElementById('question-box');
-  qb.classList.remove('flash-correct','flash-wrong');
-  void qb.offsetWidth;
-  qb.classList.add(tipo === 'correct' ? 'flash-correct' : 'flash-wrong');
-}
-
-// ══════════════════════════════════════════
-//  SISTEMA DE CELEBRAÇÃO
-// ══════════════════════════════════════════
-
-function lancarConfetti() {
-  const colors = ['#ff6b35','#ffd700','#00e5ff','#39ff14','#ff3366','#ff69b4','#9b59b6'];
-  const shapes = ['■', '●', '▲', '◆'];
-  const overlay = document.getElementById('celebration-overlay');
-
-  for (let i = 0; i < 60; i++) {
-    const el = document.createElement('div');
-    el.className = 'confetti-v2';
-    const size = 6 + Math.random() * 10;
-    el.style.cssText = 'left:' + (Math.random()*100) + 'vw;' +
-      'width:' + size + 'px;height:' + size + 'px;' +
-      'background:' + colors[Math.floor(Math.random()*colors.length)] + ';' +
-      'animation-delay:' + (Math.random()*1.5) + 's;' +
-      'animation-duration:' + (2+Math.random()*2) + 's;' +
-      'border-radius:' + (Math.random()>0.5?'50%':'2px') + ';';
-    document.body.appendChild(el);
-    setTimeout(() => el.remove(), 4000);
-  }
-}
-
-function lancarBaloes(quantidade) {
-  quantidade = quantidade || 12;
-  const emojis = ['🎈','🎈','🎈','🎉','🎊','🎈','🎈','🎈','🎊','🎉'];
-  const cores  = ['🔴','🔵','🟡','🟢','🟠','🟣'];
-  const todos  = [...emojis, ...cores];
-
-  for (let i = 0; i < quantidade; i++) {
-    const el = document.createElement('div');
-    el.className = 'balao';
-    el.textContent = todos[Math.floor(Math.random() * todos.length)];
-    el.style.cssText = 'left:' + (5 + Math.random()*90) + 'vw;' +
-      'animation-delay:' + (Math.random()*2) + 's;' +
-      'animation-duration:' + (4+Math.random()*3) + 's;' +
-      'font-size:' + (1.8+Math.random()*1.2) + 'rem;';
-    document.body.appendChild(el);
-    setTimeout(() => el.remove(), 8000);
-  }
-}
-
-function lancarEstrelas() {
-  const emojis = ['⭐','✨','🌟','💫','⭐','✨'];
-  for (let i = 0; i < 8; i++) {
-    const el = document.createElement('div');
-    el.className = 'estrela-celebracao';
-    el.textContent = emojis[Math.floor(Math.random()*emojis.length)];
-    el.style.cssText = 'left:' + (10+Math.random()*80) + 'vw;' +
-      'top:' + (10+Math.random()*60) + 'vh;' +
-      'animation-delay:' + (Math.random()*0.8) + 's;' +
-      'animation-duration:' + (1+Math.random()*0.5) + 's;';
-    document.body.appendChild(el);
-    setTimeout(() => el.remove(), 2500);
-  }
-}
-
-function celebracaoCompleta(nivel) {
-  // nivel: 'ouro' (perfeito), 'prata' (bom), 'bronze' (concluiu)
-  if (nivel === 'ouro') {
-    lancarConfetti();
-    lancarBaloes(16);
-    lancarEstrelas();
-    setTimeout(() => lancarBaloes(8), 1500);
-    setTimeout(() => lancarEstrelas(), 800);
-  } else if (nivel === 'prata') {
-    lancarConfetti();
-    lancarBaloes(8);
-    lancarEstrelas();
-  } else {
-    lancarConfetti();
-    lancarBaloes(4);
-  }
-}
-
-function animarTrofeu(elementId, ganhou) {
-  const el = document.getElementById(elementId);
-  if (!el) return;
-  el.className = ganhou ? 'trophy-pulse' : '';
-  // Reiniciar animação
-  void el.offsetWidth;
-  el.className = ganhou ? 'trophy-pulse' : 'trophy-winner';
-}
-
-// ══════════════════════════════════════════
-//  BATALHA
-// ══════════════════════════════════════════
-let batalhaLevel = 1;
-
-function irParaBatalha() {
-  renderPlayerBar('batalha');
-  mostrarTela('screen-batalha');
-}
-
-function setBatalhaLevel(lv) {
-  batalhaLevel = lv;
-  document.getElementById('nivel-batalha-selecionado').textContent =
-    lv === 1 ? '📊 Nível 1 selecionado' : '🎲 Nível 2 selecionado';
-  document.querySelectorAll('#screen-batalha .btn-level').forEach((b, i) => {
-    b.style.borderColor = (i + 1 === lv) ? 'var(--accent)' : 'rgba(255,255,255,0.08)';
-  });
-}
-
-async function criarSala() {
-  if (!jogadorId) { toast('Volte ao menu e entre novamente', 'err'); return; }
-  toast('Criando sala...', 'inf');
-  try {
-    const r = await fetch(API_URL + '/batalha/criar', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        jogador_id: jogadorId,
-        nome: jogador.nome,
-        avatar: jogador.avatar,
-        nivel: batalhaLevel
-      })
-    });
-    const d = await r.json();
-    if (!r.ok) { toast('Erro: ' + (d.detail || 'tente novamente'), 'err'); return; }
-    salaAtual = d;
-    document.getElementById('codigo-sala-display').textContent = d.codigo;
-    renderJogadoresSala([{ nome: jogador.nome, avatar: jogador.avatar, finalizado: false }]);
-    mostrarTela('screen-sala');
-    iniciarPolling(d.codigo);
-  } catch(e) { toast('Sem conexão com a API', 'err'); }
-}
-
-async function entrarSala() {
-  const codigo = document.getElementById('inp-codigo-sala').value.trim().toUpperCase();
-  if (codigo.length < 5) { toast('Digite o código da sala', 'err'); return; }
-  if (!jogadorId) { toast('Volte ao menu e entre novamente', 'err'); return; }
-  toast('Entrando na sala...', 'inf');
-  try {
-    const r = await fetch(API_URL + '/batalha/entrar', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        codigo,
-        jogador_id: jogadorId,
-        nome: jogador.nome,
-        avatar: jogador.avatar
-      })
-    });
-    const d = await r.json();
-    if (!r.ok) { toast(d.detail || 'Sala não encontrada', 'err'); return; }
-    salaAtual = d;
-    batalhaLevel = d.nivel;
-    document.getElementById('codigo-sala-display').textContent = d.codigo;
-    renderJogadoresSala(d.jogadores);
-    mostrarTela('screen-sala');
-    iniciarPolling(d.codigo);
-  } catch(e) { toast('Sem conexão com a API', 'err'); }
-}
-
-function renderJogadoresSala(jogadores) {
-  const el = document.getElementById('lista-jogadores-sala');
-  el.innerHTML = jogadores.map(j => `
-    <div style="display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.06)">
-      <span style="font-size:1.6rem">${j.avatar || '🦁'}</span>
-      <span style="font-weight:700">${j.nome}</span>
-      ${j.finalizado ? '<span style="color:var(--green); margin-left:auto">✅ Pronto</span>' : ''}
-    </div>
-  `).join('');
-
-  // Mostrar botão iniciar se 2+ jogadores e eu sou o criador
-  const btnIniciar = document.getElementById('btn-iniciar-batalha');
-  const msg = document.getElementById('sala-status-msg');
-  if (jogadores.length >= 2) {
-    btnIniciar.style.display = 'block';
-    msg.textContent = 'Sala completa! Clique em Iniciar quando todos estiverem prontos.';
-    msg.style.color = 'var(--green)';
-  } else {
-    btnIniciar.style.display = 'none';
-    msg.textContent = 'Aguardando adversário entrar na sala...';
-    msg.style.color = 'var(--muted)';
-  }
-}
-
-function iniciarPolling(codigo) {
-  clearInterval(pollingInterval);
-  pollingInterval = setInterval(async () => {
-    try {
-      const r = await fetch(API_URL + '/batalha/' + codigo);
-      const d = await r.json();
-      if (!r.ok) return;
-      salaAtual = d;
-
-      const telaAtual = document.querySelector('.screen.active');
-      const idAtual = telaAtual ? telaAtual.id : '';
-
-      // Na sala de espera → atualizar lista
-      if (idAtual === 'screen-sala') {
-        renderJogadoresSala(d.jogadores);
-      }
-
-      // Na tela aguardando → atualizar placar parcial
-      if (idAtual === 'screen-aguardando') {
-        const finalizados = d.jogadores.filter(j => j.finalizado);
-        const el = document.getElementById('aguardando-placar');
-        if (el && finalizados.length > 0) {
-          el.innerHTML = '<div style="font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Já finalizaram</div>' +
-            finalizados.map(j => '<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:rgba(255,255,255,0.04);border-radius:10px;margin-bottom:6px">' +
-              '<span>' + (j.avatar||'🦁') + '</span>' +
-              '<span style="flex:1;font-weight:700">' + j.nome + '</span>' +
-              '<span style="font-family:Boogaloo,cursive;color:var(--accent2)">' + formatarTempo(j.tempo) + '</span>' +
-            '</div>').join('');
-        }
-      }
-
-      // Jogo em andamento → iniciar
-      if (d.status === 'em_jogo' && !jogoAtivo) {
-        clearInterval(pollingInterval);
-        iniciarJogoBatalha(d.nivel);
-        return;
-      }
-
-      // Todos finalizaram → mostrar resultado
-      if (d.status === 'finalizada') {
-        clearInterval(pollingInterval);
-        setTimeout(() => mostrarResultadoBatalha(d.jogadores), 500);
-        return;
-      }
-    } catch(e) {}
-  }, 2000);
-}
-
-async function iniciarBatalha() {
-  if (!salaAtual) return;
-  try {
-    const r = await fetch(API_URL + '/batalha/' + salaAtual.codigo + '/iniciar', {
-      method: 'POST'
-    });
-    const d = await r.json();
-    if (!r.ok) { toast(d.detail || 'Erro ao iniciar', 'err'); return; }
-    // Polling vai detectar status em_jogo e chamar iniciarJogoBatalha
-  } catch(e) { toast('Erro de conexão', 'err'); }
-}
-
-function iniciarJogoBatalha(nivel) {
-  clearInterval(pollingInterval);
-  // Mostrar countdown antes de iniciar
-  const jogadoresSala = salaAtual ? salaAtual.jogadores : [];
-  mostrarCountdown(3, jogadoresSala, () => {
-    modoAtual = 'batalha';
-    iniciarJogo(nivel);
-  });
-}
-
-async function enviarResultadoBatalha() {
-  if (!salaAtual || !jogadorId) return;
-
-  // Mostrar tela de aguardando imediatamente
-  pararMusica();
-  mostrarTela('screen-aguardando');
-
-  try {
-    const r = await fetch(API_URL + '/batalha/finalizar', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        codigo: salaAtual.codigo,
-        jogador_id: jogadorId,
-        tempo: segundos,
-        acertos,
-        erros
-      })
-    });
-    const d = await r.json();
-    if (d.status === 'finalizada') {
-      setTimeout(() => mostrarResultadoBatalha(d.jogadores), 800);
-    } else {
-      // Aguardar adversário via polling
-      iniciarPolling(salaAtual.codigo);
-    }
-  } catch(e) {
-    toast('Erro de conexão', 'err');
-    iniciarPolling(salaAtual.codigo);
-  }
-}
-
-function mostrarResultadoBatalha(jogadoresList) {
-  clearInterval(pollingInterval);
-  // Ordenar por tempo
-  const finalizados = jogadoresList.filter(j => j.finalizado && j.tempo !== null);
-  finalizados.sort((a, b) => a.tempo - b.tempo);
-  const eu = jogadoresList.find(j => j.id === jogadorId);
-  const vencedor = finalizados[0];
-  const ganhei = vencedor && vencedor.id === jogadorId;
-
-  // Parar música ao mostrar resultado
-  pararMusica();
-
-  // Troféu
-  const trofeuBat = document.getElementById('batalha-trophy');
-  trofeuBat.textContent = ganhei ? '🏆' : '💪';
-  setTimeout(() => animarTrofeu('batalha-trophy', ganhei), 200);
-
-  // Título
-  document.getElementById('batalha-resultado-titulo').innerHTML = ganhei
-    ? '<span style="color:var(--accent2)">VOCÊ VENCEU!</span>'
-    : '<span style="color:var(--muted)">Boa batalha!</span>';
-
-  // Mensagem personalizada
-  const msgEl = document.getElementById('batalha-mensagem');
-  if (msgEl) {
-    const msgsPerdedor = [
-      '💡 Quase lá! Da próxima você vence!',
-      '🔥 Você foi incrível! Bora revanche?',
-      '💪 Cada treino te deixa mais forte!',
-      '⭐ A tabuada te espera de volta!',
-      '🎯 Continue treinando, você consegue!'
-    ];
-    msgEl.textContent = ganhei
-      ? 'Parabéns! Você dominou a tabuada! 🎉'
-      : msgsPerdedor[Math.floor(Math.random() * msgsPerdedor.length)];
-  }
-
-  // Banner
-  const bannerBat = document.getElementById('batalha-banner');
-  if (bannerBat) {
-    bannerBat.innerHTML = ganhei
-      ? '<div class="banner-vencedor">🏆 CAMPEÃO DA BATALHA! 🏆</div>'
-      : '<div class="banner-vencedor" style="background:linear-gradient(135deg,#2d2d44,#1a1830);color:var(--accent3);border:1px solid var(--accent3)">💪 NÃO DESISTA! REVANCHE! 💪</div>';
-  }
-
-  // Placar com estilo
-  const placarEl = document.getElementById('batalha-placar');
-  placarEl.innerHTML = finalizados.map((j, i) => {
-    const eVoce = j.id === jogadorId;
-    const medalha = i===0?'🥇':i===1?'🥈':'🥉';
-    return '<div class="placar-item ' + (i===0?'primeiro':'segundo') + '" style="animation-delay:' + (i*0.15) + 's">' +
-      '<div style="font-size:1.6rem">' + medalha + '</div>' +
-      '<div style="font-size:1.4rem">' + (j.avatar||'🦁') + '</div>' +
-      '<div style="flex:1">' +
-        '<div style="font-weight:700">' + j.nome + (eVoce?' <span style="color:var(--accent);font-size:0.75rem">(você)</span>':'') + '</div>' +
-        '<div style="font-size:0.72rem; color:var(--muted)">' + (j.acertos||0) + ' acertos · ' + (j.erros||0) + ' erros</div>' +
-      '</div>' +
-      '<div style="font-family:Boogaloo,cursive; font-size:1.2rem; color:' + (i===0?'var(--accent2)':'var(--accent3)') + '">' + formatarTempo(j.tempo) + '</div>' +
-    '</div>';
-  }).join('');
-
-  mostrarTela('screen-resultado-batalha');
-  setTimeout(() => {
-    if (ganhei) {
-      celebracaoCompleta('ouro');
-      tocarVitoria();
-    } else {
-      lancarConfetti();
-      lancarBaloes(4);
-      lancarEstrelas();
-    }
-  }, 400);
-}
-
-function copiarCodigo() {
-  const codigo = document.getElementById('codigo-sala-display').textContent;
-  navigator.clipboard.writeText(codigo).then(() => toast('Código copiado! 📋', 'ok')).catch(() => {
-    toast(codigo, 'ok');
-  });
-}
-
-function sairDaSala() {
-  clearInterval(pollingInterval);
-  salaAtual = null;
-  irParaBatalha();
-}
-
-// ══════════════════════════════════════════
-//  COUNTDOWN
-// ══════════════════════════════════════════
-function mostrarCountdown(numero, jogadoresSala, callback) {
-  mostrarTela('screen-countdown');
-
-  // Renderizar jogadores
-  const jEl = document.getElementById('countdown-jogadores');
-  jEl.innerHTML = (jogadoresSala || []).map(j =>
-    '<div class="countdown-jogador">' +
-      '<div class="countdown-av">' + (j.avatar || '🦁') + '</div>' +
-      '<div class="countdown-nome">' + j.nome + '</div>' +
-    '</div>'
-  ).join('<div style="font-family:Boogaloo,cursive;font-size:2rem;color:var(--accent);align-self:center">VS</div>');
-
-  const numEl = document.getElementById('countdown-numero');
-  const lblEl = document.getElementById('countdown-label');
-
-  function tick(n) {
-    // Reiniciar animação
-    numEl.style.animation = 'none';
-    void numEl.offsetWidth;
-    numEl.style.animation = 'countPop .8s ease-out forwards';
-
-    if (n > 0) {
-      numEl.textContent = n;
-      lblEl.textContent = n === 3 ? '⚔️ Prepara!' : n === 2 ? '🎯 Atenção!' : '🚀 Já!';
-      setTimeout(() => tick(n - 1), 900);
-    } else {
-      numEl.textContent = 'GO!';
-      lblEl.textContent = '🔥 Bora!';
-      setTimeout(() => {
-        if (typeof callback === 'function') callback();
-      }, 700);
-    }
-  }
-  tick(numero);
-}
-
-// ══════════════════════════════════════════
-//  WHATSAPP
-// ══════════════════════════════════════════
-function compartilharWhatsApp() {
-  const codigo = document.getElementById('codigo-sala-display').textContent;
-  const url = 'https://meirelesnew.github.io/tabuada-turbo/';
-  const msg = '⚡ Tabuada Turbo — Batalha!\n\nVem me desafiar na tabuada! 😤\n\n🔑 Código da sala: *' + codigo + '*\n\n👉 Acesse: ' + url + '\n\nQuem termina primeiro vence! ⚔️';
-  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
-}
-
-function compartilharResultadoWhatsApp() {
-  const titulo = document.getElementById('batalha-resultado-titulo').textContent;
-  const ganhei = titulo.includes('VENCEU');
-  const url = 'https://meirelesnew.github.io/tabuada-turbo/';
-  const tempoEl = document.querySelector('#batalha-placar .rank-time');
-  const tempo = tempoEl ? tempoEl.textContent : '';
-  const msg = ganhei ? '🏆 Venci na Tabuada Turbo! ⚡\n\nFiz em *' + tempo + '*!\n\nVem me desafiar: ' + url : '😤 Perdi desta vez...\n\nBora revanche: ' + url + ' ⚔️';
-  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
-}
-
-// ══════════════════════════════════════════
-//  FEEDBACK VISUAL (sem confirm/alert)
-// ══════════════════════════════════════════
-const STORAGE_KEYS = {
-  recorde_nivel1: 'tt_recorde_nivel1',
-  recorde_nivel2: 'tt_recorde_nivel2'
+/* ── CONFIGURAÇÃO VITAL: O link do servidor no Render ── */
+const API_URL = "https://tabuada-turbo.onrender.com";
+
+/* ── ESTADO GLOBAL ── */
+let JOGADOR = { id: "", nome: "", avatar: "🦊" };
+let JOGO = {
+  nivel: 1, 
+  modo: 'solo', 
+  tempo: 0, 
+  timerInterval: null, 
+  questoes: [], 
+  atualIdx: 0,
+  acertos: 0, 
+  erros: 0, 
+  meta: 0,
+  codigoSala: "",
+  socketCheck: null
 };
 
-let feedbackTimer = null;
-function mostrarFeedback(msg, tipo) {
-  const el = document.getElementById('feedback-overlay');
-  if (!el) return;
-  clearTimeout(feedbackTimer);
-  el.textContent = msg;
-  el.className = 'show ' + (tipo || 'info');
-  feedbackTimer = setTimeout(() => { el.className = ''; }, 2200);
-}
+const AVATARES = ["🦊", "🦁", "🐼", "🤖", "🐱", "🐶", "🐵", "🐙", "🦖", "🦄"];
+let respAtual = "";
 
-function inputFeedback(tipo) {
-  const el = document.getElementById('resposta-display');
-  if (!el) return;
-  el.classList.remove('input-pulse', 'input-shake');
-  void el.offsetWidth;
-  el.classList.add(tipo === 'success' ? 'input-pulse' : 'input-shake');
-}
-
-// ── RECORDES ──────────────────────────────
-function carregarRecorde(nivel) {
-  const key = nivel === 1 ? STORAGE_KEYS.recorde_nivel1 : STORAGE_KEYS.recorde_nivel2;
-  const val = localStorage.getItem(key);
-  return val ? parseInt(val) : null;
-}
-
-function salvarRecorde(nivel, tempo) {
-  const key = nivel === 1 ? STORAGE_KEYS.recorde_nivel1 : STORAGE_KEYS.recorde_nivel2;
-  const atual = carregarRecorde(nivel);
-  if (atual === null || tempo < atual) {
-    localStorage.setItem(key, tempo);
-    return true; // novo recorde!
-  }
-  return false;
-}
-
-function exibirRecordeTela(nivel) {
-  const recorde = carregarRecorde(nivel);
-  const el = document.getElementById('high-score-display');
-  const val = document.getElementById('high-score-valor');
-  if (!el || !val) return;
-  if (recorde !== null) {
-    el.style.display = 'flex';
-    val.textContent = formatarTempo(recorde) + ' (Nv' + nivel + ')';
-  } else {
-    el.style.display = 'none';
-  }
-}
-
-function finalizarComRecorde(nivel, tempo) {
-  const novoRecorde = salvarRecorde(nivel, tempo);
-  if (novoRecorde) {
-    mostrarFeedback('🏆 NOVO RECORDE! ' + formatarTempo(tempo), 'success');
-  }
-  exibirRecordeTela(nivel);
-}
-
-function limparDados() {
-  Object.values(STORAGE_KEYS).forEach(k => localStorage.removeItem(k));
-  localStorage.removeItem('tt_ranking_1');
-  localStorage.removeItem('tt_ranking_2');
-  localStorage.removeItem('tt_jogador');
-  mostrarFeedback('Dados limpos!', 'info');
-}
-
-// ══════════════════════════════════════════
-//  SISTEMA DE MÚSICA (Web Audio API)
-// ══════════════════════════════════════════
+/* ── AUDIO ENGINE ── */
 let audioCtx = null;
-let musicaNodes = [];
-let musicaAtiva = false;
+const NOTAS = { C4: 261.63, E4: 329.63, G4: 392.00, C5: 523.25, E5: 659.25, G5: 783.99, C6: 1046.50 };
+let musicaAtiva = true;
 let musicaLoop = null;
+let musicaNodes = [];
 
 function getAudioCtx() {
-  if (!audioCtx) {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  }
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   if (audioCtx.state === 'suspended') audioCtx.resume();
   return audioCtx;
 }
 
-// Notas em Hz — escala pentatônica (alegre, dopaminérgica)
-const NOTAS = {
-  C4:261.63, D4:293.66, E4:329.63, G4:392.00, A4:440.00,
-  C5:523.25, D5:587.33, E5:659.25, G5:783.99, A5:880.00,
-  B4:493.88, F4:349.23
-};
-
-// Melodia principal — loop energético 8-bit style
-const MELODIA_JOGO = [
-  {n:'C5',d:0.12},{n:'E5',d:0.12},{n:'G5',d:0.12},{n:'E5',d:0.12},
-  {n:'C5',d:0.12},{n:'D5',d:0.12},{n:'E5',d:0.25},{n:'_',d:0.1},
-  {n:'G4',d:0.12},{n:'A4',d:0.12},{n:'C5',d:0.12},{n:'A4',d:0.12},
-  {n:'G4',d:0.12},{n:'E4',d:0.12},{n:'G4',d:0.25},{n:'_',d:0.1},
-  {n:'E4',d:0.12},{n:'G4',d:0.12},{n:'A4',d:0.12},{n:'C5',d:0.12},
-  {n:'D5',d:0.12},{n:'E5',d:0.12},{n:'G5',d:0.25},{n:'_',d:0.1},
-  {n:'A5',d:0.12},{n:'G5',d:0.12},{n:'E5',d:0.12},{n:'D5',d:0.12},
-  {n:'C5',d:0.12},{n:'B4',d:0.12},{n:'C5',d:0.35},{n:'_',d:0.15},
-];
-
-// Fanfarra de vitória
-const MELODIA_VITORIA = [
-  {n:'C5',d:0.1},{n:'C5',d:0.1},{n:'C5',d:0.1},{n:'C5',d:0.25},
-  {n:'G4',d:0.25},{n:'A4',d:0.12},{n:'G4',d:0.12},
-  {n:'C5',d:0.15},{n:'E5',d:0.15},{n:'G5',d:0.35},
-  {n:'_',d:0.1},
-  {n:'G5',d:0.12},{n:'F4',d:0.12},{n:'E5',d:0.12},{n:'D5',d:0.12},
-  {n:'C5',d:0.5},
-];
-
-function tocarNota(freq, tempo, duracao, volume, tipo) {
-  if (!audioCtx) return;
-  const osc  = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
-  const vol  = volume || 0.15;
-  const t    = audioCtx.currentTime + tempo;
-
-  osc.type = tipo || 'square';
-  osc.frequency.setValueAtTime(freq, t);
-  // Envelope suave
-  gain.gain.setValueAtTime(0, t);
-  gain.gain.linearRampToValueAtTime(vol, t + 0.01);
-  gain.gain.exponentialRampToValueAtTime(0.001, t + duracao * 0.9);
-
-  osc.connect(gain);
-  gain.connect(audioCtx.destination);
-  osc.start(t);
-  osc.stop(t + duracao);
-  musicaNodes.push(osc);
-}
-
-function tocarBaixo(freq, tempo, duracao) {
-  tocarNota(freq * 0.5, tempo, duracao, 0.08, 'triangle');
-}
-
-function tocarMelodia(melodia, offset, volume) {
-  let t = offset || 0;
-  melodia.forEach(note => {
-    if (note.n !== '_' && NOTAS[note.n]) {
-      tocarNota(NOTAS[note.n], t, note.d * 0.85, volume || 0.15, 'square');
-      if (t % 0.5 < 0.1) {
-        tocarBaixo(NOTAS[note.n], t, note.d * 1.2);
-      }
-    }
-    t += note.d;
-  });
-  return t;
-}
-
-function calcularDuracaoMelodia(melodia) {
-  return melodia.reduce((s, n) => s + n.d, 0);
-}
-
-function iniciarMusicaJogo() {
-  if (musicaAtiva) return;
+function tocarNota(freq, delay, dur, vol, tipo = 'triangle') {
   try {
-    getAudioCtx();
+    const ctx = getAudioCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = tipo;
+    osc.frequency.setValueAtTime(freq, ctx.currentTime + delay);
+    gain.gain.setValueAtTime(vol, ctx.currentTime + delay);
+    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + delay + dur);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(ctx.currentTime + delay);
+    osc.stop(ctx.currentTime + delay + dur);
+    if (tipo === 'sine') musicaNodes.push(osc);
+  } catch(e) {}
+}
+
+const MELODIA_JOGO = [
+  {f: NOTAS.C4, d: 0.2}, {f: NOTAS.E4, d: 0.2}, {f: NOTAS.G4, d: 0.2}, {f: NOTAS.C5, d: 0.4},
+  {f: NOTAS.G4, d: 0.2}, {f: NOTAS.E4, d: 0.2}, {f: NOTAS.C4, d: 0.4}
+];
+const MELODIA_VITORIA = [
+  {f: NOTAS.C5, d: 0.15}, {f: NOTAS.E5, d: 0.15}, {f: NOTAS.G5, d: 0.15}, 
+  {f: NOTAS.C6, d: 0.5}, {f: NOTAS.G5, d: 0.2}, {f: NOTAS.C6, d: 0.6}
+];
+
+function tocarMelodia(m, delay = 0, vol = 0.1) {
+  let tempo = delay;
+  m.forEach(n => {
+    tocarNota(n.f, tempo, n.d * 2, vol, 'sine');
+    tempo += n.d;
+  });
+}
+
+function calcularDuracaoMelodia(m) { return m.reduce((a, b) => a + b.d, 0); }
+
+function iniciarMusica() {
+  if (!musicaAtiva) return;
+  try {
+    pararMusica();
     musicaAtiva = true;
     const dur = calcularDuracaoMelodia(MELODIA_JOGO);
-
     function loop() {
       if (!musicaAtiva) return;
       tocarMelodia(MELODIA_JOGO, 0, 0.15);
@@ -2427,30 +980,526 @@ function pararMusica() {
   musicaNodes = [];
 }
 
-// Botão mute no jogo
-let musicaMutada = false;
-function toggleMusica() {
-  musicaMutada = !musicaMutada;
-  const btn = document.getElementById('btn-musica');
-  if (btn) btn.textContent = musicaMutada ? '🔇' : '🎵';
-  if (musicaMutada) {
-    pararMusica();
+/* ── LÓGICA DE TELAS ── */
+function goto(screenId) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + screenId).classList.add('active');
+  if (screenId !== 'jogo' && screenId !== 'countdown') pararMusica();
+  window.scrollTo(0,0);
+}
+
+function showToast(msg, type='ok') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'show ' + type;
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function showFeedback(msg, type='info') {
+  const f = document.getElementById('feedback-overlay');
+  f.textContent = msg;
+  f.className = 'show ' + type;
+  setTimeout(() => f.classList.remove('show'), 1500);
+}
+
+/* ── INICIALIZAÇÃO ── */
+window.onload = () => {
+  const grid = document.getElementById('avatar-grid');
+  AVATARES.forEach(av => {
+    const b = document.createElement('div');
+    b.className = 'av-btn';
+    b.textContent = av;
+    b.onclick = () => {
+      document.querySelectorAll('.av-btn').forEach(x => x.classList.remove('selected'));
+      b.classList.add('selected');
+      JOGADOR.avatar = av;
+    };
+    grid.appendChild(b);
+  });
+  grid.children[0].click();
+
+  const salvo = localStorage.getItem('tabuada_turbo_v2');
+  if (salvo) {
+    const p = JSON.parse(salvo);
+    document.getElementById('input-nome').value = p.nome;
+    JOGADOR.nome = p.nome;
+    JOGADOR.id = p.id || "jog_" + Date.now();
+    JOGADOR.avatar = p.avatar;
+    document.querySelectorAll('.av-btn').forEach(b => {
+      if (b.textContent === p.avatar) b.click();
+    });
   } else {
-    iniciarMusicaJogo();
+    JOGADOR.id = "jog_" + Date.now();
+  }
+  
+  // Admin Check
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.has('token')) {
+    document.getElementById('btn-admin-limpar').style.display = 'block';
+  }
+};
+
+async function salvarEIniciar() {
+  const nome = document.getElementById('input-nome').value.trim();
+  if (!nome) return showToast("Digite seu nome!", "err");
+  
+  JOGADOR.nome = nome;
+  localStorage.setItem('tabuada_turbo_v2', JSON.stringify(JOGADOR));
+  
+  document.getElementById('bar-nome').textContent = JOGADOR.nome;
+  document.getElementById('bar-av').textContent = JOGADOR.avatar;
+  
+  try {
+    // Sincroniza com servidor Render
+    await fetch(`${API_URL}/jogador/salvar`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ jogador_id: JOGADOR.id, nome: JOGADOR.nome, avatar: JOGADOR.avatar })
+    });
+  } catch(e) {}
+  
+  goto('modos');
+}
+
+/* ── JOGO SOLO ── */
+function iniciarSolo(nivel) {
+  JOGO.nivel = nivel;
+  JOGO.modo = 'solo';
+  JOGO.meta = nivel === 1 ? 25 : 100;
+  prepararJogo();
+  iniciarCountdown();
+}
+
+function prepararJogo() {
+  JOGO.tempo = 0;
+  JOGO.acertos = 0;
+  JOGO.erros = 0;
+  JOGO.atualIdx = 0;
+  respAtual = "";
+  
+  const nums = JOGO.nivel === 1 ? [1,2,3,4,5] : [1,2,3,4,5,6,7,8,9,10];
+  JOGO.questoes = [];
+  nums.forEach(a => {
+    nums.forEach(b => {
+      JOGO.questoes.push({a, b, r: a*b, ok: false});
+    });
+  });
+  JOGO.questoes = JOGO.questoes.sort(() => Math.random() - 0.5);
+  JOGO.meta = JOGO.questoes.length;
+
+  desenharGrade();
+  atualizarStats();
+  document.getElementById('timer').textContent = "00:00";
+  document.getElementById('timer').classList.remove('danger');
+}
+
+function desenharGrade() {
+  const g = document.getElementById('grade');
+  g.innerHTML = "";
+  const max = JOGO.nivel === 1 ? 5 : 10;
+  
+  let h = '<tr><th class="corner">×</th>';
+  for(let i=1; i<=max; i++) h += `<th>${i}</th>`;
+  h += '</tr>';
+  
+  for(let i=1; i<=max; i++) {
+    h += `<tr><th>${i}</th>`;
+    for(let j=1; j<=max; j++) {
+      h += `<td id="cell-${i}-${j}">?</td>`;
+    }
+    h += '</tr>';
+  }
+  g.innerHTML = h;
+}
+
+function iniciarCountdown() {
+  goto('countdown');
+  const num = document.getElementById('countdown-num');
+  const jogs = document.getElementById('countdown-jogs');
+  jogs.innerHTML = `<div class="countdown-jogador"><div class="countdown-av">${JOGADOR.avatar}</div><div class="countdown-nome">${JOGADOR.nome}</div></div>`;
+  
+  let c = 3;
+  num.textContent = c;
+  const timer = setInterval(() => {
+    c--;
+    if (c > 0) {
+      num.textContent = c;
+      num.style.animation = 'none';
+      setTimeout(() => num.style.animation = 'countPop .8s ease-out forwards', 10);
+    } else {
+      clearInterval(timer);
+      goto('jogo');
+      proximaPergunta();
+      iniciarTimer();
+      iniciarMusica();
+    }
+  }, 1000);
+}
+
+function iniciarTimer() {
+  clearInterval(JOGO.timerInterval);
+  const start = Date.now();
+  JOGO.timerInterval = setInterval(() => {
+    JOGO.tempo = Math.floor((Date.now() - start) / 1000);
+    const m = Math.floor(JOGO.tempo / 60).toString().padStart(2, '0');
+    const s = (JOGO.tempo % 60).toString().padStart(2, '0');
+    document.getElementById('timer').textContent = `${m}:${s}`;
+  }, 1000);
+}
+
+function proximaPergunta() {
+  const q = JOGO.questoes[JOGO.atualIdx];
+  document.getElementById('pergunta').innerHTML = `${q.a} <span>×</span> ${q.b} =`;
+  document.getElementById('resp-view').textContent = "";
+  document.getElementById('resp-view').classList.remove('preenchido');
+  respAtual = "";
+  
+  document.querySelectorAll('td').forEach(td => td.classList.remove('active-cell'));
+  const cell = document.getElementById(`cell-${q.a}-${q.b}`);
+  if (cell) cell.classList.add('active-cell');
+}
+
+function tecla(v) {
+  const view = document.getElementById('resp-view');
+  if (v === 'C') {
+    respAtual = "";
+  } else if (v === 'OK') {
+    confirmar();
+    return;
+  } else {
+    if (respAtual.length < 3) respAtual += v;
+    view.classList.add('input-pulse');
+    setTimeout(() => view.classList.remove('input-pulse'), 300);
+  }
+  view.textContent = respAtual;
+  if (respAtual !== "") view.classList.add('preenchido');
+  else view.classList.remove('preenchido');
+}
+
+function confirmar() {
+  if (respAtual === "") return;
+  const q = JOGO.questoes[JOGO.atualIdx];
+  const userR = parseInt(respAtual);
+  const cell = document.getElementById(`cell-${q.a}-${q.b}`);
+  
+  if (userR === q.r) {
+    JOGO.acertos++;
+    tocarAcerto();
+    if (cell) {
+      cell.textContent = q.r;
+      cell.className = "answered-correct";
+    }
+    showFeedback("ACERTOU! ⚡", "success");
+    explosao(cell);
+  } else {
+    JOGO.erros++;
+    tocarErro();
+    if (cell) {
+      cell.textContent = q.r;
+      cell.className = "answered-wrong";
+    }
+    showFeedback("ERROU! ❌", "error");
+  }
+  
+  JOGO.atualIdx++;
+  atualizarStats();
+  
+  if (JOGO.atualIdx >= JOGO.meta) {
+    finalizar();
+  } else {
+    proximaPergunta();
   }
 }
 
-// ══════════════════════════════════════════
-//  TOAST
-// ══════════════════════════════════════════
-let toastTimer = null;
-function toast(msg, tipo) {
-  const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.className = `show ${tipo}`;
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => { el.className = ''; }, 2000);
+function atualizarStats() {
+  document.getElementById('stat-acertos').textContent = JOGO.acertos;
+  document.getElementById('stat-erros').textContent = JOGO.erros;
+  document.getElementById('stat-restam').textContent = JOGO.meta - JOGO.atualIdx;
+  document.getElementById('progress').style.width = (JOGO.atualIdx / JOGO.meta * 100) + "%";
+}
+
+async function finalizar() {
+  clearInterval(JOGO.timerInterval);
+  pararMusica();
+  tocarVitoria();
+  
+  const m = Math.floor(JOGO.tempo / 60).toString().padStart(2, '0');
+  const s = (JOGO.tempo % 60).toString().padStart(2, '0');
+  document.getElementById('res-tempo').textContent = `${m}:${s}`;
+  document.getElementById('res-meta').innerHTML = `<strong>${JOGO.acertos}</strong> acertos • <strong>${JOGO.erros}</strong> erros`;
+  
+  goto('resultado');
+  confettiRain();
+
+  if (JOGO.modo === 'solo') {
+    try {
+      await fetch(`${API_URL}/ranking/salvar`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          jogador_id: JOGADOR.id,
+          nome: JOGADOR.nome,
+          avatar: JOGADOR.avatar,
+          nivel: JOGO.nivel,
+          tempo: JOGO.tempo,
+          acertos: JOGO.acertos,
+          erros: JOGO.erros,
+          modo: 'solo'
+        })
+      });
+    } catch(e) {}
+  } else {
+    // Modo Batalha
+    document.getElementById('res-batalha-card').style.display = 'block';
+    finalizarBatalha();
+  }
+}
+
+/* ── MODO BATALHA ── */
+function abrirBatalha() { goto('batalha-menu'); }
+
+async function criarSala(nivel) {
+  try {
+    const res = await fetch(`${API_URL}/batalha/criar`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ jogador_id: JOGADOR.id, nome: JOGADOR.nome, avatar: JOGADOR.avatar, nivel })
+    });
+    const data = await res.json();
+    JOGO.codigoSala = data.codigo;
+    JOGO.nivel = nivel;
+    JOGO.modo = 'batalha';
+    document.getElementById('espera-codigo').textContent = data.codigo;
+    goto('sala-espera');
+    monitorarSala();
+  } catch(e) { showToast("Erro ao criar sala", "err"); }
+}
+
+async function entrarSala() {
+  const cod = document.getElementById('input-codigo').value.trim().toUpperCase();
+  if (!cod) return;
+  try {
+    const res = await fetch(`${API_URL}/batalha/entrar`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ codigo: cod, jogador_id: JOGADOR.id, nome: JOGADOR.nome, avatar: JOGADOR.avatar })
+    });
+    const data = await res.json();
+    if (data.erro) return showToast(data.erro, "err");
+    
+    JOGO.codigoSala = cod;
+    JOGO.nivel = data.nivel;
+    JOGO.modo = 'batalha';
+    document.getElementById('espera-codigo').textContent = cod;
+    goto('sala-espera');
+    monitorarSala();
+  } catch(e) { showToast("Sala não encontrada", "err"); }
+}
+
+function monitorarSala() {
+  if (JOGO.socketCheck) clearInterval(JOGO.socketCheck);
+  JOGO.socketCheck = setInterval(async () => {
+    try {
+      const res = await fetch(`${API_URL}/batalha/status?codigo=${JOGO.codigoSala}`);
+      const sala = await res.json();
+      
+      const lista = document.getElementById('espera-jogadores');
+      lista.innerHTML = sala.jogadores.map(j => `
+        <div class="countdown-jogador">
+          <div class="countdown-av">${j.avatar}</div>
+          <div class="countdown-nome">${j.nome}</div>
+        </div>
+      `).join('');
+
+      if (sala.status === 'jogando') {
+        clearInterval(JOGO.socketCheck);
+        prepararJogo();
+        iniciarCountdownBatalha(sala.jogadores);
+      }
+    } catch(e) { clearInterval(JOGO.socketCheck); }
+  }, 2000);
+}
+
+function iniciarCountdownBatalha(jogs) {
+  goto('countdown');
+  const num = document.getElementById('countdown-num');
+  const divJogs = document.getElementById('countdown-jogs');
+  divJogs.innerHTML = jogs.map(j => `
+    <div class="countdown-jogador">
+      <div class="countdown-av">${j.avatar}</div>
+      <div class="countdown-nome">${j.nome}</div>
+    </div>
+  `).join('<div style="font-family:Boogaloo; font-size:2rem; align-self:center;">VS</div>');
+  
+  let c = 3;
+  num.textContent = c;
+  const timer = setInterval(() => {
+    c--;
+    if (c > 0) num.textContent = c;
+    else {
+      clearInterval(timer);
+      goto('jogo');
+      proximaPergunta();
+      iniciarTimer();
+      iniciarMusica();
+    }
+  }, 1000);
+}
+
+async function finalizarBatalha() {
+  try {
+    await fetch(`${API_URL}/batalha/finalizar`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        codigo: JOGO.codigoSala, 
+        jogador_id: JOGADOR.id, 
+        tempo: JOGO.tempo, 
+        acertos: JOGO.acertos, 
+        erros: JOGO.erros 
+      })
+    });
+    
+    const checkRes = setInterval(async () => {
+      const res = await fetch(`${API_URL}/batalha/status?codigo=${JOGO.codigoSala}`);
+      const sala = await res.json();
+      if (sala.status === 'finalizado') {
+        clearInterval(checkRes);
+        mostrarVencedorBatalha(sala.jogadores);
+      }
+    }, 2000);
+  } catch(e) {}
+}
+
+function mostrarVencedorBatalha(jogs) {
+  const lista = document.getElementById('res-batalha-lista');
+  // Ordena por tempo (quem terminou primeiro ganha)
+  const ordenados = [...jogs].sort((a,b) => a.tempo - b.tempo);
+  lista.innerHTML = ordenados.map((j, i) => `
+    <div class="rank-item" style="${j.id === JOGADOR.id ? 'border-color:var(--accent);' : ''}">
+      <div class="rank-pos ${i===0?'gold':''}">${i===0?'👑':(i+1)+'º'}</div>
+      <div class="rank-av">${j.avatar}</div>
+      <div class="rank-info">
+        <div class="rank-name">${j.nome} ${j.id === JOGADOR.id ? '(Você)' : ''}</div>
+        <div class="rank-meta">${j.acertos} acertos</div>
+      </div>
+      <div class="rank-time">${Math.floor(j.tempo/60)}:${(j.tempo%60).toString().padStart(2,'0')}</div>
+    </div>
+  `).join('');
+}
+
+/* ── RANKING GLOBAL ── */
+async function carregarRanking(nivel) {
+  document.querySelectorAll('.rank-tab').forEach(t => t.classList.remove('active'));
+  if (nivel === 1) document.getElementById('tab-nv1').classList.add('active');
+  else if (nivel === 2) document.getElementById('tab-nv2').classList.add('active');
+  else document.getElementById('tab-geral').classList.add('active');
+
+  const lista = document.getElementById('ranking-lista');
+  lista.innerHTML = '<div class="rank-empty">Carregando mestre da tabuada...</div>';
+  
+  goto('ranking');
+
+  try {
+    const res = await fetch(`${API_URL}/ranking/global?nivel=${nivel}`);
+    const data = await res.json();
+    
+    if (!data.ranking || data.ranking.length === 0) {
+      lista.innerHTML = '<div class="rank-empty">Nenhum recorde ainda. Seja o primeiro!</div>';
+      return;
+    }
+
+    lista.innerHTML = data.ranking.map((r, i) => `
+      <div class="rank-item">
+        <div class="rank-pos ${i===0?'gold':i===1?'silver':i===2?'bronze':''}">${i+1}º</div>
+        <div class="rank-av">${r.avatar}</div>
+        <div class="rank-info">
+          <div class="rank-name">${r.nome}</div>
+          <div class="rank-meta">Nível ${r.nivel} • ${r.acertos} acertos • ${r.data}</div>
+        </div>
+        <div class="rank-time">${Math.floor(r.tempo/60)}:${(r.tempo%60).toString().padStart(2,'0')}</div>
+      </div>
+    `).join('');
+  } catch(e) {
+    lista.innerHTML = '<div class="rank-empty">Erro ao carregar. Verifique sua internet.</div>';
+  }
+}
+
+function abrirRanking() { carregarRanking(1); }
+
+/* ── ADMIN ── */
+async function adminLimpar() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const token = urlParams.get('token');
+  if (!token) return;
+  
+  if (!confirm("Deseja mesmo limpar registos inválidos?")) return;
+  
+  try {
+    const res = await fetch(`${API_URL}/admin/limpar-invalidos?token=${token}`);
+    const data = await res.json();
+    showToast(`Limpeza concluída: ${data.removidos} removidos`);
+    carregarRanking(1);
+  } catch(e) { showToast("Erro na limpeza", "err"); }
+}
+
+/* ── EFEITOS VISUAIS ── */
+function explosao(el) {
+  if (!el) return;
+  const rect = el.getBoundingClientRect();
+  for (let i = 0; i < 8; i++) {
+    const p = document.createElement('div');
+    p.className = 'confetti-piece';
+    p.style.left = (rect.left + rect.width/2) + 'px';
+    p.style.top = (rect.top + rect.height/2) + 'px';
+    p.style.background = JOGADOR.avatar === '🦊' ? '#ff6b35' : ['#ff6b35','#ffd700','#00e5ff','#39ff14'][Math.floor(Math.random()*4)];
+    const angle = Math.random() * Math.PI * 2;
+    const velocity = 2 + Math.random() * 4;
+    p.animate([
+      { transform: 'translate(0,0) scale(1)', opacity: 1 },
+      { transform: `translate(${Math.cos(angle)*100}px, ${Math.sin(angle)*100}px) scale(0)`, opacity: 0 }
+    ], { duration: 600, easing: 'ease-out' });
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 600);
+  }
+}
+
+function confettiRain() {
+  for (let i = 0; i < 50; i++) {
+    const p = document.createElement('div');
+    p.className = 'confetti-piece';
+    p.style.left = Math.random() * 100 + 'vw';
+    p.style.top = '-20px';
+    p.style.background = ['#ff6b35','#ffd700','#00e5ff','#39ff14','#ff3366'][Math.floor(Math.random()*5)];
+    p.style.width = (5 + Math.random()*10) + 'px';
+    p.style.height = p.style.width;
+    p.style.borderRadius = '50%';
+    p.animate([
+      { transform: `translate(0,0) rotate(0deg)`, opacity: 1 },
+      { transform: `translate(${(Math.random()-0.5)*200}px, 100vh) rotate(${Math.random()*360}deg)`, opacity: 0 }
+    ], { duration: 2000 + Math.random()*3000, easing: 'cubic-bezier(.37,0,.63,1)' });
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 5000);
+  }
+}
+
+function compartilharWhatsApp() {
+  const m = Math.floor(JOGO.tempo/60);
+  const s = (JOGO.tempo%60).toString().padStart(2, '0');
+  const texto = `Fiz ${JOGO.acertos} acertos na tabuada nível ${JOGO.nivel} em apenas ${m}:${s}! ⚡ Desafio você a bater meu tempo no Tabuada Turbo! 🎮\n\nJogue grátis em: https://tabuadaturbo.com.br`;
+  window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(texto)}`);
+}
+
+function sairDaSala() {
+  clearInterval(JOGO.socketCheck);
+  goto('modos');
+}
+
+function copiarCodigo() {
+  navigator.clipboard.writeText(JOGO.codigoSala);
+  showToast("Código copiado! Cole para seu amigo.");
 }
 </script>
+
 </body>
 </html>
